@@ -16,8 +16,8 @@ const navLinks = [
         path:'/engineering'
     },
     {
-        title: 'others',
-        path:'/others'
+        title: 'post',
+        path:'/createPost'
     }]
 
 

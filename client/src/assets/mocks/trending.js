@@ -1,45 +1,44 @@
 import moment from 'moment'
-
  const trendingPosts =  [
     {
-        id:1,
         title: 'Software Engineer Salary in 2020',
         date: moment().format('MMMM DD, YYYY'),
         categories: ['Tech Culture'],
         link: '#',
-        image: 'money.jpg'
+        image: '/images/image1.jpg',
+        description:'lorem in In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available.'
     },
     {
-        id:2,
         title: 'GraphQL vs REST',
         date: moment().format('MMMM DD, YYYY'),
         categories: ['React', 'JavaScript'],
         link: '#',
-        image: 'apollo_graphql.png',
+        image: '/images/image2.jpg',
+        description:'lorem in In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available.'
     },
     {
-        id:3,
         title: 'A Day in the Life of a Programmer',
         date: moment().format('MMMM DD, YYYY'),
         categories: ['Tech Culture'],
         link: '#',
-        image: 'puzzled_programmer.jpeg'
+        image: '/images/image3.jpg',
+        description:'lorem in In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available.'
     },
     {
-        id:4,
         title: 'Brain Hacks for Learning to Program',
         date: moment().format('MMMM DD, YYYY'),
         categories: ['Brain Health'],
         link: '#',
-        image: 'neuron.jpg'
+        image: '/images/image4.jpg',
+        description:'lorem in In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available.'
     },
     {
-        id:5,
         title: 'React Vs Vue',
         date: moment().format('MMMM DD, YYYY'),
         categories: ['React', 'Vue'],
         link: '#',
-        image: 'logo.png'
+        image: '/images/image5.jpg',
+        description:'lorem in In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available.'
     },
 ]
 export {trendingPosts}

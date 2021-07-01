@@ -4,6 +4,8 @@ import {Pagination} from 'antd'
 import TagRow from './TagRow'
 
 function PostGrid({posts}) {
+    const PF = "http://localhost:5000/public";
+
     const [pageSize, setPageSize] = useState(9)
     const [current, setCurrent] = useState(1)
 
@@ -29,7 +31,7 @@ function PostGrid({posts}) {
                     <div className='post-container'>
                         <figure>
                             <Link to={`post/${post?.id}`}>
-                                <img src={require(`../assets/images/${post.image}`)} alt={post.image}/>
+                                <img src={PF +post.image} alt={post.image}/>
                             </Link>
                         </figure> 
                             <TagRow tags={post.categories}/>

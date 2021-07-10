@@ -22,6 +22,7 @@ const registerUser = asynchandler(async(req, res) =>{
         userName: user.userName,
         email: user.email,
         isAdmin: user.isAdmin,
+        profilePicture:user.profilePicture,
         token:generateToken(user._id)
     })
     } else {
@@ -45,6 +46,7 @@ const loginUser = asynchandler(async(req, res)=>{
             userName: user.userName,
             email: user.email,
             isAdmin: user.isAdmin,
+            profilePicture:user.profilePicture,
             token:generateToken(user._id)
         })   
         }else{

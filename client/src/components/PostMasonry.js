@@ -1,12 +1,39 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import MasonryPost from './MasonryPost'
-function PostMasonry({posts, columns, tagsOnTop}) {
-    return (
+import {useSelector, useDispatch} from 'react-redux'
+import { getTopPosts } from '../actions/postActions'
+function PostMasonry({columns, tagsOnTop}) {
+
+    const postMansonryPosts = useSelector(state => state.postMansonryPosts)
+    const {isLoading, posts, error} = postMansonryPosts
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(getTopPosts())
+        
+    }, [dispatch])
+    const trendingConfig = {
+        1:{
+            gridArea: '1/2/3/3',
+        }
+    }
+    
+    const mergeStyles = function(posts, config){
+        posts.forEach((post, index)=>{
+            post.style = config[index]
+        })
+    }
+    const trendingPosts = posts
+     mergeStyles(trendingPosts, trendingConfig)
+
+    return (<>
+        {isLoading?<h1>still loading</h1> : (error?(<h1>{error.message}</h1>):(
         <section className='masonry' style={{gridTemplateColumns:`repeat(${columns}, minmax(275px, 1fr))`}}>
-            {posts.map((post, index)=>
-                <MasonryPost  {...{post, index, tagsOnTop, key:index}}/>
+            {posts.map((post)=>
+                <MasonryPost  {...{post, tagsOnTop, key:post._id}}/>
             )}
         </section>
+        ))}
+        </>
     )
 }
 

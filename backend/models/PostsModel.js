@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 const commentSchema = mongoose.Schema({
-    name:{type:String, required:true},
-    comment:{type:String, required:false},
+    userName:{type:String, required:true},
+    comment:{type:String, required:true},
     user:{
         type: mongoose.Schema.Types.ObjectId,
         required:true,
@@ -14,6 +14,10 @@ const postSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required:true,
         ref:'User'
+    },
+    userAuthor:{
+        type:String,
+        required:true
     },
     title:{
         type: String,

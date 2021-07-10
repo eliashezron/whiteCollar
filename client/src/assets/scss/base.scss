@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Castoro&display=swap');
 @import './_variables';
 @import './_navigation';
 @import './_tagRow';
@@ -10,6 +11,11 @@
 @import './_register';
 @import './_createPost.scss';
 @import './_profile.scss';
+@import './_rightBar.scss';
+@import './_sideBar.scss';
+@import './_banner.scss';
+@import './_error.scss';
+@import './_postComponent.scss';
 
 body {
     font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
@@ -30,7 +36,7 @@ main{
 }
 
 .row {
-    margin: 4em 20px;
+    margin: .2em 20px;
 }
 
 .overlay::before {    
@@ -41,5 +47,5 @@ main{
     right: 0;
     bottom: 0;
     left: 0;
-    background: linear-gradient(180deg, transparent 0%, transparent 10%, rgba(201, 198, 198, 0.2) 99%, rgba(104, 103, 103, 0.1) 100%)
+    background: linear-gradient(180deg, transparent 0%, transparent 18%, rgba(0,0,0,0.8) 99%, rgba(0,0,0,0.8) 100%)
 }

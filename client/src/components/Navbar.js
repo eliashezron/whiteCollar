@@ -1,28 +1,32 @@
 import React,{useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Avatar} from 'antd'
+import { logout } from '../actions/userActions'
+import { useDispatch, useSelector } from 'react-redux'
+import {LogoutOutlined, LoginOutlined} from '@ant-design/icons'
 
+ 
+const PF = "http://localhost:5000/public"
 const navLinks = [
     {
         title: 'Blog',
         path:'/'
     },
     {
-        title: 'surveying',
-        path:'/surveying'
-    },
-    {
-        title: 'engineering',
-        path:'/engineering'
-    },
-    {
         title: 'post',
         path:'/createPost'
-    }]
-
-
-export default function Navbar({user}) {
+    }
+   ]
+   
+   
+   export default function Navbar() {
+       const dispatch = useDispatch()
+       const logoutHandler = ()=>{
+           dispatch(logout())
+       }
     const [menuActive, setMenuActive] = useState(false)
+    const loginUser = useSelector(state => state.loginUser)
+    const {userInfo} = loginUser
     return (
         <nav className={`site-navigation ${menuActive && 'active' }`}>
             <span className='menu-title'>Professionals</span>
@@ -34,10 +38,20 @@ export default function Navbar({user}) {
                         </li>
                     ))}
                 </ul>
+                {userInfo ? (
                 <div className="menu-avatar-conatiner">
-                    <Avatar size={50} src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>
-                    <span className="menu-avatar-name">{user.name}</span>
-                </div>
+                    <Link to = '/profile'>
+                    <Avatar size={50} src={userInfo.profilePicture ?
+                        PF +userInfo.profilePicture:
+                        PF + '/images/person/noAvatar.png'}/>
+                    <span className="menu-avatar-name">{userInfo.userName}</span>
+                    </Link>
+                    <Link to='/logout' onClick={logoutHandler}><LogoutOutlined /></Link>
+                </div>):(
+                    <div className='login-div'>
+                        <LoginOutlined />
+                    </div>
+                )}
             </div>
             <i className="icon ionicons ion-ios-menu"
             onClick={(e)=> setMenuActive(!menuActive)}/>

@@ -21,10 +21,10 @@
         align-items: center;
     }
       .writeIcon {
-        width: 25px;
-        height: 25px;
+        width: 30px;
+        height: 30px;
         font-size: 20px;
-        border: 1px solid;
+        border: .2px solid;
         border-radius: 50%;
         color: rgb(129, 125, 125);
         display: flex;
@@ -55,6 +55,40 @@
         background-color: $background;
 
     }
+    .categories-section{
+      position: relative;
+      display: inline-block;
+      font-size: 24px;
+      color: black;
+      // &:hover .dropdown-content{
+      //   display: block;
+      // }
+      // &:hover .dropbtn{
+      //   display: block;
+      // }
+    }
+    .dropbtn{
+      background-color:teal;
+      color: white;
+      padding: 16px;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
+     
+      .dropdown-content {
+        // display: none;
+        position: absolute;
+        // background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+
+  //       &:hover{
+  //         background-color: #ddd;
+  //       }
+  //     }
+    }
+  }
      .writeSubmit {
         position: absolute;
         top: 20px;
@@ -70,6 +104,11 @@
         align-items: center;
     }
 
+}
+@media screen and (max-width: 900px) {
+  .write{
+    padding: 10px 40px;
+  }
 }
 
   

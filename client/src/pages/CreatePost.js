@@ -1,23 +1,105 @@
-export default function Write() {
+import axios from 'axios'
+import React,{useState, useEffect} from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import {PaperClipOutlined} from '@ant-design/icons'
+import { createPostCreate } from '../actions/postActions'
+import { POST_CREATE_RESET } from '../constants/postConstants'
+
+export default function CreatePost({match, history}) {
+  const [title, settitle] = useState('')
+  const [description, setdescription] = useState('')
+  const [image, setimage] = useState('')
+  const [category, setcategory] = useState('')
+  const [previewsource, setpreviewsource] = useState('')
+  const [uploading, setuploading] = useState(false)
+  const loginUser = useSelector(state => state.loginUser)
+  const {userInfo} = loginUser
+  const categoriesPost = useSelector(state => state.categoriesPost)
+  const {categoriesInfo} = categoriesPost
+  const createPost = useSelector(state => state.createPost)
+  const {success, post, error} = createPost
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    if(success){
+      dispatch({type:POST_CREATE_RESET})
+      history.push(`/post/${post._id}`)
+    }else{
+      console.log('failed to create post')
+    }
+  },[dispatch,history, success, post, userInfo])
+  const uploadFileHandler =async(e)=>{
+    const file = e.target.files[0]
+    previewFile(file)
+    const formData = new FormData()
+    formData.append('image', file)
+    setuploading(true)
+    try{
+      const config ={
+        headers:{
+          'Content-Type':'multipart/form-data'
+        }
+      }
+      const {data} = await axios.post('/api/upload', formData, config)
+      console.log(data)
+      setimage(data)
+      setuploading(false)
+    }catch(error){
+      console.log(error)
+      setuploading(false)
+    }
+  }
+  const previewFile = (file) =>{
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onloadend=()=>{
+      setpreviewsource(reader.result)
+    }
+  }
+  const handleSubmit= (e)=>{
+    e.preventDefault()
+    dispatch(createPostCreate({image, title, description, category}))
+  }
   return (
     <div className="write">
-      <img
+      {uploading ? (<h1>uploading</h1>) : 
+      previewsource  ? (
+        <img
         className="writeImg"
-        src="../assets/images/registerpage.jpg"
+        src={previewsource}
         alt=""
       />
-      <form className="writeForm">
+      ):''}
+
+      <form className="writeForm" onSubmit={handleSubmit}>
         <div className="writeFormGroup">
           <label htmlFor="fileInput">
-            <i className="writeIcon fas fa-plus"></i>
+            <i className="writeIcon">
+            <PaperClipOutlined /></i>
           </label>
-          <input id="fileInput" type="file" style={{ display: "none" }} />
+          <input id="fileInput" 
+          type="file" 
+          style={{ display: "none" }}
+          custom
+          onChange={uploadFileHandler} />
           <input
             className="writeInput"
             placeholder="Title"
             type="text"
             autoFocus={true}
+            onChange={(e)=>settitle(e.target.value)}
           />
+        </div>
+        <div className='categories-section'>
+          <label >select a category</label>
+          <select className='dropbtn'>
+            {categoriesInfo.map((x)=>{
+             return  (<option  key={x._id} className='dropdown-content'
+             value ={category}
+             onChange={(e)=>setcategory(e.target.value)}>
+                {x.category}
+              </option>)}
+            )}
+          </select>
         </div>
         <div className="writeFormGroup">
           <textarea
@@ -25,9 +107,12 @@ export default function Write() {
             placeholder="description"
             type="text"
             autoFocus={true}
+            onChange={(e)=>setdescription(e.target.value)}
           />
         </div>
-        <button className="writeSubmit" type="submit">
+        <button className="writeSubmit" 
+        type="submit"
+        >
           Publish
         </button>
       </form>

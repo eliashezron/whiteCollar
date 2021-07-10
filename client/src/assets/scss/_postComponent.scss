@@ -1,0 +1,46 @@
+.card-box{
+    display: flex;
+    flex-direction: column;
+    background-color: #fdfdfd;
+    border-radius: 1px solid #eee;
+    box-shadow: 0px 0px 8px 0px #d4d4d4;
+    transition: 0.5s;
+    // margin: 0 15px;
+    text-align: justify;
+    
+    &:hover{
+        border: 1px solid #007bff;
+    }
+    figure{
+        height: 100px;
+    }
+    img {
+        position: relative;
+        // border-radius: 5px;
+        overflow: hidden;
+        object-fit: cover;
+        object-position: center center;
+        height: 100%;
+        width: 100%;
+        margin: 0 auto;
+        max-height: 280px;
+    }
+ 
+    .author-title{
+        padding: 10px;
+        span:nth-child(1){
+            margin-right: 10px;
+        }
+    }
+    .title{
+        align-self: flex-start;
+        font-size: 20px;
+        font-weight: 800px;
+        font-family: 'Castoro', serif;
+    }
+}
+@media screen and (max-width: 900px){
+    .card-box{
+        margin: 20px 30px;
+    }
+}

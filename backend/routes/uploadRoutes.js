@@ -11,17 +11,16 @@ const cloud = cloudinary.v2
 const router = express.Router()
 
 cloud.config({
-    cloud_name:'',
-    api_key:'',
-    api_secret:''
+    cloud_name:'eliashezron1',
+    api_key:'885519831199467',
+    api_secret:'n503NmtCArF3U9LqClV03LPtShM'
 })
 
 const storageImage = new CloudinaryStorage({
     cloudinary: cloud,
     params:{
         folder:'postImages',
-        public_id:(req, file)=>`${file.originalname.split('.')[0]}-${Date.now()}`,
-        transformation:[{width:500, height:500, crop:"limit"}]
+        public_id:(req, file)=>`${file.originalname.split('.')[0]}-${Date.now()}`
     }
 })
 
@@ -31,12 +30,12 @@ const storageProfilePicture = new CloudinaryStorage({
         folder:'userProfilePictures',
         public_id:(req, file)=>`${file.originalname.split('.')[0]}-${Date.now()}`,
         transformation:[{width:750, height:200, crop:"limit"}]
-    }
+    },
 })
 
 function checkFileType(file, cb){
     const filetypes = /jpg|jpeg|png/;
-    const extname = filetypes.test(path.extyname(file.originalname).toLocaleLowerCase())
+    const extname = filetypes.test(path.extname(file.originalname).toLocaleLowerCase())
     const mimetype = filetypes.test(file.mimetype)
     if(extname && mimetype){
         return cb(null, true)
@@ -46,16 +45,16 @@ function checkFileType(file, cb){
 }
 
 const upload = multer({
-    storageImage,
+    storage:storageImage,
     fileFilter:function(req,file,cb){
         checkFileType(file, cb)
-    }
+    },
 })
 const uploadPP = multer({
-    storageProfilePicture,
+    storage:storageProfilePicture,
     fileFilter:function(req,file,cb){
         checkFileType(file, cb)
-    }
+    },
 })
 
 router.post('/', upload.single('image'), (req, res)=>{

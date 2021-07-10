@@ -2,8 +2,9 @@ import React, {useState, useEffect, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import {Pagination} from 'antd'
 import TagRow from './TagRow'
-
-function PostGrid({posts}) {
+import MasonryPost from './MasonryPost'
+import PostComponent from './PostComponent'
+function PostGrid({posts, tagsOnTop}) {
     const PF = "http://localhost:5000/public";
 
     const [pageSize, setPageSize] = useState(9)
@@ -17,6 +18,7 @@ function PostGrid({posts}) {
 
     }, [current, pageSize, posts])
 
+    const windowWidth = window.innerWidth
     useEffect(()=>{
         window.scroll({
             top:0,
@@ -26,33 +28,19 @@ function PostGrid({posts}) {
     })
     return (
         <section className='grid-pagination-container'>
+            {windowWidth > 900 ?
             <section className='post-grid container'>
-                {paginatedPosts.map((post, index)=>(
-                    <div className='post-container'>
-                        <figure>
-                            <Link to={`post/${post?.id}`}>
-                                <img src={PF +post.image} alt={post.image}/>
-                            </Link>
-                        </figure> 
-                            <TagRow tags={post.categories}/>
-                            <h2>{post.title}</h2>
-                            <p className = 'author-text'>
-                                <span>
-                                    By: <Link to={`/authors/${post.author}`}>
-                                        {post.author}
-                                    </Link>
-                                </span>
-                                <span>
-                                    {post.date}
-                                </span>
-                            </p>
-                            <p className='description-text'>
-                                {post.description}
-                            </p>
-                            <Link to={post.link}>Read More ...</Link>
-                    </div>
+                {paginatedPosts.map((post)=>(
+                    <PostComponent post={post} key={post._id}/>
                 ))}
-            </section>
+            </section> :(
+                <>
+                {posts.map((post)=>
+                    <MasonryPost  {...{post, tagsOnTop, key:post._id}}/>
+                )}
+                </>
+
+            )}
             <Pagination
             simple
             showSizeChanger

@@ -1,42 +1,30 @@
-import React, { Component } from 'react'
-import { trendingPosts } from './assets/mocks/trending'
-
-const posts = [...trendingPosts,...trendingPosts,...trendingPosts]
-const BlogContext = React.createContext()
-
-class BlogProvider extends Component {
-    state = {
-        posts:[]
-    }
-    componentDidMount(){
-        let posts = this.formatData(posts)
-        this.setState({
-            posts
-        })
-    }
-    formatData(posts){
-        let displayPosts = posts.map(item=>{
-            let id = post.id
-            let posts = {...id}
-
-            return posts
-        })
-        return displayPosts
-    }
-    getPost = (id) =>{
-        let posts = [...this.state.posts]
-        const post = posts.find(post => post.id === id)
-        return post
-    }
-    render() {
-        return (
-            <BlogContext.Provider value={{...this.state, getPost: this.getPost}}>
-                {this.props.children}
-            </BlogContext.Provider>
-        )
-    }
+import {createContext, useEffect, useReducer} from 'react'
+import Reducer from './Reducers/Reducer'
+const initialState = {
+    user:JSON.parse(localStorage.getItem('user')) || null,
+    posts: [],
+    isLoading:false,
+    error:false
 }
 
-const BlogConsumer = BlogContext.Consumer
+export const Context = createContext(initialState)
 
-export function withBlogConsumer(.)
+export const ContextProvider = ({children}) =>{
+    const [state, dispatch] = useReducer(Reducer, initialState)
+    useEffect(() => {
+        localStorage.setItem('User', JSON.stringify(state.user))
+
+    }, [state.user])
+
+    return(
+        <ContextProvider
+            value={{
+                user:state.user,
+                isLoading:state.isLoading,
+                error:state.error,
+                dispatch
+            }}>
+                {children}
+            </ContextProvider>
+    )
+}

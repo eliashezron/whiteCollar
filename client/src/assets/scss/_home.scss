@@ -1,9 +1,12 @@
 .home{
-    padding: 1.5em 0;
+    padding: .5em 0;
     
     h1{
         width: 100%;
         color: $text-color;
         padding: 15px 0;
     }
+}
+.homes{
+    display: flex;
 }

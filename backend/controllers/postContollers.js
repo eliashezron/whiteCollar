@@ -1,5 +1,6 @@
 import asynchandler from 'express-async-handler'
 import Post from '../models/PostsModel.js'
+import User from '../models/UserModel.js'
 
 // get all posts
 // method get
@@ -8,7 +9,7 @@ import Post from '../models/PostsModel.js'
      const pageSize = 9
      const page = Number(req.query.pageNumber) || 1
      const keyword = req.query.keyword ? {
-         author:{
+         userAuthor:{
             $regex: req.query.keyword,
             $options:'i'
          },
@@ -22,14 +23,14 @@ import Post from '../models/PostsModel.js'
          },
      }:{}
      const count = await Post.countDocuments({...keyword})
-     const author = req.query.author
+     const userAuthor = req.query.userAuthor
      const category = req.query.category
      try{
      let posts;
-     if(author){
-        posts = await Post.find({author, ...keyword}).limit(pageSize).skip(pageSize * (page -1))
+     if(userAuthor){
+        posts = await Post.find({userAuthor})
      }else if(category){
-         posts = await Post.find({categories:{$in:[category, ...keyword]}}).limit(pageSize).skip(pageSize * (page -1))
+         posts = await Post.find({category:{$in:[category]}})
      }else{
          posts = await Post.find({...keyword}).limit(pageSize).skip(pageSize * (page -1))
      }
@@ -39,10 +40,6 @@ import Post from '../models/PostsModel.js'
          res.status(400).json(error)
      }
  })
-// filter post by created at date
-// method get
-// route/:filter
-
 // get single post
 // method get
 // route /:title
@@ -56,13 +53,79 @@ const getSinglePost = asynchandler(async(req, res)=>{
         throw new Error ('post not found')
     }
 })
-// filter posts by category
-// method get
-// route /query?=cat
-
 // liking a post
 // method put
-// route 
+// route '/:id/like'
+const likePost = asynchandler(async(req, res)=>{
+    try{
+        const post = await Post.findById(req.params.id)
+        if(!post.likes.includes(req.body.user._id)){
+            await post.updateOne({$push:{likes:req.body.user._id}})
+            res.status(200).json('the post has been liked')
+        }else{
+            await post.updateOne({$pull:{likes:req.body.user._id}})
+            res.status(200).json('the post has been disliked')
+        }
+    }catch(error){
+        res.status(400).json(error)
+    }
+})
+// get timeline posts
+// method get
+// route '/timeline/:id
+const getTimelinePosts = asynchandler(async(req, res)=>{
+    try{
+        const currentUser = await User.findById(req.user.id)
+        const userPosts = await Post.find({author:currentUser._id})
+        const friendPosts = await Promise.all(
+            currentUser.followings.map((friendId)=>{
+                return Post.find({author: friendId})
+            })
+        )
+        res.status(200).json(userPosts.concat(...friendPosts))
+    }catch(error){
+        res.status(500).json(error)
+    }
+})
+// get authors posts
+// method get
+// route '/profile/:userName
+const getAuthorsPosts = asynchandler(async(req, res)=>{
+    try{
+        const user = await User.findOne(req.params.id)
+        const posts = await Post.find({author:user._id}) 
+        res.status(200).json(posts)
+    }catch(error){
+        res.status(500).json(err)
+    }
+})
+// comment on a post
+// method put
+// route '/post/:id/comment
+const commentOnPost = asynchandler(async(req, res)=>{
+   try {
+       const{ comment} = req.body
+    const post = await Post.findById(req.params.id)
+        if(post){
+            const userComment = {
+            userName:req.user.userName,
+            comment,
+            user:req.user._id
+            }
+            post.comments.push(userComment)
+            post.numberOfComments = post.comments.length
+            await post.save()
+
+            res.status(201).json({message:'Comment added'})
+        }else{
+            res.status(400).json('post not found')
+        }
+   } catch (error) {
+       res.status(400)
+       res.json(error)
+   }
+    
+})
 
 // create a post
 // method post
@@ -70,6 +133,7 @@ const getSinglePost = asynchandler(async(req, res)=>{
  const createPost = asynchandler(async(req, res)=>{
      const post = new Post({
         title: req.body.title,
+        userAuthor:req.user.userName,
         description:req.body.description,
         author: req.user._id,
         image:req.body.image,
@@ -123,7 +187,16 @@ const getTopPosts = asynchandler(async(req, res)=>{
     res.json(topPosts)
 })
 
-export { getAllPosts, getTopPosts, getSinglePost, deletePost, createPost, updatePost}
+export { getAllPosts,
+        getTopPosts,
+        getSinglePost,
+        deletePost,
+        createPost,
+        updatePost,
+        commentOnPost,
+        likePost,
+        getAuthorsPosts,
+        getTimelinePosts}
 
 
 

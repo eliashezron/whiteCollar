@@ -23,9 +23,9 @@ app.use(cors())
 // app.use(express.static(__dirname + '/public'))
 app.use("/public", express.static(path.join(__dirname, "/public")))
 
-app.get('/', (req, res)=>{
-    res.send('this is the home page')
-})
+// app.get('/', (req, res)=>{
+//     res.send('this is the home page')
+// })
 if(process.env.NODE_ENV === 'development'){
     app.use(morgan('dev'))
 }
@@ -35,12 +35,6 @@ app.use('/api/posts', postRoutes)
 app.use('/api/categories', categoryRoutes)
 app.use('/api/upload', uploadRoutes)
 
-if(process.env.NODE_ENV === 'production'){
-    app.use(express.static(path.join(__dirname, '/client/build')))
-
-    app.get('*', (req, res)=>
-     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html')))
-}
 // "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
 // // deloying to the server
 if(process.env.NODE_ENV === 'production'){

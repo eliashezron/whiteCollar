@@ -42,7 +42,13 @@ if(process.env.NODE_ENV === 'production'){
      res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html')))
 }
 // "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+// // deloying to the server
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static(path.join(__dirname, '/client/build')))
 
+    app.get('*', (req, res)=>
+     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html')))
+}
 // error middleware
 app.use(notFound)
 app.use(errorHandler)

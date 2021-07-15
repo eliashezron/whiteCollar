@@ -20,6 +20,7 @@ const getSingleUser = asynchandler(async(req, res) => {
         res.json({
             _id:user._id,
             userName: user.name,
+            profilePicture:user.profilePicture,
             email:user.email,
             isAdmin: user.isAdmin,
             profilePicture:user.profilePicture})
@@ -76,6 +77,7 @@ const updateUserProfile = asynchandler(async(req, res)=>{
     if(user){
         user.userName = req.body.userName || user.userName
         user.emai = req.body.emai|| user.email 
+        user.profilePicture = req.body.profilePicture || user.profilePicture
         if(req.body.password){
             user.password = req.body.password
         }

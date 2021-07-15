@@ -1,24 +1,16 @@
 import React,{useState} from 'react'
+import {Route} from 'react-router-dom'
 import {Link} from 'react-router-dom'
 import {Avatar} from 'antd'
 import { logout } from '../actions/userActions'
 import { useDispatch, useSelector } from 'react-redux'
 import {LogoutOutlined, LoginOutlined} from '@ant-design/icons'
 
+import SearchBox from './SearchBox'
+
  
-const PF = "http://localhost:5000/public"
-const navLinks = [
-    {
-        title: 'Blog',
-        path:'/'
-    },
-    {
-        title: 'post',
-        path:'/createPost'
-    }
-   ]
-   
-   
+const PF = 'https://res.cloudinary.com/eliashezron1/image/upload/v1626282055/userProfilePictures/noAvatar_kwzvtj.png'
+
    export default function Navbar() {
        const dispatch = useDispatch()
        const logoutHandler = ()=>{
@@ -27,29 +19,37 @@ const navLinks = [
     const [menuActive, setMenuActive] = useState(false)
     const loginUser = useSelector(state => state.loginUser)
     const {userInfo} = loginUser
+
+
     return (
         <nav className={`site-navigation ${menuActive && 'active' }`}>
-            <span className='menu-title'>Professionals</span>
+            <Link to='/'><span className='menu-title'>WHITEPEN</span></Link>
+            <Route render={({history}) => <SearchBox history={history}/>}/>
             <div className="menu-content-container">
                 <ul>
-                    {navLinks.map((link, index) => (
-                        <li key={index}>
-                            <Link to={link.path}>{link.title}</Link>
+                        <li>
+                            <Link to='/'>Blog</Link>
                         </li>
-                    ))}
+                        <li>
+                            {userInfo ? <Link to='/create'>post</Link> :<Link to='/login'>post</Link> }
+                            
+                        </li>
+                        
                 </ul>
                 {userInfo ? (
-                <div className="menu-avatar-conatiner">
+                <div className='class'>
+                    <div className="menu-avatar-conatiner">
                     <Link to = '/profile'>
                     <Avatar size={50} src={userInfo.profilePicture ?
-                        PF +userInfo.profilePicture:
-                        PF + '/images/person/noAvatar.png'}/>
+                        userInfo.profilePicture:
+                        PF}/>
                     <span className="menu-avatar-name">{userInfo.userName}</span>
                     </Link>
+                    </div>
                     <Link to='/logout' onClick={logoutHandler}><LogoutOutlined /></Link>
                 </div>):(
                     <div className='login-div'>
-                        <LoginOutlined />
+                    <Link to='/login'><LoginOutlined /></Link>  
                     </div>
                 )}
             </div>

@@ -51,22 +51,47 @@ export const LoginUserReducer = (state={}, action)=>{
             return state
     }
 }
+export const userDetailsReducer = (state ={ user:{}}, action) => {
+    switch(action.type){ 
+        case 'USER_DETAILS_START':
+            return{ 
+                ...state, 
+                isLoading: true
+            }
+        case 'USER_DETAILS_SUCCESS':
+            return{ 
+                isLoading: false, 
+                user:action.payload}
+        case 'USER_DETAILS_FAILURE':
+            return{ 
+                isLoading: false, 
+                error:action.payload
+            }
+            case 'USER_DETAILS_RESET':
+                return{ 
+                    user:{}
+                }
+            default:
+            return state
+    }
+} 
 
 export const updateUserProfile =(state={}, action)=>{
     switch(action.type){
 
         case UPDATE_START:
             return{
-                ...state,
                 isLoading:true,
             };
         case UPDATE_SUCCESS:
             return{
-                user:action.payload,
+                userInfo:action.payload,
                 isLoading:false,
+                success:true
             };
         case UPDATE_FAILURE:
             return{
+                success:false,
                 isLoading:false,
                 error:true
             };

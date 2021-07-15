@@ -10,9 +10,7 @@ import users from './assets/mocks/user';
 import ErrorPage from './pages/ErrorPage';
 import CategoriesPage from './pages/CategoriesPage';
 import UserAuthorPosts from './pages/UserAuthorPosts';
-
 export default function App() {
- 
   return (
     <Router>
       <div className='App'>
@@ -23,11 +21,12 @@ export default function App() {
         <Route path='/posts/:category' component={CategoriesPage}/>
         <Route path='/post/:id' component={SinglePost}/>
         <Route path='/' component={Home} exact/>
+        <Route path='/create' component={CreatePost}/>
         <Route path='/login' component={Login} />
         <Route path='/register' component={Register} />
-        <Route path='/createPost' component={CreatePost} />
         <Route path='/profile' component={Profile} />
-        {/* <Route component={ErrorPage} exact/> */}
+        <Route path='/search/:keyword' component={Home} />
+        <Route component={ErrorPage} exact/>
         </Switch>
         </main>
       </div>

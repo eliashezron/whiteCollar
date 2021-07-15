@@ -70,3 +70,69 @@ import {
             })
         }
     }
+    // get one user
+    
+export const getUserDetails = () => async(dispatch, getState)=>{
+    try {
+        dispatch({
+            type:'USER_DETAILS_START'
+        })
+        const {userLogin:{userInfo}}= getState()
+        const config = {
+            headers:{
+                'Content-Type':'application/json',
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+        const {data} = await axios.get(`/api/users/profile`, config)
+        console.log(data)
+        dispatch({
+            type:'USER_DETAILS_SUCCESS',
+            payload:data
+        })
+    } catch (error) {
+        console.log(error)
+        dispatch({
+            type:'USER_DETAILS_FAILURE',
+            error:error.response && error.response.data.message ? 
+            error.response.data.message : error.message
+        })
+        
+    }
+}
+    // get one user
+    
+export const updateUserDetails = (user) => async(dispatch, getState)=>{
+    try {
+        dispatch({
+            type: UPDATE_START
+        })
+        const {userLogin:{userInfo}}= getState()
+        const config = {
+            headers:{
+                'Content-Type':'application/json',
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+        const {data} = await axios.put('/api/users/profile',user, config)
+        console(data)
+        dispatch({
+            type: UPDATE_SUCCESS,
+            payload:data
+        })
+        dispatch({
+            type: LOGIN_SUCCESS,
+            payload: data,
+          })
+        localStorage.setItem('userInfo',JSON.stringify(data))
+
+    } catch (error) {
+        console.log(error)
+        dispatch({
+            type: UPDATE_FAILURE,
+            error:error.response && error.response.data.message ? 
+            error.response.data.message : error.message
+        })
+        
+    }
+}

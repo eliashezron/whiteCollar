@@ -2,6 +2,7 @@ import React,{useEffect,useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import { Link } from 'react-router-dom'
 import { login } from '../actions/userActions'
+import Meta from '../components/Meta'
 
 export default function Login({history, location}) {
   const [userName, setuserName] = useState('')
@@ -18,9 +19,12 @@ export default function Login({history, location}) {
   const handleSubmit=(e)=>{
     e.preventDefault()
     dispatch(login(userName,password))
+  
                      
   }
   return (
+  <>
+  <Meta title='log into Leaves'/>
     <div className="login">
       <span className="loginTitle">Login</span>
       <form className="loginForm" onSubmit={handleSubmit}>
@@ -48,5 +52,6 @@ export default function Login({history, location}) {
           </button>
         </div>
     </div>
+    </>
   );
 }

@@ -1,0 +1,41 @@
+{
+  "name": "whitepen",
+  "version": "1.0.0",
+  "description": "share your experience",
+  "main": "backend/server.js",
+  "type": "module",
+  "engines": {
+    "npm": ">=6.14.8",
+    "node": ">=14.13.0"
+  },
+  "scripts": {
+    "start": "node backend/server",
+    "server": "nodemon backend/server ",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "data:import": "node backend/seeder",
+    "data:destroy": "node backend/seeder -d",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eliashezron/professionals.git"
+  },
+  "keywords": [
+    "engineering",
+    "art",
+    "life",
+    "economics",
+    "architecture"
+  ],
+  "author": "eliashezron",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eliashezron/professionals/issues"
+  },
+  "homepage": "https://github.com/eliashezron/professionals#readme",
+  "devDependencies": {
+    "concurrently": "^6.2.0",
+    "nodemon": "^2.0.12"
+  }
+}

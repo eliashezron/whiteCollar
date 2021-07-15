@@ -4,7 +4,7 @@ import {Pagination} from 'antd'
 import TagRow from './TagRow'
 import MasonryPost from './MasonryPost'
 import PostComponent from './PostComponent'
-function PostGrid({posts, tagsOnTop}) {
+function PostGrid({posts, pages, page, pageNumber,tagsOnTop}) {
     const PF = "http://localhost:5000/public";
 
     const [pageSize, setPageSize] = useState(9)
@@ -30,13 +30,13 @@ function PostGrid({posts, tagsOnTop}) {
         <section className='grid-pagination-container'>
             {windowWidth > 900 ?
             <section className='post-grid container'>
-                {paginatedPosts.map((post)=>(
-                    <PostComponent post={post} key={post._id}/>
+                {paginatedPosts.map((post, index)=>(
+                    <PostComponent post={post} key={index}/>
                 ))}
             </section> :(
                 <>
-                {posts.map((post)=>
-                    <MasonryPost  {...{post, tagsOnTop, key:post._id}}/>
+                {paginatedPosts.map((post, index)=>
+                    <MasonryPost  {...{post, tagsOnTop, key:index}}/>
                 )}
                 </>
 

@@ -1,3 +1,14 @@
+.ant-input-group{
+    width: fit-content;
+    border-radius: 10px;
+    padding: 0 20px 0 20px;
+}
+.ant-btn-primary{
+    // background: inherit;
+    // border-color:inherit;
+    text-shadow: none;
+    box-shadow: none;
+}
 .site-navigation{
     background-color: white;
     display: flex;
@@ -16,6 +27,10 @@
         height:100%;
         display: flex;
         margin-left: 30px;
+        color: black;
+        &:hover{
+            color:$text-link
+        }
     }
 
     .menu-content-container{
@@ -29,7 +44,7 @@
             flex-direction: row;
             height:100%;
             justify-content: flex-end;
-            margin: 0 20px 0 50px;
+            margin: 0 20px 0 20px;
             margin-block-start: 0;
             margin-block-end: 0;
             padding-inline-start: 0;
@@ -45,15 +60,36 @@
                 }
             }
         }
-
-        .ant-avatar{
-            background-color: $background;
-            border: 1px solid $border
+        .class{
+            display: flex;
+            flex-direction: row;
+            .anticon-logout{
+                font-size: 20px;
+                padding: 30px;
+                color:black;
+                    &:hover{
+                        color:$text-link;
+                    }
+            }
         }
-        .menu-avatar-name{
-            font-size: 18px;
-            margin-left: 15px;
-            margin-right: 15px;
+        .menu-avatar-container{
+            display: flex;
+            flex-direction: row;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            
+            .ant-avatar{
+                padding: 0 20px 0 20px;
+                background-color: $background;
+                border: 1px solid $border;
+            }
+            .menu-avatar-name{
+                padding: 30px;
+                display: inline-block;
+                overflow: hidden;
+                white-space: nowrap;
+            }
         }
     }
     .ion-ios-menu{

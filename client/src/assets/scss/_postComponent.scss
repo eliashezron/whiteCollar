@@ -11,6 +11,7 @@
     &:hover{
         border: 1px solid #007bff;
     }
+    
     figure{
         height: 100px;
     }
@@ -28,19 +29,32 @@
  
     .author-title{
         padding: 10px;
+        color: black;
         span:nth-child(1){
             margin-right: 10px;
         }
     }
     .title{
+        color: black;
         align-self: flex-start;
         font-size: 20px;
         font-weight: 800px;
         font-family: 'Castoro', serif;
     }
+    .post-description{
+        color: black;
+    }
 }
 @media screen and (max-width: 900px){
     .card-box{
-        margin: 20px 30px;
+        margin: .5px 30px;
+        .title{
+            font-size: 15px;
+            font-weight: 800px;
+        }
+        .author-title{
+            padding: 5px;
+            margin-top: -8px;
+        }
     }
 }

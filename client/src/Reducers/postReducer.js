@@ -13,11 +13,19 @@ import{ POST_UPLOAD_START,
         POST_EDIT_START,
         POST_EDIT_SUCCESS,
         POST_EDIT_FAILURE,
+        POST_EDIT_RESET,
+        POST_LIKE_START,
+        POST_LIKE_SUCCESS,
+        POST_LIKE_FAILURE,
+        POST_LIKE_RESET,
+        POST_COMMENT_START,
+        POST_COMMENT_SUCCESS,
+        POST_COMMENT_FAILURE,
+        POST_COMMENT_RESET,
         POST_DELETE_START,
         POST_DELETE_SUCCESS,
         POST_DELETE_FAILURE,
-        POST_CREATE_RESET,
-        POST_EDIT_RESET} from '../constants/postConstants'
+        POST_CREATE_RESET} from '../constants/postConstants'
 
 export const getPostsReducer = (state={posts:[]}, action)=>{
     switch(action.type){
@@ -111,7 +119,7 @@ export const getUserAuthorPostsReducer = (state={posts:[]},action)=>{
 
 
 
-export const getSinglePost = (state={post:{category:[]}}, action)=>{
+export const getSinglePost = (state={post:{ category:[], comments:[], likes:[]}}, action)=>{
     switch(action.type){
 
         case POST_DETAILS_START:
@@ -125,6 +133,28 @@ export const getSinglePost = (state={post:{category:[]}}, action)=>{
                 isLoading:false,
             };
         case POST_DETAILS_FAILURE:
+            return{
+                isLoading:false,
+                error:action.payload
+            };
+        default:
+            return state
+    }
+}
+export const getSinglePostComments = (state={commentsAll:{}}, action)=>{
+    switch(action.type){
+
+        case 'POST_COMMENTS_START':
+            return{
+                isLoading:true,
+                ...state            
+            };
+        case 'POST_COMMENTS_SUCCESS':
+            return{
+                commentsAll:action.payload,
+                isLoading:false,
+            };
+        case 'POST_COMMENTS_FAILURE':
             return{
                 isLoading:false,
                 error:action.payload
@@ -175,6 +205,52 @@ export const editPost = (state={post:{}}, action)=>{
                 error:action.payload
             };
             case POST_EDIT_RESET:
+                return {}
+        default:
+            return state
+    }
+}
+export const likePost = (state={}, action)=>{
+    switch(action.type){
+
+        case POST_LIKE_START:
+            return{
+                isLoading:true,
+            };
+        case POST_LIKE_SUCCESS:
+            return{
+                success:true,
+                isLoading:false
+            };
+        case POST_LIKE_FAILURE:
+            return{
+                isLoading:false,
+                error:action.payload
+            };
+        case POST_LIKE_RESET:
+                return {}
+        default:
+            return state
+    }
+}
+export const commentPost = (state={}, action)=>{
+    switch(action.type){
+
+        case POST_COMMENT_START:
+            return{
+                isLoading:true,
+            };
+        case POST_COMMENT_SUCCESS:
+            return{
+                success:true,
+                isLoading:false
+            };
+        case POST_COMMENT_FAILURE:
+            return{
+                isLoading:false,
+                error:action.payload
+            };
+        case POST_COMMENT_RESET:
                 return {}
         default:
             return state

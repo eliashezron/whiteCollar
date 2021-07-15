@@ -14,6 +14,12 @@ import{ POST_UPLOAD_START,
     POST_EDIT_START,
     POST_EDIT_SUCCESS,
     POST_EDIT_FAILURE,
+    POST_LIKE_START,
+    POST_LIKE_SUCCESS,
+    POST_LIKE_FAILURE,
+    POST_COMMENT_START,
+    POST_COMMENT_SUCCESS,
+    POST_COMMENT_FAILURE,
     POST_DELETE_START,
     POST_DELETE_SUCCESS,
     POST_DELETE_FAILURE} from '../constants/postConstants'
@@ -101,7 +107,6 @@ export const getPostDetails = (id) => async(dispatch)=>{
             type:POST_DETAILS_START
         })
         const {data} = await axios.get(`/api/posts/${id}`)
-        console.log(data)
         dispatch({
             type:POST_DETAILS_SUCCESS,
             payload:data
@@ -109,6 +114,27 @@ export const getPostDetails = (id) => async(dispatch)=>{
     } catch (error) {
         dispatch({
             type:POST_DETAILS_FAILURE,
+            error:error.response && error.response.data.message ? 
+            error.response.data.message : error.message
+        })
+        
+    }
+}
+// get one post comments
+export const getPostDetailsComments = (id) => async(dispatch)=>{
+    try {
+        dispatch({
+            type:'POST_COMMENTS_START'
+        })
+        const {data} = await axios.get(`/api/posts/${id}/comments`)
+        console.log(data)
+        dispatch({
+            type:'POST_COMMENTS_SUCCESS',
+            payload:data
+        })
+    } catch (error) {
+        dispatch({
+            type:'POST_COMMENTS_FAILURE',
             error:error.response && error.response.data.message ? 
             error.response.data.message : error.message
         })
@@ -152,7 +178,7 @@ export const updatePost = (post) => async(dispatch,getState)=>{
         const {loginUser:{userInfo}, } = getState()
         const config = {
             headers:{
-                'content-Type':'application/json',
+                'Content-Type':'application/json',
                 Authorization:`Bearer ${userInfo.token}`
             }
         }
@@ -166,6 +192,60 @@ export const updatePost = (post) => async(dispatch,getState)=>{
         console.log(error)
         dispatch({
             type:POST_EDIT_FAILURE,
+            error:error.response && error.response.data.message ? 
+            error.response.data.message : error.message
+        })
+        
+    }
+}
+// update a post
+export const likePostAction = (postId, userId) => async(dispatch,getState)=>{
+    try {
+        dispatch({
+            type:POST_LIKE_START
+        })
+        const {loginUser:{userInfo}, } = getState()
+        const config = {
+            headers:{
+                'Content-Type':'application/json',
+                Authorization:`Bearer ${userInfo.token}`
+            }
+        }
+         await axios.put(`/api/posts/${postId}/likes`,userId,config)
+        dispatch({
+            type:POST_LIKE_SUCCESS,
+        })
+    } catch (error) {
+        console.log(error)
+        dispatch({
+            type:POST_LIKE_FAILURE,
+            error:error.response && error.response.data.message ? 
+            error.response.data.message : error.message
+        })
+        
+    }
+}
+// update a post
+export const commentPostAction = (postId, comment) => async(dispatch,getState)=>{
+    try {
+        dispatch({
+            type:POST_COMMENT_START
+        })
+        const {loginUser:{userInfo}, } = getState()
+        const config = {
+            headers:{
+                'Content-Type':'application/json',
+                Authorization:`Bearer ${userInfo.token}`
+            }
+        }
+        await axios.post(`/api/posts/${postId}/comments`,comment,config)
+        dispatch({
+            type:POST_COMMENT_SUCCESS,
+        })
+    } catch (error) {
+        console.log(error)
+        dispatch({
+            type:POST_COMMENT_FAILURE,
             error:error.response && error.response.data.message ? 
             error.response.data.message : error.message
         })

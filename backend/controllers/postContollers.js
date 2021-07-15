@@ -1,4 +1,5 @@
 import asynchandler from 'express-async-handler'
+// import Pusher from 'pusher'
 import Post from '../models/PostsModel.js'
 import User from '../models/UserModel.js'
 
@@ -9,14 +10,14 @@ import User from '../models/UserModel.js'
      const pageSize = 9
      const page = Number(req.query.pageNumber) || 1
      const keyword = req.query.keyword ? {
-         userAuthor:{
-            $regex: req.query.keyword,
-            $options:'i'
-         },
-         category:{
-            $regex: req.query.keyword,
-            $options:'i'
-         },
+        //  userAuthor:{
+        //     $regex: req.query.keyword,
+        //     $options:'i'
+        //  },
+        //  category:{
+        //     $regex: req.query.keyword,
+        //     $options:'i'
+        //  },
          title:{
             $regex: req.query.keyword,
             $options:'i'
@@ -53,17 +54,28 @@ const getSinglePost = asynchandler(async(req, res)=>{
         throw new Error ('post not found')
     }
 })
+const getSinglePostComments = asynchandler(async(req, res)=>{
+    const post = await Post.findById(req.params.id)
+    const{comments,...others} = post
+    if(post){
+        res.status(200)
+        res.json({comments})
+    }else{
+        res.status(404)
+        throw new Error ('post not found')
+    }
+})
 // liking a post
 // method put
 // route '/:id/like'
 const likePost = asynchandler(async(req, res)=>{
     try{
         const post = await Post.findById(req.params.id)
-        if(!post.likes.includes(req.body.user._id)){
-            await post.updateOne({$push:{likes:req.body.user._id}})
+        if(!post.likes.includes(req.body.userName)){
+            await post.updateOne({$push:{likes:req.body.userName}})
             res.status(200).json('the post has been liked')
         }else{
-            await post.updateOne({$pull:{likes:req.body.user._id}})
+            await post.updateOne({$pull:{likes:req.body.userName}})
             res.status(200).json('the post has been disliked')
         }
     }catch(error){
@@ -102,7 +114,24 @@ const getAuthorsPosts = asynchandler(async(req, res)=>{
 // comment on a post
 // method put
 // route '/post/:id/comment
+
+const postComments = asynchandler(async(req, res)=>{
+    const postCommentsArray = await Post.find({comments:{$in: [req.params.userName]}})
+    
+    if(postCommentsArray){
+        res.json(postCommentsArray)
+    }else{
+        res.status(400).json('comments not found')
+    }
+})
 const commentOnPost = asynchandler(async(req, res)=>{
+//  const pusher = new Pusher ({  
+// app_id : "1234215",
+// key : "a09580bb76b0d8c97e6c",
+// secret : "172bb0a44701f8ba18c3",
+// cluster : "mt1",
+// encrypted: true
+// })
    try {
        const{ comment} = req.body
     const post = await Post.findById(req.params.id)
@@ -114,8 +143,8 @@ const commentOnPost = asynchandler(async(req, res)=>{
             }
             post.comments.push(userComment)
             post.numberOfComments = post.comments.length
+            // pusher.trigger('flash-comments', 'new-comment', userComment)
             await post.save()
-
             res.status(201).json({message:'Comment added'})
         }else{
             res.status(400).json('post not found')
@@ -196,34 +225,8 @@ export { getAllPosts,
         commentOnPost,
         likePost,
         getAuthorsPosts,
-        getTimelinePosts}
+        getTimelinePosts,
+        getSinglePostComments,
+        postComments}
 
 
-
-
-
-
-
-
-
-
-// const createNewPost = asynchandler(async(req, res)=>{
-//     const {title, image, description, category, image } = req.body
-
-//     const titleExists = Post.findOne({title})
-//     if(titleExists){
-//         res.status(400)
-//         throw new Error ('title already exists')
-//     }
-//     const post = Post.create({title, image, description, category ,image })
-//     if(post){
-//         res.status(200)
-//         res.json({
-//             _id:post._id,
-//             title:post.title,
-//             description:post.description,
-//             category:post.category,
-//             image:post.image
-//         })
-//     }
-// })

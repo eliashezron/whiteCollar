@@ -60,33 +60,22 @@
       display: inline-block;
       font-size: 24px;
       color: black;
-      // &:hover .dropdown-content{
-      //   display: block;
-      // }
-      // &:hover .dropbtn{
-      //   display: block;
-      // }
+
     }
     .dropbtn{
       background-color:teal;
       color: white;
-      padding: 16px;
+      padding: 4px;
       font-size: 20px;
       border: none;
       border-radius: 10px;
      
       .dropdown-content {
-        // display: none;
         position: absolute;
-        // background-color: #f1f1f1;
         min-width: 160px;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         z-index: 1;
 
-  //       &:hover{
-  //         background-color: #ddd;
-  //       }
-  //     }
     }
   }
      .writeSubmit {
@@ -109,6 +98,21 @@
   .write{
     padding: 10px 40px;
   }
+  .categories-section{
+    font-size: 16px;
+  }
+  .dropbtn{
+    font-size: 10px;
+    min-width: none;
+  }
+  .dropbtn{
+    background-color:teal;
+    color: white;
+    padding: 5px;
+    font-size: 10px;
+    border: none;
+    border-radius: 5px;
+}
 }
 
   

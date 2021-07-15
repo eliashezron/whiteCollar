@@ -1,5 +1,5 @@
-import React from 'react'
-import {MoreOutlined ,CommentOutlined, HeartOutlined} from '@ant-design/icons'
+import React, { useState } from 'react'
+import {CommentOutlined, HeartOutlined} from '@ant-design/icons'
 import {format} from 'timeago.js'
 import TagRow from './TagRow';
 import { Link } from 'react-router-dom';
@@ -7,25 +7,23 @@ import { Link } from 'react-router-dom';
 function PostComponent({post}) {
   const PF = "http://localhost:5000/public";
 
-  const likeHandler = (e) =>{
-    e.preventDefault()
-  }
-  const commentHandler = (e) =>{
-    e.preventDefault()
-  }
   const windowWidth = window.innerWidth
     return (
+     
         <div className="card-box">
-          <figure className='figure-img'>
-            <img src={PF + post.image} alt={post.image}/>
+          <Link to={`/post/${post._id}`}>
+            <figure className='figure-img'>
+            <img src={post.image} alt={post.image}/>
           </figure>
+          </Link>
           <TagRow tags={post.category}/>
           <div className='author-title'> 
           <Link to={`/authors/${post.userAuthor}`}><span>by {post.userAuthor}</span></Link>
           <span>{format (post.createdAt)}</span>
+          <Link to={`/post/${post._id}`}>
           <div className='title'>{post.title}</div>
           { windowWidth > 900 ? 
-          (<div>
+          (<div className='post-description'>
             {post.description.length <100 ? `${post.description}` : `${post.description.substring(0, 100)}...`}
           </div>)
           :(
@@ -33,11 +31,13 @@ function PostComponent({post}) {
             {post.description.length <100 ? `${post.description}` : `${post.description.substring(0, 45)}...`}
           </div>)}
           <div className='button-icons'>
-          <span onClick={likeHandler}>< HeartOutlined/></span>
-          <span onClick={commentHandler}>< CommentOutlined/></span>
+          <span>< HeartOutlined/>{post.likes.length === 0 ? '': `${post.likes.length}`}</span>
+          <span>< CommentOutlined/>{post.numberOfComments === 0 ? '': `${post.numberOfComments}`}</span>
           </div>
+          </Link>
           </div>
       </div>
+     
     );
   }       
 

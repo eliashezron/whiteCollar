@@ -1,20 +1,24 @@
 import { createStore, combineReducers, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
 import {composeWithDevTools} from 'redux-devtools-extension'
-import { createPost, deletePost, editPost, getCategoryPostsReducer, getPostsReducer, getSinglePost, getTopPostsReducer, getUserAuthorPostsReducer } from './Reducers/postReducer'
-import { LoginUserReducer, registerUserReducer, updateUserProfile } from './Reducers/userReducer'
+import { createPost, deletePost, likePost, commentPost, editPost, getCategoryPostsReducer, getPostsReducer, getSinglePost, getTopPostsReducer, getUserAuthorPostsReducer, getSinglePostComments } from './Reducers/postReducer'
+import { LoginUserReducer, registerUserReducer, updateUserProfile, userDetailsReducer } from './Reducers/userReducer'
 import { categoriesReducer } from './Reducers/categoryReducers'
 
 const reducer = combineReducers({
     allPosts:getPostsReducer,
     postMansonryPosts:getTopPostsReducer,
     postDetails:getSinglePost,
+    postComments:getSinglePostComments,
     createPost:createPost,
     editPost:editPost,
+    likePost:likePost,
+    commentPost:commentPost,
     deletePost:deletePost,
     userRegister:registerUserReducer,
     loginUser:LoginUserReducer,
     updateUser:updateUserProfile,
+    userDetails:userDetailsReducer,
     categoriesPost:categoriesReducer,
     getcategoryPosts:getCategoryPostsReducer,
     getuserAuthorPosts:getUserAuthorPostsReducer

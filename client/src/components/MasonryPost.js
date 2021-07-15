@@ -5,7 +5,7 @@ function MasonryPost({post, tagsOnTop}) {
     const windowWidth = window.innerWidth
 
     const imageBackground ={
-        backgroundImage:`url(http://localhost:5000/public${post.image})`
+        backgroundImage:`url(${post.image})`
     }
 
     const style = windowWidth>900 ? {...imageBackground, ...post.style} : imageBackground

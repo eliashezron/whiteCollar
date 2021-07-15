@@ -10,7 +10,6 @@ import userRoutes from './routes/user&authRoutes.js'
 import postRoutes from './routes/postRoute.js' 
 import categoryRoutes from './routes/categoryRoutes.js' 
 import uploadRoutes from './routes/uploadRoutes.js' 
-
 const __dirname = path.resolve(path.dirname(''));
 dotenv.config({path:__dirname + '/.env'})
 
@@ -35,6 +34,13 @@ app.use('/api/users', userRoutes)
 app.use('/api/posts', postRoutes)
 app.use('/api/categories', categoryRoutes)
 app.use('/api/upload', uploadRoutes)
+
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static(path.join(__dirname, '/client/build')))
+
+    app.get('*', (req, res)=>
+     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html')))
+}
 
 // error middleware
 app.use(notFound)

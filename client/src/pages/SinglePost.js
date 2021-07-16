@@ -77,9 +77,7 @@ function SinglePost({match, history}) {
            }
     }, [dispatch, match.params.id, commentPostSuccess, editSuccess, deleteSuccess, like, post])
 
-
-    console.log(title)
-    const uploadFileHandler =async(e)=>{
+      const uploadFileHandler =async(e)=>{
         const file = e.target.files[0]
         previewFile(file)
         const formData = new FormData()
@@ -151,7 +149,6 @@ function SinglePost({match, history}) {
         
     
       }
-      console.log(post)
     return (
         <>
             <Link to='/'><DoubleLeftOutlined /></Link>

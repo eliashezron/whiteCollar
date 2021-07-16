@@ -22,10 +22,11 @@ const PF = 'https://res.cloudinary.com/eliashezron1/image/upload/v1626282055/use
 
 
     return (
+        <>
         <nav className={`site-navigation ${menuActive && 'active' }`}>
             <Link to='/'><span className='menu-title'>WHITEPEN</span></Link>
             <Route render={({history}) => <SearchBox history={history}/>}/>
-            <div className="menu-content-container">
+            <div className="menu-content-container" onMouseEnter={()=>setMenuActive(true)} onMouseLeave={()=>setMenuActive(false)}>
                 <ul>
                         <li>
                             <Link to='/'>Blog</Link>
@@ -58,6 +59,7 @@ const PF = 'https://res.cloudinary.com/eliashezron1/image/upload/v1626282055/use
             
             
         </nav>
+        </>
     )
 }
 

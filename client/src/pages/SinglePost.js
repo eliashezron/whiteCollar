@@ -75,7 +75,7 @@ function SinglePost({match, history}) {
                dispatch({type:POST_COMMENT_RESET})
                console.log('success')
            }
-    }, [dispatch, match.params.id, commentPostSuccess, editSuccess, deleteSuccess, like])
+    }, [dispatch, match.params.id, commentPostSuccess, editSuccess, deleteSuccess, like, post])
 
 
     console.log(title)

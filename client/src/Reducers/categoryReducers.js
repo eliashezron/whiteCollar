@@ -3,12 +3,12 @@ export const categoriesReducer = (state={categories:[]}, action)=>{
         case 'CATEGORIES_START':
             return{
                 isLoading:true,
-                categories:[],
+                categoriesInfo:[],
             };
             case 'CATEGORIES_SUCCESS':
             return{
                 isLoading:false,
-                categories:action.payload
+                categoriesInfo:action.payload
             };
         case 'CATEGORIES FAILURE':
             return{

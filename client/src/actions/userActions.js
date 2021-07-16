@@ -37,6 +37,7 @@ import {
        }
        export const logout = () =>(dispatch)=>{
            localStorage.removeItem('userInfo')
+           localStorage.removeItem('categoriesInfo')
            dispatch({
                type:LOGOUT
            })

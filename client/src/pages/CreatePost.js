@@ -25,9 +25,7 @@ export default function CreatePost({match, history}) {
 
   const dispatch = useDispatch()
   useEffect(()=>{
-    if(userInfo && !categoriesInfo){
-      dispatch(getAllCategories())
-    }else if(success){
+    if(success){
       dispatch({type:POST_CREATE_RESET})
       history.push(`/post/${post._id}`)
     }else{
@@ -106,10 +104,11 @@ export default function CreatePost({match, history}) {
         </div>
         <div className='categories-section'>
           <label >select a category</label>
-          <select className='dropbtn' value ={category} onChange={(e)=>setcategory(e.target.value)}>
+         {categoriesInfo ? 
+         <select className='dropbtn' value ={category} onChange={(e)=>setcategory(e.target.value)}>
             {categoriesInfo.map((x)=>{
              return  (<option key={x._id}className='dropdown-content' >{x.category} </option>)} )} 
-          </select>  
+          </select> :''} 
         </div>
         <div className="writeFormGroup">
           <textarea

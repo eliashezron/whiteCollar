@@ -19,7 +19,7 @@ function CategoriesPage({match}) {
             <Link to='/'><DoubleLeftOutlined /></Link>
         <div className='post-grid container'>
         {posts.map((x)=>{
-            return <PostComponent post={x} key={x._id}/>
+            return <PostComponent post={x} key={x._id} userAuthor={x.userAuthor}/>
         })}
         </div>
         </>

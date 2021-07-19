@@ -71,6 +71,24 @@ import {
             })
         }
     }
+
+    export const callUser = (userName) => async(dispatch)=>{
+        try{
+            dispatch({type: 'ALL_USERS_START'})
+            const {data} = await axios.get(`/api/users?userName=${userName}`)
+            dispatch({
+                type:'ALL_USERS_SUCCESS',
+                payload:data
+            }) 
+        }catch(error){
+            console.log(error)
+            dispatch({
+                type:'ALL_USERS_FAILURE',
+                payload: error.response && error.response.data.message ? 
+                error.response.data.message : error.message
+            })
+        }
+    }
     // get one user
     
 export const getUserDetails = () => async(dispatch, getState)=>{

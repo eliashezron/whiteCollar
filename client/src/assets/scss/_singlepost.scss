@@ -26,7 +26,7 @@
 
     img {
         position: relative;
-        border-radius: 15px;
+        border-radius: 5px;
         overflow: hidden;
         object-fit: cover;
         object-position: center center;
@@ -37,6 +37,8 @@
     }
     .singlePostTitleInput{
         margin: 10px;
+        width: max-content;
+        align-items: flex-start;
         font-family: 'Castoro', serif;
         font-size: 28px;
         text-align: center;
@@ -50,7 +52,8 @@
         }
     }
     .singlePostTitleInput:focus{
-        float: right;
+        width: 60vw;
+        // float: right;
         font-size: 16px;
     }
 
@@ -110,46 +113,106 @@
             margin-right: 10px;
         }
     }
-    .pure-form{
-        .row{
-            display: flex;
-            flex-direction: row;
-            .text-area{
-                flex: 9;
-                border:1px solid #aeaeae;
-                height: 50px;
-                justify-content: center;
-                align-self: flex-start;
-                &:hover{
-                    border: 1px solid #007bff;
+    .flash-comments{
+        transition: 300ms ease left;
+        position: relative;
+        display: none;
+        transform: translateX(100%);
+        height: 100%;
+        width: 30vw;
+        overflow-y: scroll;
+        justify-content: flex-start;
+        .pure-form{
+            .row{
+                display: flex;
+                flex-direction: row;
+                .text-area{
+                    flex: 9;
+                    border:1px solid #aeaeae;
+                    height: 50px;
+                    justify-content: center;
+                    align-self: flex-start;
+                    &:hover{
+                        border: 1px solid #007bff;
+                    }
                 }
+                .comment-input{
+                    border: none;
+                    color: #666;
+                    font-size: 18px;
+                    line-height: 25px;
+                    width:100%;
+                    height: 100%;
+                    float: right;
+                    font-size: 16px;
+                }
+                .comment-input:focus{
+                    outline: none;
+                }
+                
+                .button-secondary {
+                background: teal; 
+                color: white;
+                border-radius: 4px;
+                text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+                justify-content: center;
+                margin-left: 20px;
+                } 
             }
-            .comment-input{
-                border: none;
-                color: #666;
-                font-size: 18px;
-                line-height: 25px;
-                width:100%;
-                height: 100%;
-               float: right;
-                font-size: 16px;
-            }
-            .comment-input:focus{
-                outline: none;
-            }
-            
-            .button-secondary {
-            background: teal; 
-            color: white;
-            border-radius: 4px;
-            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-            justify-content: center;
-            margin-left: 20px;
-            } 
+        }
+        &.active{
+            right: 0px;
+            position: absolute;
+            transform: translateX(0);
+            display: flex;
+            flex-direction: column-reverse;
+            /* From https://css.glass */
+            background: rgba(26, 27, 27, 0.08);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(3.3px);
+            -webkit-backdrop-filter: blur(3.3px);
+            border: 1px solid rgba(26, 27, 27, 0.3);
         }
     }
+    .box{
+        margin-top: 40px;
+        padding: 20px 20px 20px 20px;
+        display: flex;
+        flex-direction: row;
+        .avatar-div{
+            align-content: center;
+        }
+        .div{
+            margin-left: 40px;
+            span:nth-child(1){
+                font-size: 18px;
+                font-weight: 800px;
+                font-family: 'Castoro', serif;
+                color: $text-color;
+                display: block;
+            }
+            span:nth-child(2){
+                font-size: 24px;
+                font-weight: 800px;
+                color:black;
+                font-family:'Montserrat', sans-serif;
+            }
+            p{
+                font-size: 18;
+                font-weight: 400;
+                color: $text-color;
+                font-family:'Montserrat', sans-serif;
+            }
+        }
+        &:hover{
+            border: none !important;
+        }
+    }
+    .last{
+        margin-top: 30px;
+    }
 }
-
 .comment-section{
         border:1px solid #aeaeae;
         border-radius: 10px;
@@ -167,18 +230,19 @@
 
             .head{
                 align-self: flex-start;
-                font-size: 10px;
-                font-weight: 400px;
+                font-size: 12px;
+                // font-weight: 400px;
                 // font-family: 'Castoro', serif;
                 color:$text-light;
 
-                span:nth-child(2){
-                    margin-left: 10px;
+                span:nth-child(1){
+                    margin-left: 2px;
+                    margin-right: 5px;
                     // background: #007bff;
                 }
             }
             .body{
-                font-size: 24px;
+                font-size: 28px;
                 font-weight: 400px;
                 color: #555;
             }

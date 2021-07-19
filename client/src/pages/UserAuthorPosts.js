@@ -5,7 +5,7 @@ import PostComponent from '../components/PostComponent'
 import {DoubleLeftOutlined} from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 
-function CategoriesPage({match}) {
+function UserAuthorPosts({match}) {
     const userAuthor = match.params.userAuthor
     const getuserAuthorPosts = useSelector(state => state.getuserAuthorPosts)
     const {isLoading, posts, error} =getuserAuthorPosts
@@ -18,11 +18,11 @@ function CategoriesPage({match}) {
             <Link to='/'><DoubleLeftOutlined /></Link>
         <div className='post-grid container'>
         {posts.map((x)=>{
-            return <PostComponent post={x} key={x._id}/>
+            return <PostComponent post={x} key={x._id} userAuthor={x.userAuthor}/>
         })}
         </div>
         </>
     )
 }
 
-export default CategoriesPage
+export default UserAuthorPosts

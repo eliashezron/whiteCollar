@@ -5,33 +5,18 @@ import TagRow from '../components/TagRow'
 import { Link } from 'react-router-dom'
 import { deletePostAction,likePostAction, getPostDetails, updatePost, commentPostAction, getPostDetailsComments } from '../actions/postActions'
 import {EditOutlined, DeleteOutlined, CommentOutlined,DoubleLeftOutlined, HeartOutlined} from '@ant-design/icons'
-import { POST_COMMENT_RESET, POST_CREATE_RESET, POST_EDIT_RESET } from '../constants/postConstants'
-import {format} from 'timeago.js'
+import { POST_COMMENT_RESET, POST_CREATE_RESET, POST_EDIT_RESET, POST_LIKE_RESET } from '../constants/postConstants'
 import {PaperClipOutlined} from '@ant-design/icons'
 import { message } from 'antd'
 import Loader from '../components/Loader'
 import Meta from '../components/Meta'
+import CommentSection from '../components/CommentSection'
+import { callUser } from '../actions/userActions'
+import Avatar from 'antd/lib/avatar/avatar'
+import Usercard from '../components/Usercard'
 
-// import Pusher from '../../../backend/node_modules/pusher'
 
 
-const CommentSection = ({comment}) => {
-    return(
-        <div className='comment-section'>
-            <div className='comments'>
-               <div className='head'>
-                  <Link to={`/authors/${comment.userAuthor}`}>
-                      <span>{comment.userName}</span>
-                    </Link> 
-                  <span>{format (comment.createdAt)}</span>
-               </div>
-               <div className='body'>
-                   {comment.comment}
-               </div>
-            </div>
-        </div>
-    )
-}
 
 function SinglePost({match, history}) {
     const [updateMode, setupdateMode] = useState(false)
@@ -41,6 +26,8 @@ function SinglePost({match, history}) {
     const [like, setlike] = useState('')
     const [isliked, setisliked] = useState(false)
     const [comment, setcomment] = useState('')
+    const [divActive, setdivActive] = useState(false)
+    // const [commentsPusher, setcommentsPusher] = useState('')
     const [previewsource, setpreviewsource] = useState('')
     const [uploading, setuploading] = useState(false)
   
@@ -54,16 +41,22 @@ function SinglePost({match, history}) {
     const {success:deleteSuccess} = deletePost
     const loginUser = useSelector(state => state.loginUser)
     const {userInfo} = loginUser
+    const allUsers = useSelector(state => state.allUsers)
+    const {user} = allUsers
     const dispatch = useDispatch()
-    const PF = "http://localhost:5000/public";
-    
+    const PF = 'https://res.cloudinary.com/eliashezron1/image/upload/v1626282055/userProfilePictures/noAvatar_kwzvtj.png'
+
     useEffect(() => {
+        if(post){
+            dispatch(callUser(post.userAuthor))
+        }
         if(editSuccess){
             dispatch({type:POST_EDIT_RESET})
         }else{
        
         if(!post._id || post._id !== match.params.id){
             dispatch(getPostDetails(match.params.id))
+          
         }else{
             settitle(post.title)
             setdescription(post.description)
@@ -75,7 +68,9 @@ function SinglePost({match, history}) {
                dispatch({type:POST_COMMENT_RESET})
                console.log('success')
            }
-    }, [dispatch, match.params.id, commentPostSuccess, editSuccess, deleteSuccess, like, post])
+    }, [dispatch, match.params.id, commentPostSuccess, editSuccess, deleteSuccess, post])
+    console.log(user)
+
 
       const uploadFileHandler =async(e)=>{
         const file = e.target.files[0]
@@ -122,13 +117,14 @@ function SinglePost({match, history}) {
     }
     const likeHandler = (e) =>{
         if(userInfo){
-              dispatch(likePostAction(match.params.id,{userName:userInfo.userName}))
+              dispatch(likePostAction(match.params.id))
+              dispatch({type:POST_LIKE_RESET})
         setlike(isliked ? like -1 : like + 1)
         setisliked(!isliked)
         if(isliked){
-            message.success('post has been liked')
-        }else{
             message.success('post has been disliked')
+        }else{
+            message.success('post has been liked')
         }
         }else{
             message.warning('login in to like post')
@@ -170,17 +166,19 @@ function SinglePost({match, history}) {
                 </Link>
             </figure>)} 
                 <TagRow tags={post.category}/>
-            {updateMode ? (
+            {updateMode ? (<>
                 <div>
                 <label htmlFor="fileInput">
                 <i className="writeIcon">
-                <PaperClipOutlined /></i>
+                <PaperClipOutlined size={40}/></i>
                  </label>
                 <input id="fileInput" 
                 type="file" 
                 style={{ display: "none" }}
                 custom
                  onChange={uploadFileHandler} />
+                 </div>
+                <div>
                 <input
                 id='title'
                 type='text'
@@ -189,7 +187,7 @@ function SinglePost({match, history}) {
                 autoFocus
                 onChange={(e)=>settitle(e.target.value)}
                 />
-                </div>
+                </div></>
             ):(
             <h2 className= 'singlePostTitle'>{post.title}
             {post.userAuthor === userInfo?.userName && (
@@ -202,7 +200,14 @@ function SinglePost({match, history}) {
             )}
             <p className = 'author-text'>
                 <span>
-                    By: <Link to={`/authors/${post.userAuthor}`}>
+               {user && <Link to = '/profile'>
+                    <Avatar size={40} src={user.profilePicture ?
+                        user.profilePicture:
+                        PF}/>
+                </Link>}
+                </span>
+                <span>
+                    <Link to={`/authors/${post.userAuthor}`}>
                         {post.userAuthor}
                     </Link>
                 </span>
@@ -230,10 +235,10 @@ function SinglePost({match, history}) {
                 </button>
             )}
             <div className='likesection'>
-                <span onClick={likeHandler}><HeartOutlined />{like=== 0 ? '':like}</span>
-                <span><CommentOutlined />{post.comments.length === 0 ? '': `${post.comments.length}`}</span>  
+                <span onClick={likeHandler}><HeartOutlined />{like === 0 ? '': like}</span>
+                <span onClick={()=>setdivActive(!divActive)}><CommentOutlined />{post.comments.length === 0 ? '': `${post.comments.length}`}</span>  
             </div>
-            <div class="flash-comments">
+            <div className={`flash-comments ${divActive && 'active' }`} onMouseEnter={()=>setdivActive(true)} onMouseLeave={()=>setdivActive(!divActive)}>
             {userInfo ? (
                 <form class="pure-form" id="comment-form" onSubmit={commentHandler}>
                 <div class="row">
@@ -260,10 +265,28 @@ function SinglePost({match, history}) {
                  )}
                 <div>
                 {post.comments.map(x=>{
-                    return<CommentSection comment={x} key={x._id}/>
+                    return<CommentSection comment={x} key={x._id} userAuthor={x.userName}/>
                 })}
                 </div>
             </div>
+                 {user &&
+                 <div className='card-box box'>
+                     <div className='avatar-div'>
+                    <Link to={`/authors/${post.userAuthor}`}>
+                    <Link to = '/profile'>
+                        <Avatar size={100} src={user.profilePicture ?
+                            user.profilePicture:
+                            PF}/>
+                    </Link>
+                    </Link></div>
+                    <div className='div'>
+                    <span>WRITTEN BY</span>
+                    <span>{user.userName}</span>
+                    <p>{user.userBio}</p>
+                    </div>
+                
+                </div>}
+                <div className='last'></div>
     </div>
     </>)}
     </>

@@ -198,8 +198,8 @@ export const updatePost = (post) => async(dispatch,getState)=>{
         
     }
 }
-// update a post
-export const likePostAction = (postId, userId) => async(dispatch,getState)=>{
+// update a like
+export const likePostAction = (postId) => async(dispatch,getState)=>{
     try {
         dispatch({
             type:POST_LIKE_START
@@ -211,7 +211,7 @@ export const likePostAction = (postId, userId) => async(dispatch,getState)=>{
                 Authorization:`Bearer ${userInfo.token}`
             }
         }
-         await axios.put(`/api/posts/${postId}/likes`,userId,config)
+         await axios.put(`/api/posts/${postId}/likes`,({userName:userInfo.userName}),config)
         dispatch({
             type:POST_LIKE_SUCCESS,
         })

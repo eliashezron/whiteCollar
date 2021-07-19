@@ -1,15 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector} from 'react-redux';
 import {CommentOutlined, HeartOutlined} from '@ant-design/icons'
 import {format} from 'timeago.js'
 import TagRow from './TagRow';
 import { Link } from 'react-router-dom';
+import Avatar from 'antd/lib/avatar/avatar'
+import axios from 'axios'
 
-function PostComponent({post}) {
-  const PF = "http://localhost:5000/public";
+function PostComponent({post, userAuthor}) {
+  const PF = 'https://res.cloudinary.com/eliashezron1/image/upload/v1626282055/userProfilePictures/noAvatar_kwzvtj.png'
+  const [user, setuser] = useState('')
+   const dispatch = useDispatch()
+  useEffect(async() => {
+    const {data} = await axios.get(`/api/users?userName=${userAuthor}`)
+    setuser(data)
+  }, [dispatch, userAuthor])
 
   const windowWidth = window.innerWidth
     return (
-     
         <div className="card-box">
           <Link to={`/post/${post._id}`}>
             <figure className='figure-img'>
@@ -18,7 +26,14 @@ function PostComponent({post}) {
           </Link>
           <TagRow tags={post.category}/>
           <div className='author-title'> 
-          <Link to={`/authors/${post.userAuthor}`}><span>by {post.userAuthor}</span></Link>
+          <Link to={`/authors/${post.userAuthor}`}>
+          {user && <Link to = '/profile'>
+                    <Avatar size={40} src={user.profilePicture ?
+                        user.profilePicture:
+                        PF}/>
+          </Link>}
+            <span>{post.userAuthor}</span>
+          </Link>
           <span>{format (post.createdAt)}</span>
           <Link to={`/post/${post._id}`}>
           <div className='title'>{post.title}</div>

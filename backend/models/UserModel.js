@@ -9,6 +9,10 @@ const userSchema = mongoose.Schema({
         max:20,
         unique: true,
     },
+    userBio:{
+        type:String,
+        default:''
+    },
     email:{
         type:String,
         required:true,

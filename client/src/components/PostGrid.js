@@ -31,7 +31,7 @@ function PostGrid({posts, pages, page, pageNumber,tagsOnTop}) {
             {windowWidth > 900 ?
             <section className='post-grid container'>
                 {paginatedPosts.map((post, index)=>(
-                    <PostComponent post={post} key={index}/>
+                    <PostComponent post={post} key={index} userAuthor={post.userAuthor}/>
                 ))}
             </section> :(
                 <>

@@ -51,6 +51,30 @@ export const LoginUserReducer = (state={}, action)=>{
             return state
     }
 }
+export const allUsersReducer = (state ={ user:{}}, action) => {
+    switch(action.type){ 
+        case 'ALL_USERS_START':
+            return{ 
+                users:{},
+                isLoading: true
+            }
+        case 'ALL_USERS_SUCCESS':
+            return{ 
+                isLoading: false, 
+                user:action.payload}
+        case 'ALL_USERS_FAILURE':
+            return{ 
+                isLoading: false, 
+                error:action.payload
+            }
+            case 'ALL_USERS_RESET':
+                return{ 
+                    users:{}
+                }
+            default:
+            return state
+    }
+} 
 export const userDetailsReducer = (state ={ user:{}}, action) => {
     switch(action.type){ 
         case 'USER_DETAILS_START':

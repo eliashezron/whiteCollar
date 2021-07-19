@@ -6,9 +6,15 @@ import generateToken from "../utils/generateToken.js"
 // access private/admin
 // method get
 const getAllUsers = asynchandler(async(req, res) =>{
-    const users = await User.find({})
+    const userName = req.query.userName
+    let users;
+    if(userName){
+        users = await User.findOne({userName})
+    }else{
+         users = await User.find({})
+    }
     res.status(200).json(users)
-})
+}) 
 
 // get single user
 // route '/profile'

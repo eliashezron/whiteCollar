@@ -8,6 +8,8 @@ import {PlusCircleOutlined} from '@ant-design/icons'
 import {Link} from 'react-router-dom'
 import { getAllCategories } from '../actions/categoriesAction'
 import Meta from '../components/Meta'
+import { getTopUsers } from '../actions/userActions'
+import Usercard from '../components/Usercard'
 
 
 export default function Home({match}) {
@@ -17,14 +19,18 @@ export default function Home({match}) {
     const {isLoading, error, posts, page, pages} = allPosts
     const loginUser = useSelector(state => state.loginUser)
     const {userInfo} = loginUser
+    const topUsers = useSelector(state => state.topUsers)
+    const {users}= topUsers
+    const categoriesPost = useSelector(state => state.categoriesPost)
+    const {categoriesInfo} = categoriesPost
 
     const dispatch = useDispatch()
     
     useEffect(()=>{
         dispatch(listPosts(keyword, pageNumber))
         dispatch(getAllCategories())
+        dispatch(getTopUsers())
     },[dispatch, keyword, pageNumber])
-    
     
      const recentPosts =[...posts, ...posts, ...posts]
         const windowWidth = window.innerWidth
@@ -41,11 +47,15 @@ export default function Home({match}) {
             <PostMasonry columns={3} tagsOnTop={true}/>
         </div>
         </section> :''}
-    <section className='container'>
-        <div className='row'>
+    <section className='container' style={{display:'flex'}}>
+        <div className='row' style={{flex:"8"}}>
             <h2>recent posts</h2>
             <PostGrid posts={recentPosts} tagsOnTop={true} page={page} pages={pages} pageNumber={pageNumber}/>
         </div> 
+        {window.innerWidth > 900 && 
+        <div style={{flex:"4"}}>
+        <Usercard categories={categoriesInfo} users={users}/>    
+        </div>}
     </section>
     </div>)}
         </>

@@ -19,3 +19,25 @@ export const categoriesReducer = (state={categories:[]}, action)=>{
             return state
     }
 }
+export const followcategory= (state={ }, action)=>{
+    switch(action.type){
+        case 'CATEGORY_FOLLOW_START':
+            return{
+                isLoading:true,
+            };
+        case 'CATEGORY_FOLLOW_SUCCESS':
+            return{
+                isLoading:true,
+                success:true,
+            };
+        case 'CATEGORY_FOLLOW_FAILURE':
+            return{
+                isLoading:false,
+                error:action.payload
+            }
+        case "CATEGORY_FOLLOW_RESET":
+            return {};
+        default:
+            return state
+    }
+}

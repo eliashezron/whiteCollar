@@ -6,6 +6,12 @@ import User from '../models/UserModel.js'
 // get all posts
 // method get
 // route /
+function Randomizer(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
  const getAllPosts = asynchandler(async(req, res)=>{
      const pageSize = 9
      const page = Number(req.query.pageNumber) || 1
@@ -33,7 +39,7 @@ import User from '../models/UserModel.js'
      }else if(category){
          posts = await Post.find({category:{$in:[category]}})
      }else{
-         posts = await Post.find({...keyword}).limit(pageSize).skip(pageSize * (page -1))
+         posts = await Post.find({...keyword}).limit(pageSize).skip(pageSize * (page -1))         
      }
          res.status(200)
          res.json({posts, page, pages:Math.ceil(count/pageSize)})
@@ -215,6 +221,7 @@ const getTopPosts = asynchandler(async(req, res)=>{
     const topPosts = await Post.find({}).sort({likes: -1}).limit(5)
     res.json(topPosts)
 })
+
 
 export { getAllPosts,
         getTopPosts,

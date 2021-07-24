@@ -13,7 +13,6 @@ import Meta from '../components/Meta'
 import CommentSection from '../components/CommentSection'
 import { callUser } from '../actions/userActions'
 import Avatar from 'antd/lib/avatar/avatar'
-import Usercard from '../components/Usercard'
 
 
 

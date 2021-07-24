@@ -1,3 +1,4 @@
+import { Alert, message } from 'antd'
 import React,{useEffect,useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -8,7 +9,7 @@ export default function Login({history, location}) {
   const [userName, setuserName] = useState('')
   const [password, setpassword] = useState('')
   const loginUser = useSelector(state => state.loginUser)
-  const {isLoading, userInfo, error} = loginUser
+  const {isLoading, userInfo, error, success} = loginUser
   const dispatch = useDispatch()
   const redirect = location.search?location.search.split('=')[1]:'/'
   useEffect(() => {
@@ -19,12 +20,13 @@ export default function Login({history, location}) {
   const handleSubmit=(e)=>{
     e.preventDefault()
     dispatch(login(userName,password))
-  
-                     
   }
   return (
   <>
-  <Meta title='log into Leaves'/>
+
+  <Meta title='log into whitePen'/>
+  {error && <Alert type='error' message='username and password combinations do no match'showIcon closable/>}
+  {success && message.success('login successfull')}
     <div className="login">
       <span className="loginTitle">Login</span>
       <form className="loginForm" onSubmit={handleSubmit}>
@@ -44,6 +46,7 @@ export default function Login({history, location}) {
         type='submit'
         disabled={isLoading}>Login</button>
       </form>
+      
         <div> new User ? {''}
         <button className="loginRegisterButton">
           <Link className='link' to={redirect ? `/register?register=${redirect}`:'/register'}>

@@ -2,6 +2,7 @@ import React,{useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { register } from '../actions/userActions'
 import { Link } from 'react-router-dom'
+import { message } from 'antd'
 
 export default function Register({location, history}) {
 const [userName, setuserName] = useState('')
@@ -21,14 +22,15 @@ useEffect(() => {
 const handleSubmit = (e) =>{
   e.preventDefault()
   if(password !== confirmpassword){
-    console.log('passwords do no match')
+    message.error('passwords do no match')
   }else{
     dispatch(register(userName,email,password))
-
+    message.success('account created successfully')
   }
 }
 
-    return (
+    return (<>
+      {/* {error && <Alert type='error' message='username and password combinations do no match'showIcon closable/>} */}
         <div className="register">
       <span className="registerTitle">Register</span>
       <form className="registerForm" 
@@ -67,5 +69,6 @@ const handleSubmit = (e) =>{
          </button>
         
     </div>
+    </>
     )
 }

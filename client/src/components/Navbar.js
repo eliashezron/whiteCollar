@@ -40,14 +40,13 @@ const PF = 'https://res.cloudinary.com/eliashezron1/image/upload/v1626282055/use
                 {userInfo ? (
                 <div className='class'>
                     <div className="menu-avatar-conatiner">
-                    <Link to = '/profile'>
+                    <Link to={`/authors/${userInfo.userName}`}>
                     <Avatar size={50} src={userInfo.profilePicture ?
                         userInfo.profilePicture:
                         PF}/>
-                    <span className="menu-avatar-name">{userInfo.userName}</span>
                     </Link>
                     </div>
-                    <Link to='/logout' onClick={logoutHandler}><LogoutOutlined /></Link>
+                    <Link to='/' onClick={logoutHandler}><LogoutOutlined /></Link>
                 </div>):(
                     <div className='login-div'>
                     <Link to='/login'><LoginOutlined /></Link>  

@@ -7,7 +7,7 @@ function TagRow({tags}) {
         <div className='tags-container'>
             {tags.map((tag)=>
             <Link to = {`/posts/${tag}`}>
-                <span key={tag._id} className='tag' style={{backgroundColor: categoryColors[tag]}}>
+                <span key={tag._id} className='tag' style={{backgroundColor: categoryColors[tag], color:'white'}}>
                     {tag.toUpperCase()}
                 </span>
             </Link>            

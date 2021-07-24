@@ -1,6 +1,18 @@
 import express from 'express'
 import { loginUser, registerUser } from '../controllers/authContollers.js'
-import { adminGetSingleUser, deleteUser, getAllUsers, getSingleUser, updateUserByAdmin, updateUserProfile } from '../controllers/userControllers.js'
+import { adminGetSingleUser,
+            deleteUser,
+            followCategory, 
+            followUser,
+            getAllUsers,
+            getMostFollowedUsers,
+            getSingleUser,
+            randomUsers,
+            updateUserByAdmin,
+            updateUserProfile,
+            userReadingList, 
+            viewFollowers,
+            viewFollowings} from '../controllers/userControllers.js'
 import {protect, admin} from '../middleware/authMiddeleware.js'
 
 
@@ -8,10 +20,16 @@ const router = express.Router()
 router.post('/login', loginUser)
 router.post('/register', registerUser)
 router.get('/', getAllUsers)
+router.get('/random', randomUsers)
+router.get('/topusers', getMostFollowedUsers)
 router.get('/profile', protect, getSingleUser)
+router.get('/:id/followers',  viewFollowers)
+router.get('/:id/followings',  viewFollowings)
+router.get('/:id', protect, adminGetSingleUser)
 router.put('/profile', protect, updateUserProfile)
-router.get('/:id', protect, admin, adminGetSingleUser)
-router.put('/:id', protect, admin, updateUserByAdmin)
+router.put('/profile/readinglist', protect, userReadingList)
+router.put('/profile/follow', protect, followUser)
+router.put('/profile/followcategory', protect, followCategory)
 router.delete('/:id', protect, admin, deleteUser)
 
 export default router

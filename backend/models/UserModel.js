@@ -40,6 +40,18 @@ const userSchema = mongoose.Schema({
     followings:{
         type:Array,
         default:[]
+    },
+    readingList:{
+        type:Array,
+        default:[]
+    },
+    drafts:{
+        type:Array,
+        default:[]
+    },
+    preferedCategories:{
+        type:Array,
+        default:[]
     }
 },{
     timestamps: true

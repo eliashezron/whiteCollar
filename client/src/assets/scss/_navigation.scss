@@ -80,7 +80,7 @@
             align-items: center;
             
             .ant-avatar{
-                padding: 0 20px 0 20px;
+                padding: 0 5px 0 5px;
                 background-color: $background;
                 border: 1px solid $border;
             }
@@ -99,6 +99,15 @@
         align-items: center;
         margin-right: 30px;
     }
+}
+.login-div{
+    .anticon-login{
+        font-size: 20px;
+        padding: 30px;
+        color:black;
+            &:hover{
+                color:$text-link;
+  }       }
 }
 
 @media screen and (max-width: 900px) {

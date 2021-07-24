@@ -5,5 +5,7 @@ const router = express.Router()
 
 router.get('/', getAllCategories)
 
+
+
 export default router
 // get all categories

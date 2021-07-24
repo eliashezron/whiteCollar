@@ -5,15 +5,15 @@
     border-radius: 1px solid #eee;
     box-shadow: 0px 0px 8px 0px #d4d4d4;
     transition: 0.5s;
-    // margin: 0 15px;
     text-align: justify;
+    margin-bottom: 15px;
     
     &:hover{
         border: 1px solid #007bff;
     }
     
     figure{
-        height: 100px;
+        height: 200px;
     }
     img {
         position: relative;
@@ -40,12 +40,24 @@
     .title{
         color: black;
         align-self: flex-start;
-        font-size: 20px;
-        font-weight: 800px;
+        font-size: 40px;
+        font-weight: 900px;
         font-family: 'Castoro', serif;
+        text-align: left;
+        letter-spacing: .2px;
+        word-spacing: .5px;
+        line-break: loose;
+        line-height: 1.2;
     }
     .post-description{
-        color: black;
+        color: $text-color;
+        font-size: 20px;
+        font-weight: 500px;
+        font-family: 'Raleway', sans-serif;
+        margin-bottom: 20px;
+    }
+    .ant-icon{
+        font-size:10px;
     }
 }
 @media screen and (max-width: 900px){
@@ -55,9 +67,17 @@
             font-size: 15px;
             font-weight: 800px;
         }
+        figure{
+            height: 100px;
+        }
         .author-title{
             padding: 5px;
             margin-top: -8px;
+        }
+        .title{
+            line-height: normal;
+            font-weight: 700px;
+            font-size: 24px;
         }
     }
 }

@@ -39,11 +39,13 @@ export const LoginUserReducer = (state={}, action)=>{
             return{
                 userInfo:action.payload,
                 isLoading:false,
+                success:true,
             };
         case LOGIN_FAILURE:
             return{
                 isLoading:false,
-                error:action.payload
+                error:action.payload,
+                success:false
             };
         case LOGOUT:
             return{};
@@ -51,17 +53,17 @@ export const LoginUserReducer = (state={}, action)=>{
             return state
     }
 }
-export const allUsersReducer = (state ={ user:{}}, action) => {
+export const allUsersReducer = (state ={ users:[]}, action) => {
     switch(action.type){ 
         case 'ALL_USERS_START':
             return{ 
-                users:{},
+                users:[],
                 isLoading: true
             }
         case 'ALL_USERS_SUCCESS':
             return{ 
                 isLoading: false, 
-                user:action.payload}
+                users:action.payload}
         case 'ALL_USERS_FAILURE':
             return{ 
                 isLoading: false, 
@@ -69,7 +71,31 @@ export const allUsersReducer = (state ={ user:{}}, action) => {
             }
             case 'ALL_USERS_RESET':
                 return{ 
-                    users:{}
+                    users:[]
+                }
+            default:
+            return state
+    }
+} 
+export const topUsersReducer = (state ={ users:[]}, action) => {
+    switch(action.type){ 
+        case 'TOP_USERS_START':
+            return{ 
+                isLoading: true
+            }
+        case 'TOP_USERS_SUCCESS':
+            return{ 
+                isLoading: false, 
+                users:action.payload
+            }
+        case 'TOP_USERS_FAILURE':
+            return{ 
+                isLoading: false, 
+                error:action.payload
+            }
+            case 'TOP_USERS_RESET':
+                return{ 
+                    users:[]
                 }
             default:
             return state
@@ -85,7 +111,8 @@ export const userDetailsReducer = (state ={ user:{}}, action) => {
         case 'USER_DETAILS_SUCCESS':
             return{ 
                 isLoading: false, 
-                user:action.payload}
+                user:action.payload
+            }
         case 'USER_DETAILS_FAILURE':
             return{ 
                 isLoading: false, 
@@ -100,7 +127,7 @@ export const userDetailsReducer = (state ={ user:{}}, action) => {
     }
 } 
 
-export const updateUserProfile =(state={}, action)=>{
+export const updateUserProfile =(state={ }, action)=>{
     switch(action.type){
 
         case UPDATE_START:
@@ -109,7 +136,7 @@ export const updateUserProfile =(state={}, action)=>{
             };
         case UPDATE_SUCCESS:
             return{
-                userInfo:action.payload,
+                user:action.payload,
                 isLoading:false,
                 success:true
             };
@@ -119,6 +146,56 @@ export const updateUserProfile =(state={}, action)=>{
                 isLoading:false,
                 error:true
             };
+        case 'UPDATE_RESET':
+            return{ 
+                user:{}
+            }
+        default:
+            return state
+    }
+}
+export const followUser= (state={ }, action)=>{
+    switch(action.type){
+        case 'FOLLOW_START':
+            return{
+                isLoading:true,
+            };
+        case 'FOLLOW_SUCCESS':
+            return{
+                isLoading:true,
+                success:true,
+                user:action.payload
+            };
+        case 'FOLLOW_FAILURE':
+            return{
+                isLoading:false,
+                error:action.payload
+            }
+        case "FOLLOW_RESET":
+            return {user:{}};
+        default:
+            return state
+    }
+}
+export const unfollowUser= (state={ }, action)=>{
+    switch(action.type){
+        case 'UN_FOLLOW_START':
+            return{
+                isLoading:true,
+            };
+        case 'UN_FOLLOW_SUCCESS':
+            return{
+                isLoading:true,
+                success:true,
+                user:action.payload
+            };
+        case 'UN_FOLLOW_FAILURE':
+            return{
+                isLoading:false,
+                error:action.payload
+            }
+        case "UN_FOLLOW_RESET":
+            return {user:{}};
         default:
             return state
     }

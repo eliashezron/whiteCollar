@@ -6,15 +6,11 @@ import TagRow from './TagRow';
 import { Link } from 'react-router-dom';
 import Avatar from 'antd/lib/avatar/avatar'
 import axios from 'axios'
+import { Hooks } from './Hooks';
 
 function PostComponent({post, userAuthor}) {
   const PF = 'https://res.cloudinary.com/eliashezron1/image/upload/v1626282055/userProfilePictures/noAvatar_kwzvtj.png'
-  const [user, setuser] = useState('')
-   const dispatch = useDispatch()
-  useEffect(async() => {
-    const {data} = await axios.get(`/api/users?userName=${userAuthor}`)
-    setuser(data)
-  }, [dispatch, userAuthor])
+  const {user} = Hooks({userAuthor})
 
   const windowWidth = window.innerWidth
     return (
@@ -39,15 +35,15 @@ function PostComponent({post, userAuthor}) {
           <div className='title'>{post.title}</div>
           { windowWidth > 900 ? 
           (<div className='post-description'>
-            {post.description.length <100 ? `${post.description}` : `${post.description.substring(0, 100)}...`}
+            {post.description.length <100 ? `${post.description}` : `${post.description.substring(0, 180)}...`}
           </div>)
           :(
           <div>
             {post.description.length <100 ? `${post.description}` : `${post.description.substring(0, 45)}...`}
           </div>)}
           <div className='button-icons'>
-          <span>< HeartOutlined/>{post.likes.length === 0 ? '': `${post.likes.length}`}</span>
-          <span>< CommentOutlined/>{post.numberOfComments === 0 ? '': `${post.numberOfComments}`}</span>
+          <span>< HeartOutlined />{post.likes.length === 0 ? '': `${post.likes.length}`}</span>
+          <span>< CommentOutlined />{post.numberOfComments === 0 ? '': `${post.numberOfComments}`}</span>
           </div>
           </Link>
           </div>

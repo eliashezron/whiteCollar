@@ -1,7 +1,14 @@
 .settings {
     display: flex;
   }
-  
+  .writeInput {
+    font-size: 30px;
+    border: none;
+    padding: 20px;
+    width: 100%;
+    background-color: $background;
+
+}
   .settingsWrapper {
     flex: 9;
     padding: 20px;

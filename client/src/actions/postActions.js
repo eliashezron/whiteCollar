@@ -65,7 +65,6 @@ export const getPostsByuserAuthor = (userAuthor) => async(dispatch)=>{
         try{
             dispatch({type:'GET_USERAUTHOR_START'})
             const {data} = await axios.get(`/api/posts?userAuthor=${userAuthor}`)
-            console.log(data)
             dispatch(
                 {type:'GET_USERAUTHOR_SUCCESS',
                 payload: data}

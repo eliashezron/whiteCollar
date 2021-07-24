@@ -2,8 +2,8 @@ import { createStore, combineReducers, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
 import {composeWithDevTools} from 'redux-devtools-extension'
 import { createPost, deletePost, likePost, commentPost, editPost, getCategoryPostsReducer, getPostsReducer, getSinglePost, getTopPostsReducer, getUserAuthorPostsReducer, getSinglePostComments } from './Reducers/postReducer'
-import { allUsersReducer, LoginUserReducer, registerUserReducer, updateUserProfile, userDetailsReducer } from './Reducers/userReducer'
-import { categoriesReducer } from './Reducers/categoryReducers'
+import { allUsersReducer, followUser,unfollowUser, LoginUserReducer, registerUserReducer, topUsersReducer, updateUserProfile, userDetailsReducer } from './Reducers/userReducer'
+import { categoriesReducer, followcategory } from './Reducers/categoryReducers'
 
 const reducer = combineReducers({
     allPosts:getPostsReducer,
@@ -22,7 +22,11 @@ const reducer = combineReducers({
     categoriesPost:categoriesReducer,
     getcategoryPosts:getCategoryPostsReducer,
     getuserAuthorPosts:getUserAuthorPostsReducer, 
-    allUsers:allUsersReducer
+    allUsers:allUsersReducer,
+    topUsers:topUsersReducer,
+    followuser:followUser,
+    unfollowuser:unfollowUser,
+    followcategory:followcategory
 })
 const userInfoFromStorage = localStorage.getItem('userInfo') ? JSON.parse
 (localStorage.getItem('userInfo')):null

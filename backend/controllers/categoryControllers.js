@@ -3,13 +3,18 @@ import Categories from '../models/CategoriesModel.js'
 
 // getAllCategories
 const getAllCategories = asynchandler(async(req, res)=>{
-    const categories = await Categories.find({})
-    if(categories){
-        res.status(200).json(categories)
+    const category = req.query.category
+
+    let categories
+    if(category){
+        categories = await Categories.findOne({category})
     }else{
-        console.log(error)
+        categories = await Categories.find({})
     }
+    res.status(200).json(categories)
 })
+
+
 // create category
 // method post
 // route /create

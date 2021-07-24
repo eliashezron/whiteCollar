@@ -6,7 +6,6 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import CreatePost from './pages/CreatePost'
 import Profile from './pages/Profile'
-import users from './assets/mocks/user';
 import ErrorPage from './pages/ErrorPage';
 import CategoriesPage from './pages/CategoriesPage';
 import UserAuthorPosts from './pages/UserAuthorPosts';

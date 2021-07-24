@@ -1,10 +1,13 @@
 import User from "../models/UserModel.js"
+import Post from "../models/PostsModel.js"
 import asynchandler from 'express-async-handler'
 import generateToken from "../utils/generateToken.js"
+import Categories from "../models/CategoriesModel.js"
 // get all users
 // route '/'
 // access private/admin
 // method get
+
 const getAllUsers = asynchandler(async(req, res) =>{
     const userName = req.query.userName
     let users;
@@ -16,6 +19,24 @@ const getAllUsers = asynchandler(async(req, res) =>{
     res.status(200).json(users)
 }) 
 
+// get top users
+const getMostFollowedUsers = asynchandler(async(req, res)=>{
+    const topUsers = await User.find({}).sort({followers: -1}).limit(4)
+    res.json(topUsers)
+})
+
+const randomUsers = asynchandler(async(req,res)=>{
+   const users = await User.find({}).limit(5) 
+
+   const Randomizer = (array)=>{
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+   const randomusers = Randomizer(users)
+   res.json(randomusers)
+})
 // get single user
 // route '/profile'
 // method get
@@ -23,13 +44,7 @@ const getSingleUser = asynchandler(async(req, res) => {
     const  user = await User.findById(req.user._id)
     if(user){
         res.status(200)
-        res.json({
-            _id:user._id,
-            userName: user.name,
-            profilePicture:user.profilePicture,
-            email:user.email,
-            isAdmin: user.isAdmin,
-            profilePicture:user.profilePicture})
+        res.json(user )
     }else{
         res.status(404)
         throw new Error('User not found')
@@ -66,8 +81,13 @@ const updateUserByAdmin = asynchandler(async(req, res)=>{
             userName: updatedUser.userName,
             email: updatedUser.email,
             isAdmin: updatedUser.isAdmin,
-            profilePicture:user.profilePicture,
-            token:generateToken(updatedUser._id)
+            profilePicture:updatedUser.profilePicture,
+            token:generateToken(updatedUser._id),
+            followers:updatedUser.followers,
+            followings:updatedUser.followings,
+            preferedCategories:updatedUser.preferedCategories,
+            readingList:updatedUser.readingList,
+            drafts:updatedUser.drafts
     })
     }else{
         res.status(404)
@@ -82,7 +102,8 @@ const updateUserProfile = asynchandler(async(req, res)=>{
 
     if(user){
         user.userName = req.body.userName || user.userName
-        user.emai = req.body.emai|| user.email 
+        user.email = req.body.email || user.email 
+        user.userBio = req.body.userBio || user.userBio
         user.profilePicture = req.body.profilePicture || user.profilePicture
         if(req.body.password){
             user.password = req.body.password
@@ -121,77 +142,150 @@ const deleteUser = asynchandler(async(req, res)=>{
 // route '/:id/follow
 // method put
 const followUser = asynchandler(async(req, res)=>{
-    if(req.body.user._id !== req.params.id){
+    if(req.user._id !== req.body.userId){
         try{
-            const user = await User.findById(req.params.id)
-            const currentUser = await User.findById(req.body.user._id)
-            if(!user.followers.includes(req.body.user._id)){
-                await user.updateOne({$push:{followers:req.body.user._id}})
-                await currentUser.updateOne({$push:{followings:req.params.id}})
-                res.status(200).json('user has been followed')
+            const currentUser = await User.findById(req.user._id)
+            const user = await User.findById(req.body.userId)
+            if(!currentUser.followings.includes(req.body.userId)){
+                await user.updateOne({$push:{followers:req.user._id}})
+                await currentUser.updateOne({$push:{followings:req.body.userId}})
+                res.status(200).json(
+                 {   _id:currentUser._id,
+                    userName: currentUser.userName,
+                    email: currentUser.email,
+                    isAdmin: currentUser.isAdmin,
+                    profilePicture:currentUser.profilePicture,
+                    token:generateToken(currentUser._id),
+                    followers:currentUser.followers,
+                    followings:currentUser.followings,
+                    preferedCategories:currentUser.preferedCategories,
+                    readingList:currentUser.readingList,
+                    drafts:currentUser.drafts}
+                )
             }else{
-                res.status(403).json('you already follow this user')
+                await user.updateOne({$pull:{followers:req.user._id}})
+                await currentUser.updateOne({$pull:{followings:req.body.userId}})
+                res.status(403).json(
+                   { _id:currentUser._id,
+                    userName: currentUser.userName,
+                    email: currentUser.email,
+                    isAdmin: currentUser.isAdmin,
+                    profilePicture:currentUser.profilePicture,
+                    token:generateToken(currentUser._id),
+                    followers:currentUser.followers,
+                    followings:currentUser.followings,
+                    preferedCategories:currentUser.preferedCategories,
+                    readingList:currentUser.readingList,
+                    drafts:currentUser.drafts}
+                )
             }
         }catch(error){
             res.status(500).json(error)
+            res.send(error)
         }
     }else{
         res.status(403).json('you can not follow your self')
     }
 })
-// unfollow a user
-// route '/:id/unfollow
+
+
+
+
+// follow a user
+// route '/:id/follow
 // method put
-const unFollowUser = asynchandler(async(req, res)=>{
-    if(req.body.user._id !== req.params.id){
+const followCategory = asynchandler(async(req, res)=>{
+    if(req.user._id){
         try{
-            const user = await User.findById(req.params.id)
-            const currentUser = await User.findById(req.body.user._id)
-            if(!user.followers.includes(req.body.user._id)){
-                await user.updateOne({$pull:{followers:req.body.user._id}})
-                await currentUser.updateOne({$pull:{followings:req.params.id}})
-                res.status(200).json('user has been unfollowed')
+            const category = await Categories.findById(req.body.categoryId)
+            const user = await User.findById(req.user._id)
+            if(!user.preferedCategories.includes(req.body.categoryId)){
+                await user.updateOne({$push:{preferedCategories:req.body.categoryId}})
+                await category.updateOne({$push:{followers:req.user._id}})
+                res.status(200).json('category has been followed')
             }else{
-                res.status(403).json('you do not follow this user')
+                await user.updateOne({$pull:{preferedCategories:req.body.categoryId}})
+                await category.updateOne({$pull:{followers:req.user._id}})
+                res.status(403).json('category has been unfollowed')
             }
         }catch(error){
             res.status(500).json(error)
         }
     }else{
-        res.status(403).json('you can not unfollow your self')
+        res.status(403).json('login to follow a category')
     }
 })
-
+// view followers
+// route '/friends/:id
+// method get
+const viewFollowings = asynchandler(async(req, res)=>{
+    try {
+        const user = await User.findById(req.params.id)
+        const followers = await Promise.all(
+            user.followings.map(async(x)=>{
+                return await User.findById(x)
+            })
+        )
+        let followersList = []
+        followers.map((follower)=>{
+            const{_id, userName, profilePicture} = follower
+            followersList.push({_id, userName, profilePicture})
+        })
+        res.status(200).json(followersList)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+})
 // view followers
 // route '/friends/:id
 // method get
 const viewFollowers = asynchandler(async(req, res)=>{
     try {
         const user = await User.findById(req.params.id)
-        const friends = await Promise.all(
-            user.followings.map((x)=>{
-                return User.findById(x)
-            })
+        const followings = await Promise.all(
+            user.followers.map(async(x)=>{return await User.findById(x)})
         )
-        let friendlist = []
-        friends.map((friend)=>{
-            const{_id, userName, profilePicture} = friend
-            friendlist.push({_id, userName, profilePicture})
+
+        let followingsList = []
+        followings.map((following)=>{
+            const{_id, userName, profilePicture} = following
+            followingsList.push({_id, userName, profilePicture})
         })
-        res.status(200).json(friendlist)
+        res.status(200).json(followingsList)
     } catch (error) {
         res.status(500).json(error)
     }
 })
-
-
+// add to reading list
+const userReadingList = asynchandler(async(req, res)=>{
+        try{
+            const post = await Post.findById(req.body.postId)
+            const user = await User.findById(req.user._id)
+            if(!user.readingList.includes(req.body.postId)){
+                await user.updateOne({$push:{readingList:req.body.postId}})
+                await post.updateOne({$push:{saved:req.user._id}})
+                res.status(200).json('post has been added to reading list')
+            }else{
+                await user.updateOne({$pull:{readingList:req.body.postId}})
+                await post.updateOne({$pull:{saved:req.user._id}})
+                res.status(403).json('post has been removed from reading list')
+            }
+        }catch(error){
+            res.status(500).json(error)
+        }
+    
+})
 
 export {getAllUsers,
+        followCategory,
+        userReadingList,
         getSingleUser,
         updateUserByAdmin,
         updateUserProfile,
         deleteUser,
         adminGetSingleUser,
         viewFollowers,
-        unFollowUser,
+        viewFollowings,
+        getMostFollowedUsers,
+        randomUsers, 
         followUser}

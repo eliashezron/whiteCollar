@@ -40,7 +40,7 @@
   .loginButton {
     margin-top: 20px;
     cursor: pointer;
-    background-color: teal;
+    background-color: $main-color;
     color: white;
     padding: 10px;
     border: none;
@@ -52,7 +52,7 @@
     position: absolute;
     margin-top: 25px;
     width: 120px;
-    background-color: teal;
+    background-color: $main-color;
     cursor: pointer;
     padding: 10px;
     border: none;

@@ -1,12 +1,28 @@
 import Avatar from 'antd/lib/avatar/avatar'
-import React from 'react'
+import React,{useEffect} from 'react'
 import { Tag, Divider,Button } from 'antd';
 import { categoryColors } from './CategoryColors';
 import { Link } from 'react-router-dom'
+import { getReadingList } from '../actions/userActions';
+import {useDispatch, useSelector} from 'react-redux'
+import {format} from 'timeago.js'
+import TagRow from './TagRow';
+import {CommentOutlined, HeartOutlined} from '@ant-design/icons'
+import { Hooks } from './Hooks';
 
 function Usercard({categories, users, Category}) {
     const PF = 'https://res.cloudinary.com/eliashezron1/image/upload/v1626282055/userProfilePictures/noAvatar_kwzvtj.png'
-
+    const loginUser = useSelector(state => state.loginUser)
+    const {userInfo} = loginUser
+    const dispatch = useDispatch()
+    const getreadingList = useSelector(state => state.getreadingList)
+    const {readingList} = getreadingList
+    const windowWidth = window.innerWidth
+    useEffect(() => {
+      if(userInfo){
+        dispatch(getReadingList())
+      }
+    }, [dispatch, userInfo])
     return (
       <>
       {categories &&
@@ -32,13 +48,13 @@ function Usercard({categories, users, Category}) {
       </div>}
       
       {users &&
-      <div className='users-section'>
+      <div className='users-section' style={{borderBottom:' 1px solid lightgray'}}>
         <Divider orientation="left">WHO TO FOLLOW</Divider>
       {users.map((user)=>{
                return (
                  <div className='users-list'>
                    <ul>
-                     <div className='div2'>
+                     <div className='div2' key={user._id}>
                      <Link to={`/authors/${user.userName}`}>
                       <Avatar src={user.profilePicture} size={60}/>
                       </Link>
@@ -48,9 +64,11 @@ function Usercard({categories, users, Category}) {
                         <span>{user.userBio}</span>
                       </div>
                       </Link>
+                      <Link to={`/authors/${user.userName}`}>
                       <Button type="default" size={40} shape='round'>
-                      follow
+                      View Posts
                       </Button>
+                      </Link>
                      </div>
                    </ul>
                  </div>
@@ -58,6 +76,28 @@ function Usercard({categories, users, Category}) {
              })}
       </div>
       }
+      {readingList &&
+      <div>
+        <Divider orientation="left" style={{fontSize:'24px', fontFamily:'Raleway', fontWeight:'200px', paddingTop:'25px', paddingBottom:'15px'}}>Your Reading List</Divider>
+        {readingList.map((post)=>{
+          return(
+          <div className='card-box card-read' key={post._id}>
+          <div className='author-title'> 
+          {/* <TagRow tags={post.category}/> */}
+          <Link to={`/authors/${post.userAuthor}`}>
+            <span><strong style={{color:'gray', fontFamily:"Castoro", fontSize:'20px'}}>Written By: </strong>{post.userAuthor}</span>
+          </Link>
+          {/* <span>{format (post.createdAt)}</span> */}
+          <Link to={`/post/${post._id}`}>
+          <div className='title' style={{fontSize:'25px'}}>{post.title}</div>
+          <span>{format (post.createdAt)}</span>
+
+          </Link>
+          </div>
+          </div>
+          )
+        })}
+      </div>}
       </>
    
 

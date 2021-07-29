@@ -12,15 +12,34 @@ const getAllUsers = asynchandler(async(req, res) =>{
     const userName = req.query.userName
     let users;
     if(userName){
-        users = await User.findOne({userName})
+        users = await User.findOne({userName}).select("-password").lean()
     }else{
          users = await User.find({})
     }
+    // users = users.filter((user) => user._id.toString() !== req.user.id)
     res.status(200).json(users)
 }) 
 
+const getSingleUserbyusername = asynchandler(async(req, res)=>{
+    try {
+        
+        const user = await User.findOne({userName:req.params.userName}).select('-password')
+       let isFollowing = false;
+        if(user.followers.includes(req.user._id)){
+            isFollowing = true
+        }
+        res.status(200).json(isFollowing)
+    } catch (error) {
+        res.status(400).json(error)
+    }
+
+})
+
 // get top users
 const getMostFollowedUsers = asynchandler(async(req, res)=>{
+    // const count = User.countDocuments({})
+    // const random = Math.floor(Math.random()* count)
+    // const topUsers = await User.findOne().skip(random)
     const topUsers = await User.find({}).sort({followers: -1}).limit(4)
     res.json(topUsers)
 })
@@ -41,7 +60,7 @@ const randomUsers = asynchandler(async(req,res)=>{
 // route '/profile'
 // method get
 const getSingleUser = asynchandler(async(req, res) => {
-    const  user = await User.findById(req.user._id)
+    const user = await User.findById(req.user._id)
     if(user){
         res.status(200)
         res.json(user )
@@ -228,8 +247,8 @@ const viewFollowings = asynchandler(async(req, res)=>{
         )
         let followersList = []
         followers.map((follower)=>{
-            const{_id, userName, profilePicture} = follower
-            followersList.push({_id, userName, profilePicture})
+            const{_id, userName, userBio, profilePicture} = follower
+            followersList.push({_id, userName, userBio, profilePicture})
         })
         res.status(200).json(followersList)
     } catch (error) {
@@ -248,8 +267,49 @@ const viewFollowers = asynchandler(async(req, res)=>{
 
         let followingsList = []
         followings.map((following)=>{
+            const{_id, userName,userBio, profilePicture} = following
+            followingsList.push({_id, userBio, userName, profilePicture})
+        })
+        res.status(200).json(followingsList)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+})
+// view followers
+// route '/profile/follwers
+// method get
+const viewFollowingsProfile = asynchandler(async(req, res)=>{
+    try {
+        const user = await User.findById(req.user._id)
+        const followers = await Promise.all(
+            user.followings.map(async(x)=>{
+                return await User.findById(x)
+            })
+        )
+        let followersList = []
+        followers.map((follower)=>{
+            const{_id, userName, userBio, profilePicture} = follower
+            followersList.push({_id, userName,userBio, profilePicture})
+        })
+        res.status(200).json(followersList)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+})
+// view followers
+// route '/friends/:id
+// method get
+const viewFollowersProfile = asynchandler(async(req, res)=>{
+    try {
+        const user = await User.findById(req.user._id)
+        const followings = await Promise.all(
+            user.followers.map(async(x)=>{return await User.findById(x)})
+        )
+
+        let followingsList = []
+        followings.map((following)=>{
             const{_id, userName, profilePicture} = following
-            followingsList.push({_id, userName, profilePicture})
+            followingsList.push({_id, userBio, userName, profilePicture})
         })
         res.status(200).json(followingsList)
     } catch (error) {
@@ -275,8 +335,27 @@ const userReadingList = asynchandler(async(req, res)=>{
         }
     
 })
+// get reading list
+const getReadingList = asynchandler(async(req, res)=>{
+    try {
+        const user = await User.findById(req.user._id)
+        const posts = await Promise.all(
+            user.readingList.map(async(x)=>{return await Post.findById(x)})
+        )
+
+        let readingList = []
+        posts.map((post)=>{
+            readingList.push(post)
+        })
+        res.status(200).json(readingList)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+    
+})
 
 export {getAllUsers,
+        getReadingList,
         followCategory,
         userReadingList,
         getSingleUser,
@@ -286,6 +365,8 @@ export {getAllUsers,
         adminGetSingleUser,
         viewFollowers,
         viewFollowings,
+        viewFollowersProfile,
+        viewFollowingsProfile,
         getMostFollowedUsers,
-        randomUsers, 
+        randomUsers, getSingleUserbyusername,
         followUser}

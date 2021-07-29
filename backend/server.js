@@ -10,8 +10,6 @@ import userRoutes from './routes/user&authRoutes.js'
 import postRoutes from './routes/postRoute.js' 
 import categoryRoutes from './routes/categoryRoutes.js' 
 import uploadRoutes from './routes/uploadRoutes.js' 
-import bodyParser from 'body-parser';
-import Pusher from 'pusher';
 const __dirname = path.resolve(path.dirname(''));
 dotenv.config({path:__dirname + '/.env'})
 
@@ -22,38 +20,38 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
-app.use(cors())
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+// app.use(cors())
+// app.use(bodyParser.urlencoded({ extended: true }))
+// app.use(bodyParser.json())
 
-const pusher = new Pusher({
-    app_id : "1234215",
-    key : "a09580bb76b0d8c97e6c",
-    secret : "172bb0a44701f8ba18c3",
-    cluster : "mt1",
-    encrypted: true
-  })
-  let comments = [
-    {
-      author: 'robo',
-      message: 'i totally didn\'t see that coming'
-    }
-  ]
+// const pusher = new Pusher({
+//     app_id : "1234215",
+//     key : "a09580bb76b0d8c97e6c",
+//     secret : "172bb0a44701f8ba18c3",
+//     cluster : "mt1",
+//     encrypted: true
+//   })
+//   let comments = [
+//     {
+//       author: 'robo',
+//       message: 'i totally didn\'t see that coming'
+//     }
+//   ]
   /**
 * receive new comment from the client
 * update the comments array with the new entry
 * publish update to Pusher
 */
-app.post('/api/comment', function (req, res) {
-    const {author, message} = req.body
-    comments = [...[{author, message}], ...comments]
-    pusher.trigger('whitepen', 'new-comment', {author, message})
-    res.sendStatus(200)
-  })
+// app.post('/api/comment', function (req, res) {
+//     const {author, message} = req.body
+//     comments = [...[{author, message}], ...comments]
+//     pusher.trigger('whitepen', 'new-comment', {author, message})
+//     res.sendStatus(200)
+//   })
   // send all comments to the requester
-  app.get('/api/comments', function (req, res) {
-    res.json(comments)
-  })
+  // app.get('/api/comments', function (req, res) {
+  //   res.json(comments)
+  // })
 // app.use(express.static(__dirname + '/public'))
 app.use("/public", express.static(path.join(__dirname, "/public")))
 

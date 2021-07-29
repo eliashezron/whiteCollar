@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector} from 'react-redux';
 import {CommentOutlined, HeartOutlined} from '@ant-design/icons'
 import {format} from 'timeago.js'
-import TagRow from './TagRow';
+import {TagRow} from './TagRow';
 import { Link } from 'react-router-dom';
 import Avatar from 'antd/lib/avatar/avatar'
 import axios from 'axios'
@@ -13,6 +13,7 @@ function PostComponent({post, userAuthor}) {
   const {user} = Hooks({userAuthor})
 
   const windowWidth = window.innerWidth
+  
     return (
         <div className="card-box">
           <Link to={`/post/${post._id}`}>
@@ -20,7 +21,9 @@ function PostComponent({post, userAuthor}) {
             <img src={post.image} alt={post.image}/>
           </figure>
           </Link>
-          <TagRow tags={post.category}/>
+          <div className='tagspost'>
+          <TagRow tags={post.category} />
+          </div>
           <div className='author-title'> 
           <Link to={`/authors/${post.userAuthor}`}>
           {user && <Link to = '/profile'>

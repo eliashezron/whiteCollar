@@ -20,7 +20,11 @@ const PF = 'https://res.cloudinary.com/eliashezron1/image/upload/v1626282055/use
     const loginUser = useSelector(state => state.loginUser)
     const {userInfo} = loginUser
 
-
+       const showcomponent = React.createElement(
+               'span',{style:{display:'block'}}, `logout ${userInfo.userName}`
+           )
+           
+       
     return (
         <>
         <nav className={`site-navigation ${menuActive && 'active' }`}>
@@ -35,9 +39,12 @@ const PF = 'https://res.cloudinary.com/eliashezron1/image/upload/v1626282055/use
                             {userInfo ? <Link to='/create'>post</Link> :<Link to='/login'>post</Link> }
                             
                         </li>
-                        
+                        {!userInfo && 
+                        <div className='login-div'>
+                        <Link to='/login'><LoginOutlined /></Link>  
+                        </div>}
                 </ul>
-                {userInfo ? (
+                {userInfo && (
                 <div className='class'>
                     <div className="menu-avatar-conatiner">
                     <Link to={`/authors/${userInfo.userName}`}>
@@ -46,12 +53,10 @@ const PF = 'https://res.cloudinary.com/eliashezron1/image/upload/v1626282055/use
                         PF}/>
                     </Link>
                     </div>
+                    <div onMouseOver={showcomponent}>
                     <Link to='/' onClick={logoutHandler}><LogoutOutlined /></Link>
-                </div>):(
-                    <div className='login-div'>
-                    <Link to='/login'><LoginOutlined /></Link>  
                     </div>
-                )}
+                </div>)}
             </div>
             <i className="icon ionicons ion-ios-menu"
             onClick={(e)=> setMenuActive(!menuActive)}/>

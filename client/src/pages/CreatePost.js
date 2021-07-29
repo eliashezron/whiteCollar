@@ -8,6 +8,7 @@ import { getAllCategories } from '../actions/categoriesAction'
 import { Link } from 'react-router-dom'
 import Meta from '../components/Meta'
 import Loader from '../components/Loader'
+import { message , Button} from 'antd'
 
 export default function CreatePost({match, history}) {
   const [title, settitle] = useState('')
@@ -32,7 +33,7 @@ export default function CreatePost({match, history}) {
       console.log('failed to create post')
     }
         
-  },[dispatch, history, success , post, userInfo, categoriesInfo])
+  },[dispatch, history, success , post])
 
   const uploadFileHandler =async(e)=>{
     const file = e.target.files[0]
@@ -64,7 +65,17 @@ export default function CreatePost({match, history}) {
   }
   const handleSubmit= (e)=>{
     e.preventDefault()
-    dispatch(createPostCreate({image, title, description, category}))
+    if(!image){
+      message.warning('add an image before posting')
+    }else if(!title){
+      message.warning('add a title before posting')
+
+    }else if(!description){
+      message.warning('add a description before posting')
+    }else{
+      
+      dispatch(createPostCreate({image, title, description, category}))
+    }
 
     
   }
@@ -74,26 +85,30 @@ export default function CreatePost({match, history}) {
     <Link to='/'><DoubleLeftOutlined /></Link>
     {isLoading ? <Loader/> : error ? <h3>{error}</h3> : (
     <div className="write">
-      {uploading ? (<h1>uploading</h1>) : 
+      {uploading ? (<h1><Loader/></h1>) : 
       previewsource  ? (
         <img
         className="writeImg"
         src={previewsource}
         alt=""
       />
-      ):''}
+      ):(<div style={{display:'flex', justifyContent:'center', alignItems:'center', height:'120px', width:'100%', border:'1px solid gray'}}>
+        <label htmlFor="fileInput">
+        <i className="writeIcon">
+        <PaperClipOutlined /></i>
+      </label>
+      <input id="fileInput" 
+      type="file" 
+      placeholder="click to add Image"
+      style={{ display: "none" }}
+      custom
+      onChange={uploadFileHandler} />
+      </div>
+      )}
 
       <form className="writeForm" onSubmit={handleSubmit}>
         <div className="writeFormGroup">
-          <label htmlFor="fileInput">
-            <i className="writeIcon">
-            <PaperClipOutlined /></i>
-          </label>
-          <input id="fileInput" 
-          type="file" 
-          style={{ display: "none" }}
-          custom
-          onChange={uploadFileHandler} />
+
           <input
             className="writeInput"
             placeholder="Title"
@@ -119,11 +134,12 @@ export default function CreatePost({match, history}) {
             onChange={(e)=>setdescription(e.target.value)}
           />
         </div>
-        <button className="writeSubmit" 
+        <Button className="writeSubmit" 
         type="submit"
+        shape='round'
         >
           Publish
-        </button>
+        </Button>
       </form>
     </div>)}
     </>

@@ -13,7 +13,7 @@ function Randomizer(array) {
     }
 }
  const getAllPosts = asynchandler(async(req, res)=>{
-     const pageSize = 9
+     const pageSize = 1000
      const page = Number(req.query.pageNumber) || 1
      const keyword = req.query.keyword ? {
         //  userAuthor:{
@@ -35,12 +35,14 @@ function Randomizer(array) {
      try{
      let posts;
      if(userAuthor){
-        posts = await Post.find({userAuthor})
+        posts = await Post.find({userAuthor}).sort({createdAt: -1})
      }else if(category){
-         posts = await Post.find({category:{$in:[category]}})
+         posts = await Post.find({category:{$in:[category]}}).sort({createdAt: -1})
      }else{
-         posts = await Post.find({...keyword}).limit(pageSize).skip(pageSize * (page -1))         
+         posts = await Post.find({...keyword}).sort({createdAt: -1}).limit(pageSize).skip(pageSize * (page -1))       
      }
+    // const sortedPosts =  posts.slice().sort((a, b) => b.createdAt - a.createdAt)
+
          res.status(200)
          res.json({posts, page, pages:Math.ceil(count/pageSize)})
      }catch(error){
@@ -221,9 +223,29 @@ const getTopPosts = asynchandler(async(req, res)=>{
     const topPosts = await Post.find({}).sort({likes: -1}).limit(5)
     res.json(topPosts)
 })
+// get carausel posts, this are selected randomly
+const getRandomCarouselUsers = asynchandler(async(req, res)=>{
+        
+    // const limitrecords = 5
+   
+    function getRandomArbitrary(min, max) {
+      return Math.ceil(Math.random() * (max - min) + min);
+    } 
+       const count =  await Post.countDocuments({})
+       var random = Math.floor(Math.random() * count)
+        
+        // const skipRecords = getRandomArbitrary(1, count - limitrecords);
+    
+       const posts = await Post.find({}).skip(random).limit(4)
+        res.status(200).json(posts) // 5 random users 
+    // Random Offset
+    
+    
+   
+})
 
 
-export { getAllPosts,
+export { getAllPosts, getRandomCarouselUsers,
         getTopPosts,
         getSinglePost,
         deletePost,

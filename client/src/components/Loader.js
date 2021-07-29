@@ -7,10 +7,10 @@ function Loader() {
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
     return (
 
-        <>
+        <div style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
         <Spin 
         indicator={antIcon} />
-        </>
+        </div>
     )
 }
 

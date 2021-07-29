@@ -1,5 +1,5 @@
 import express from 'express'
-import { getAllPosts, getTopPosts,commentOnPost, getSinglePost, deletePost, createPost, updatePost, likePost, postComments, getSinglePostComments } from '../controllers/postContollers.js'
+import { getAllPosts, getTopPosts,commentOnPost, getSinglePost, deletePost, createPost, updatePost, likePost, postComments, getSinglePostComments, getRandomCarouselUsers } from '../controllers/postContollers.js'
 import { userReadingList } from '../controllers/userControllers.js'
 import {protect, admin} from '../middleware/authMiddeleware.js'
 
@@ -15,6 +15,7 @@ router.delete('/:id', protect, deletePost)
 router.post('/:id/comments',protect,commentOnPost)
 router.put('/:id/likes',protect,likePost)
 router.get('/trending/:trending', getTopPosts)
+router.get('/carousel/:carousel', getRandomCarouselUsers)
  
 
 

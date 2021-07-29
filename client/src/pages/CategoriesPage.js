@@ -32,10 +32,14 @@ function CategoriesPage({match}) {
         }
     }, [dispatch, category, userInfo])
   
-    const followHandler=(e) =>{            
-        dispatch(followCategoryAction({categoryId:specificCategory._id}))
-        dispatch({type:"CATEGORY_FOLLOW_RESET"})
-        setfollowed(!followed)
+    const followHandler=(e) =>{ 
+        if(userInfo){
+            dispatch(followCategoryAction({categoryId:specificCategory._id}))
+            dispatch({type:"CATEGORY_FOLLOW_RESET"})
+            setfollowed(!followed)
+        }else{
+            message.warn('login to follow category')
+        }         
       
     }
 

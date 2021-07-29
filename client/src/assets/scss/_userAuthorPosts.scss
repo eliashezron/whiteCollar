@@ -65,6 +65,58 @@
         }
 }
 
+@media screen and (max-width: 900px){ 
+    .profileRightTop{
+        height: 160px;
+        .profileCover{
+            height: 75px;
+            position: relative;
+        }
+        .profileUserImg{
+            position: absolute;
+            margin-bottom: 2px solid white;
+            height: 100px;
+            margin: auto -20px;
+            top: 125px;
+            .ant-avatar{
+                border: 5px solid white;
+            }
+        }
+        .profileInfo{
+            display: flex;
+            flex-direction:column;
+            justify-content:center;
+            margin-left: 100px;
+            .profileInfoName{
+                font-size: 18px;
+                text-transform: capitalize;
+                font-family: 'Castoro', sans-serif;
 
-
+            }
+            
+            .profileInfoDesc{
+                font-weight: 400;
+                font-size: 14px;
+                font-family: 'Raleway', sans-serif;
+            }
+        }
+        .but{
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 20px;
+            margin-top: -20px;
+            .ant-btn{
+                font-size: 14px;
+                height: fit-content;
+            }
+            .anticon-ellipsis{
+                margin-right: 5px;
+                margin-top: 8px;
+                cursor: pointer;
+              
+            }
+        }
+    }
+    
+}
 

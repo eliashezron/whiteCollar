@@ -8,8 +8,9 @@ import CreatePost from './pages/CreatePost'
 import Profile from './pages/Profile'
 import ErrorPage from './pages/ErrorPage';
 import CategoriesPage from './pages/CategoriesPage';
+// import UserAuthorPosts from './pages/UserAuthorPosts';
+// import Intermediate from './pages/Intermediate';
 import UserAuthorPosts from './pages/UserAuthorPosts';
-import CommentsPage from './pages/CommentsPage';
 export default function App() {
   return (
     <Router>
@@ -25,7 +26,6 @@ export default function App() {
         <Route path='/login' component={Login} />
         <Route path='/register' component={Register} />
         <Route path='/profile' component={Profile} />
-        <Route path='/comments' component={CommentsPage} />
         <Route path='/search/:keyword' component={Home} />
         <Route component={ErrorPage} exact/>
         </Switch>

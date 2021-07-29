@@ -6,13 +6,17 @@ import { adminGetSingleUser,
             followUser,
             getAllUsers,
             getMostFollowedUsers,
+            getReadingList,
             getSingleUser,
             randomUsers,
             updateUserByAdmin,
             updateUserProfile,
             userReadingList, 
             viewFollowers,
-            viewFollowings} from '../controllers/userControllers.js'
+            viewFollowersProfile,
+            viewFollowingsProfile,
+            viewFollowings,
+            getSingleUserbyusername} from '../controllers/userControllers.js'
 import {protect, admin} from '../middleware/authMiddeleware.js'
 
 
@@ -23,6 +27,10 @@ router.get('/', getAllUsers)
 router.get('/random', randomUsers)
 router.get('/topusers', getMostFollowedUsers)
 router.get('/profile', protect, getSingleUser)
+router.get('/profile/followers',  viewFollowersProfile)
+router.get('/profile/followings',  viewFollowingsProfile)
+router.get('/profile/readinglist', protect, getReadingList)
+router.get('/:userName', getSingleUserbyusername)
 router.get('/:id/followers',  viewFollowers)
 router.get('/:id/followings',  viewFollowings)
 router.get('/:id', protect, adminGetSingleUser)

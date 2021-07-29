@@ -192,11 +192,20 @@ export const followUserAction = (userId) => async(dispatch, getState)=>{
             type:"FOLLOW_SUCCESS",
             payload:data
         })
-        const profile = {
-            ...JSON.parse(localStorage.getItem('userInfo')),
-            ...data
-        };
-        localStorage.setItem('userInfo', JSON.stringify(profile));
+        dispatch({
+            type: UPDATE_SUCCESS,
+            payload:data
+        })
+        dispatch({
+            type: LOGIN_SUCCESS,
+            payload: data,
+          })
+        
+        // const profile = {
+        //     ...JSON.parse(localStorage.getItem('userInfo')),
+        //     ...data
+        // };
+        // localStorage.setItem('userInfo', JSON.stringify(profile));
         
     }catch(error){
         dispatch({
@@ -223,7 +232,7 @@ export const followCategoryAction = (categoryId) => async(dispatch, getState)=>{
         dispatch({
             type:"CATEGORY_FOLLOW_SUCCESS",
         })
-        
+
     }catch(error){
         dispatch({
             type:'CATEGORY_FOLLOW_FAILURE',
@@ -258,6 +267,32 @@ export const unfollowUserAction = (userId) => async(dispatch, getState)=>{
         })
     }
 }
+export const savePostAction = (postId) => async(dispatch, getState)=>{
+    try{
+        dispatch({
+            type:'SAVE_START'
+        })
+        const {loginUser:{userInfo}, } = getState()
+        const config = {
+            headers:{
+                'Content-Type':'application/json',
+                Authorization:`Bearer ${userInfo.token}`
+            }
+        }
+         await axios.put(`/api/users/profile/readinglist`, postId, config)
+        
+        dispatch({
+            type:"SAVE_SUCCESS",
+           
+        })
+    }catch(error){
+        dispatch({
+            type:'SAVE_FAILURE',
+            error:error.response && error.response.data.message ? 
+            error.response.data.message : error.message
+        })
+    }
+}
 export const getAllUsers = () => async(dispatch)=>{
     try{
         dispatch({
@@ -272,6 +307,33 @@ export const getAllUsers = () => async(dispatch)=>{
         console.log(error)
         dispatch({
             type:'ALL_USERS_FAILURE',
+            error:error.response && error.response.data.message ? 
+            error.response.data.message : error.message
+        })
+    }
+}
+export const getReadingList = () => async(dispatch, getState)=>{
+    try{
+        dispatch({
+            type:'READING_LIST_START'
+        })
+        const {loginUser:{userInfo}, } = getState()
+        const config = {
+            headers:{
+                'Content-Type':'application/json',
+                Authorization:`Bearer ${userInfo.token}`
+            }
+        }
+        const {data} = await axios.get(`/api/users/profile/readinglist`, config)
+
+        dispatch({
+            type:"READING_LIST_SUCCESS",
+            payload:data
+        })
+    }catch(error){
+        console.log(error)
+        dispatch({
+            type:'READING_LIST_FAILURE',
             error:error.response && error.response.data.message ? 
             error.response.data.message : error.message
         })

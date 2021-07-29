@@ -53,17 +53,19 @@ export const LoginUserReducer = (state={}, action)=>{
             return state
     }
 }
-export const allUsersReducer = (state ={ users:[]}, action) => {
+export const allUsersReducer = (state ={ user:{}}, action) => {
     switch(action.type){ 
         case 'ALL_USERS_START':
             return{ 
-                users:[],
+                user:{},
                 isLoading: true
             }
         case 'ALL_USERS_SUCCESS':
             return{ 
                 isLoading: false, 
-                users:action.payload}
+                user:action.payload,
+                success:true
+            }
         case 'ALL_USERS_FAILURE':
             return{ 
                 isLoading: false, 
@@ -71,7 +73,7 @@ export const allUsersReducer = (state ={ users:[]}, action) => {
             }
             case 'ALL_USERS_RESET':
                 return{ 
-                    users:[]
+                    user:{}
                 }
             default:
             return state
@@ -111,7 +113,8 @@ export const userDetailsReducer = (state ={ user:{}}, action) => {
         case 'USER_DETAILS_SUCCESS':
             return{ 
                 isLoading: false, 
-                user:action.payload
+                user:action.payload,
+                success:true
             }
         case 'USER_DETAILS_FAILURE':
             return{ 
@@ -173,6 +176,51 @@ export const followUser= (state={ }, action)=>{
             }
         case "FOLLOW_RESET":
             return {user:{}};
+        default:
+            return state
+    }
+}
+export const savePost= (state={ }, action)=>{
+    switch(action.type){
+        case 'SAVE_START':
+            return{
+                isLoading:true,
+            };
+        case 'SAVE_SUCCESS':
+            return{
+                isLoading:true,
+                success:true,
+            };
+        case 'SAVE_FAILURE':
+            return{
+                isLoading:false,
+                error:action.payload
+            }
+        case "SAVE_RESET":
+            return {};
+        default:
+            return state
+    }
+}
+export const getReadinglist= (state={ user:{readingList:[]} }, action)=>{
+    switch(action.type){
+        case 'READING_LIST_START':
+            return{
+                isLoading:true,
+            };
+        case 'READING_LIST_SUCCESS':
+            return{
+                isLoading:true,
+                success:true,
+                readingList:action.payload
+            };
+        case 'READING_LIST_FAILURE':
+            return{
+                isLoading:false,
+                error:action.payload
+            }
+        case "READING_LIST_RESET":
+            return {};
         default:
             return state
     }

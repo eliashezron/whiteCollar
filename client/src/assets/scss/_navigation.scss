@@ -138,16 +138,20 @@
                 }
 
             }
-            .ant-avatar{
-                align-self: flex-start;
-                margin-left:8%;
-            }
-            .menu-avatar-container{
+            .class{
                 display: flex;
-                flex-direction: row;
-            }
-            ul, li, .menu-avatar-container{
-                width: 100%;
+                flex-direction: column;
+                .ant-avatar{
+                    align-self: flex-start;
+                    margin-left:8%;
+                }
+                .menu-avatar-container{
+                    display: flex;
+                    flex-direction: row;
+                }
+                ul, li, .menu-avatar-container{
+                    width: 100%;
+                }
             }
         }
         &.active{

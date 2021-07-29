@@ -1,54 +1,54 @@
 import React, {useState, useEffect, useMemo} from 'react'
 import {Link} from 'react-router-dom'
-import {Pagination} from 'antd'
-import TagRow from './TagRow'
+// import {Pagination} from 'antd'
+import {TagRow} from './TagRow'
 import MasonryPost from './MasonryPost'
 import PostComponent from './PostComponent'
-function PostGrid({posts, pages, page, pageNumber,tagsOnTop}) {
-    const PF = "http://localhost:5000/public";
+function PostGrid({posts,tagsOnTop}) {
+    // const PF = "http://localhost:5000/public";
 
-    const [pageSize, setPageSize] = useState(9)
-    const [current, setCurrent] = useState(1)
+    // const [pageSize, setPageSize] = useState(9)
+    // const [current, setCurrent] = useState(1)
 
-    const paginatedPosts = useMemo(()=>{
-        const lastIndex  = current*pageSize
-        const firstIndex = lastIndex-pageSize
+    // const paginatedPosts = useMemo(()=>{
+    //     const lastIndex  = current*pageSize
+    //     const firstIndex = lastIndex-pageSize
         
-        return posts.slice(firstIndex, lastIndex)
+    //     return posts.slice(firstIndex, lastIndex)
 
-    }, [current, pageSize, posts])
+    // }, [current, pageSize, posts])
 
     const windowWidth = window.innerWidth
-    useEffect(()=>{
-        window.scroll({
-            top:0,
-            left:0,
-            behavior: 'smooth'
-        },[ current, pageSize])
-    })
+    // useEffect(()=>{
+    //     window.scroll({
+    //         top:0,
+    //         left:0,
+    //         behavior: 'smooth'
+    //     },[ current, pageSize])
+    // })
     return (
         <section className='grid-pagination-container'>
             {windowWidth > 900 ?
             <section className='post-grid container'>
-                {paginatedPosts.map((post, index)=>(
-                    <PostComponent post={post} key={index} userAuthor={post.userAuthor}/>
+                {posts.map((post)=>(
+                    <PostComponent post={post} key={post._id} userAuthor={post.userAuthor}/>
                 ))}
             </section> :(
                 <>
-                {paginatedPosts.map((post, index)=>
+                {posts.map((post, index)=>
                     <MasonryPost  {...{post, tagsOnTop, key:index}}/>
                 )}
                 </>
 
             )}
-            <Pagination
+            {/* <Pagination
             simple
             showSizeChanger
             onShowSizeChange={setPageSize}
             total={posts.length}
             defaultCurrent={current}
             onChange={setCurrent}
-            />
+            /> */}
         </section>
     )
 }

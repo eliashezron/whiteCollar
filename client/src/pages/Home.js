@@ -10,8 +10,8 @@ import { getAllCategories } from '../actions/categoriesAction'
 import Meta from '../components/Meta'
 import { getTopUsers } from '../actions/userActions'
 import Usercard from '../components/Usercard'
-
-
+import StickyBox from "react-sticky-box/dist/esnext";
+import { Divider } from 'antd'
 export default function Home({match}) {
     const keyword = match.params.keyword
     const pageNumber = match.params.pageNumber || 1
@@ -32,7 +32,7 @@ export default function Home({match}) {
         dispatch(getTopUsers())
     },[dispatch, keyword, pageNumber])
     
-     const recentPosts =[...posts, ...posts, ...posts]
+    //  const recentPosts =[...posts, ...posts, ...posts]
         const windowWidth = window.innerWidth
     return (
         <>
@@ -43,19 +43,19 @@ export default function Home({match}) {
            {windowWidth >900 ?
         <section className='container'>
         <div className='row'>
-            <h2>trending Posts</h2>
+        <Divider orientation="left">Trending posts</Divider>
             <PostMasonry columns={3} tagsOnTop={true}/>
         </div>
         </section> :''}
-    <section className='container' style={{display:'flex'}}>
+    <section className='container' style={{display:'flex', alignItems:'flex-start'}}>
         <div className='row' style={{flex:"8"}}>
-            <h2>recent posts</h2>
-            <PostGrid posts={recentPosts} tagsOnTop={true} page={page} pages={pages} pageNumber={pageNumber}/>
+        <Divider orientation="left">Lastest posts</Divider>
+            <PostGrid posts={posts} tagsOnTop={true} />
         </div> 
         {window.innerWidth > 900 && 
-        <div style={{flex:"4"}}>
+        <StickyBox style={{flex:"4" , right:'0'}}>
         <Usercard categories={categoriesInfo} users={users}/>    
-        </div>}
+        </StickyBox>}
     </section>
     </div>)}
         </>

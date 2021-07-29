@@ -9,14 +9,14 @@
     margin-bottom: 15px;
     
     &:hover{
-        border: 1px solid #007bff;
+        border: 1px solid $background;
     }
     
     figure{
         height: 200px;
+        position: relative;
     }
     img {
-        position: relative;
         // border-radius: 5px;
         overflow: hidden;
         object-fit: cover;
@@ -25,6 +25,11 @@
         width: 100%;
         margin: 0 auto;
         max-height: 280px;
+    }
+    .tagspost{
+        position: absolute;
+        padding-top: 165px;
+        // bottom:1px;
     }
  
     .author-title{
@@ -42,7 +47,7 @@
         align-self: flex-start;
         font-size: 40px;
         font-weight: 900px;
-        font-family: 'Castoro', serif;
+        font-family: 'DM Serif Display', serif;
         text-align: left;
         letter-spacing: .2px;
         word-spacing: .5px;
@@ -52,8 +57,8 @@
     .post-description{
         color: $text-color;
         font-size: 20px;
-        font-weight: 500px;
-        font-family: 'Raleway', sans-serif;
+        // font-weight: 500px;
+        font-family: 'Nunito', sans-serif;
         margin-bottom: 20px;
     }
     .ant-icon{
@@ -78,6 +83,9 @@
             line-height: normal;
             font-weight: 700px;
             font-size: 24px;
+        }
+        .tagspost{
+            padding-top: 60px;
         }
     }
 }

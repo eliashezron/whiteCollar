@@ -1,3 +1,4 @@
+
 .categories-tags{
   height: 270px;
   border-bottom: 1px solid lightgray;
@@ -77,5 +78,12 @@
         }
       }
     }
+  }
+}
+.card-read{
+  box-shadow:none !important;
+  margin-bottom: 5px;
+  &:hover{
+    border: 1px solid $main-color;
   }
 }

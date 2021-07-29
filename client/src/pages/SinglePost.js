@@ -1,18 +1,19 @@
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import {useSelector, useDispatch} from 'react-redux'
-import TagRow from '../components/TagRow' 
+import {Tags} from '../components/TagRow' 
 import { Link } from 'react-router-dom'
 import { deletePostAction,likePostAction, getPostDetails, updatePost, commentPostAction, getPostDetailsComments } from '../actions/postActions'
-import {EditOutlined, DeleteOutlined, CommentOutlined,DoubleLeftOutlined, HeartOutlined} from '@ant-design/icons'
+import {EditOutlined, DeleteOutlined, CommentOutlined,DoubleLeftOutlined, HeartOutlined,CloseOutlined} from '@ant-design/icons'
 import { POST_COMMENT_RESET, POST_CREATE_RESET, POST_EDIT_RESET, POST_LIKE_RESET } from '../constants/postConstants'
 import {PaperClipOutlined} from '@ant-design/icons'
-import { message } from 'antd'
+import { Button, message } from 'antd'
 import Loader from '../components/Loader'
 import Meta from '../components/Meta'
 import CommentSection from '../components/CommentSection'
 import { callUser } from '../actions/userActions'
 import Avatar from 'antd/lib/avatar/avatar'
+import {savePostAction} from '../actions/userActions'
 
 
 
@@ -26,9 +27,9 @@ function SinglePost({match, history}) {
     const [isliked, setisliked] = useState(false)
     const [comment, setcomment] = useState('')
     const [divActive, setdivActive] = useState(false)
-    // const [commentsPusher, setcommentsPusher] = useState('')
     const [previewsource, setpreviewsource] = useState('')
     const [uploading, setuploading] = useState(false)
+    const [save, setsave] = useState(false)
   
     const postDetails = useSelector(state => state.postDetails)
     const {isLoading, post, success, error} = postDetails
@@ -40,14 +41,16 @@ function SinglePost({match, history}) {
     const {success:deleteSuccess} = deletePost
     const loginUser = useSelector(state => state.loginUser)
     const {userInfo} = loginUser
-    const allUsers = useSelector(state => state.allUsers)
-    const {user} = allUsers
+    const savePost = useSelector(state => state.savePost)
+    const {success:saveSuccess} = savePost
     const dispatch = useDispatch()
     const PF = 'https://res.cloudinary.com/eliashezron1/image/upload/v1626282055/userProfilePictures/noAvatar_kwzvtj.png'
-
-    useEffect(() => {
+    const [user, setuser] = useState('')
+     
+    useEffect(async() => {
         if(post){
-            dispatch(callUser(post.userAuthor))
+            const {data} = await axios.get(`/api/users?userName=${post.userAuthor}`)
+            setuser(data)
         }
         if(editSuccess){
             dispatch({type:POST_EDIT_RESET})
@@ -67,9 +70,10 @@ function SinglePost({match, history}) {
                dispatch({type:POST_COMMENT_RESET})
                console.log('success')
            }
+        if(userInfo.readingList.includes(post.id)){
+            setsave(userInfo.readingList.includes(post.id))
+        }
     }, [dispatch, match.params.id, commentPostSuccess, editSuccess, deleteSuccess, post])
-    console.log(user)
-
 
       const uploadFileHandler =async(e)=>{
         const file = e.target.files[0]
@@ -135,14 +139,25 @@ function SinglePost({match, history}) {
               dispatch(commentPostAction(match.params.id,{comment:comment}))
               if(!commentPostSuccess){
                   message.success('comment submitted')
+                  window.location.reload ()
               }else{
                   message.error('error occuried')
               }
           }else{
               message.warning('only users can comment')
           }
-        
-    
+      }
+      const handleSave = (e) =>{
+          if(userInfo){
+              dispatch(savePostAction({postId:post._id}))
+              setsave(!save)
+              dispatch({type:"SAVE_RESET"})
+              if(save){
+                  message.success('post removed from reading list')
+                }else{
+                  message.success('post added to reading list')
+              }
+          }
       }
     return (
         <>
@@ -159,12 +174,12 @@ function SinglePost({match, history}) {
             />
                 ):
                    ( <figure>
-                <Link to={`post/${post?.id}`}>
                     {post.image && (
                     <img src={post.image} alt={post.image}/>)}
-                </Link>
             </figure>)} 
-                <TagRow tags={post.category}/>
+            <div className='tagspost'>
+                <Tags tags={post.category}/>
+            </div>
             {updateMode ? (<>
                 <div>
                 <label htmlFor="fileInput">
@@ -199,7 +214,7 @@ function SinglePost({match, history}) {
             )}
             <p className = 'author-text'>
                 <span>
-               {user && <Link to = '/profile'>
+               {user && <Link to={`/authors/${post.userAuthor}`}>
                     <Avatar size={40} src={user.profilePicture ?
                         user.profilePicture:
                         PF}/>
@@ -227,17 +242,32 @@ function SinglePost({match, history}) {
             </p>
             )}
             {updateMode && (
-                <button className='singlepostButton'
+                <div style={{display:'flex', justifyContent:'center'}}>
+                <Button 
                 type='button'
                 onClick={handleUpdate}> 
                 Update
-                </button>
+                </Button>
+                <Button
+                type='button'
+                onClick={()=>setupdateMode(false)}> 
+                Cancel
+                </Button>
+                </div>
             )}
-            <div className='likesection'>
-                <span onClick={likeHandler}><HeartOutlined />{like === 0 ? '': like}</span>
-                <span onClick={()=>setdivActive(!divActive)}><CommentOutlined />{post.comments.length === 0 ? '': `${post.comments.length}`}</span>  
+            <div className='likesection' style={{display:'flex', justifyContent:'space-between'}}>
+                <div>
+                <span onClick={likeHandler} style={{cursor:'pointer'}}><HeartOutlined />{like === 0 ? '': like}</span>
+                <span ><CommentOutlined style={{cursor:'pointer'}} onClick={()=>setdivActive(!divActive)}/>{post.comments.length === 0 ? '': `${post.comments.length}`}</span>  
+                </div>
+                <div style={{height:'fit-content', width:'fit-content'}}>
+                <Button shape='round' type='default' onClick={handleSave}>
+                {save ? 'saved' : 'save'}
+                </Button>
+                </div>
             </div>
-            <div className={`flash-comments ${divActive && 'active' }`} onMouseEnter={()=>setdivActive(true)} onMouseLeave={()=>setdivActive(!divActive)}>
+            <div className={`flash-comments ${divActive && 'active' }`} >
+                <div className='closediv'style={{top:'85px', right:'0', width:'fix-content', zIndex:'3', position:'absolute'}} onClick={()=>setdivActive(false)}><CloseOutlined style={{position:'sticky'}}/></div>
             {userInfo ? (
                 <form class="pure-form" id="comment-form" onSubmit={commentHandler}>
                 <div class="row">
@@ -269,13 +299,17 @@ function SinglePost({match, history}) {
                 </div>
             </div>
                  {user &&
-                 <div className='card-box box'>
+                 <div className=' box'>
                      <div className='avatar-div'>
                     <Link to={`/authors/${post.userAuthor}`}>
-                    <Link to = '/profile'>
+                    <Link to ={`/authors/${post.userAuthor}`}>
+                        { window.innerWidth> 900 ?
                         <Avatar size={100} src={user.profilePicture ?
                             user.profilePicture:
-                            PF}/>
+                            PF}/>:
+                        <Avatar size={75} src={user.profilePicture ?
+                            user.profilePicture:
+                            PF}/>}
                     </Link>
                     </Link></div>
                     <div className='div'>

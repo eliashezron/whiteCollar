@@ -6,6 +6,7 @@ import {Avatar} from "antd";
 import { getUserDetails, updateUserDetails } from "../actions/userActions";
 import { Link } from 'react-router-dom'
 import { message } from 'antd';
+import Loader from '../components/Loader';
 
 
 const Profile =({history})=> {
@@ -90,7 +91,7 @@ const Profile =({history})=> {
         <form className="settingsForm" >
           <label>Profile Picture</label>
           <div className="settingsPP">
-            {uploading ? ( <h4>isloading</h4>)  : previewsource ? (
+            {uploading ? ( <Loader/>)  : previewsource ? (
               <Avatar size={50} src={previewsource} alt=''/>
             ):
                 <Avatar size={50} src={user.profilePicture ?

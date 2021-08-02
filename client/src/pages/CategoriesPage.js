@@ -54,6 +54,7 @@ function CategoriesPage({match}) {
     return (<>
         <Meta title={`${category}`}/>
         <Link to='/'><DoubleLeftOutlined /></Link>
+        {isLoading && <Loader/>}
         <div style={{backgroundColor:categoryColors[category]}} className='card-box category-box container'>
             <div className='cat1'>
                 <span>#{category}</span>

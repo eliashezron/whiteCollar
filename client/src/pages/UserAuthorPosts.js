@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import { getPostsByuserAuthor } from '../actions/postActions'
 import PostComponent from '../components/PostComponent'
 import {DoubleLeftOutlined, EllipsisOutlined } from '@ant-design/icons'
-import { Link, Redirect, useHistory } from 'react-router-dom'
+import { Link} from 'react-router-dom'
 import Avatar from 'antd/lib/avatar/avatar'
 import Loader from '../components/Loader'
 import { Button, message } from 'antd'
@@ -63,7 +63,7 @@ import { callUser, followUserAction, getUserDetails} from '../actions/userAction
     }
     const style = user.coverPhoto ? {...imageBackground, ...user.style} : imageBackground1
     return (<>
-    <Meta title={`${user.userName} profile`}/>
+    {user&& <Meta title={`${user.userName} profile`}/>}
     {isLoading ? <h1><Loader/></h1> : error ?(<h1>{error.message}</h1>) :(
       <>
       <Link to='/'><DoubleLeftOutlined /></Link>

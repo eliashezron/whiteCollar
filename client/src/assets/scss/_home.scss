@@ -25,6 +25,10 @@
     }
     
 }
+.sec{
+    display: flex;
+    align-items: flex-start;
+}
 @media screen and (max-width: 900px){
     .anticon.anticon-plus-circle{
         color: white;

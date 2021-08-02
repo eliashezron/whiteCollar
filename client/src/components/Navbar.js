@@ -51,7 +51,9 @@ const PF = 'https://res.cloudinary.com/eliashezron1/image/upload/v1626282055/use
                         userInfo.profilePicture:
                         PF}/>
                     </Link>
+                    <Link to={`/authors/${userInfo.userName}`}>
                     <span className='menu-avatar-name'>{userInfo.userName}</span>
+                    </Link>
                     </div>
                     <div>
                     <Link to='/' onClick={logoutHandler}><LogoutOutlined /></Link>

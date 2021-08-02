@@ -59,7 +59,7 @@ function Usercard({categories, users, Category}) {
                       <Link to={`/authors/${user.userName}`}>
                       <div className='div3'>
                         <span>{user.userName}</span>
-                        <span>{user.userBio}</span>
+                        <span style={{textAlign:'left'}}>{user.userBio}</span>
                       </div>
                       </Link>
                       <Link to={`/authors/${user.userName}`}>

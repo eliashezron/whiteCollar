@@ -10,7 +10,6 @@ import Loader from '../components/Loader'
 import {message} from 'antd'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import Parser from 'html-react-parser'
 
 function CreatePost({history}) {
   const quillObj = useRef(null)
@@ -25,19 +24,26 @@ function CreatePost({history}) {
   const createPost = useSelector(state => state.createPost)
   const {success, post, error} = createPost
   useEffect(() => {
-    if(quillObj && quillObj.current) {
+    let isMounted = true
+    if(isMounted && (quillObj && quillObj.current)) {
       quillObj.current.getEditor()
-     
     }
-  
+    return()=>{isMounted= false}
   }, [quillObj])
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    if(success){
+      dispatch({type:POST_CREATE_RESET})
+      history.push(`/post/${post._id}`)
+    }   
+  },[dispatch, history, success , post])
   const modules = useMemo(()=>({
     toolbar:{ 
       container:[
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }], 
+      [{ 'size': ['large','small', 'huge', false] }],
       [{font:[]}],
       ['bold', 'italic', 'underline','strike', 'blockquote'],
-      [{ 'size': ['small', false, 'large', 'huge'] }],
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }], 
       [{ 'align': [] }],
       [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
       ['link'],
@@ -51,13 +57,7 @@ function CreatePost({history}) {
     }
     }
   }),[])
-  const dispatch = useDispatch()
-  useEffect(()=>{
-    if(success){
-      dispatch({type:POST_CREATE_RESET})
-      history.push(`/post/${post._id}`)
-    }   
-  },[dispatch, history, success , post])
+ 
 
   const uploadFileHandler =async(e)=>{
     const file = e.target.files[0]
@@ -132,11 +132,10 @@ function CreatePost({history}) {
   //     setpreviewsource(reader.result)
   //   }
   // }
-  const gethtmlHandler=()=>{
+  const gethtmlHandler=(e)=>{
     const editor = quillObj.current.getEditor();
     const unprivilegedEditor = quillObj.current.makeUnprivilegedEditor(editor);
     const inputText = unprivilegedEditor.getText()
-    console.log(inputText)
     setdescription(inputText)
   }
   
@@ -179,7 +178,7 @@ function CreatePost({history}) {
       type="file" 
       placeholder="click to add Image"
       style={{ display: "none" }}
-      custom
+      custom="true"
       onChange={uploadFileHandler} />
       </div>
       )}
@@ -210,7 +209,7 @@ function CreatePost({history}) {
         placeholder='create your post'
             theme="snow" 
             defaultValue= {description}
-            onChange={gethtmlHandler}
+            onChange={(e)=>gethtmlHandler()}
             modules={modules}
             formats={CreatePost.formats}
          />
@@ -246,4 +245,4 @@ function CreatePost({history}) {
   ]
 
 
-  export default CreatePost
+  export default React.memo(CreatePost)

@@ -274,8 +274,8 @@ function SinglePost({match, history}) {
             <div className={`flash-comments ${divActive && 'active' }`} >
                 <div className='closediv' onClick={()=>setdivActive(false)}><CloseOutlined style={{position:'sticky'}}/></div>
             {userInfo ? (
-                <form class="pure-form" id="comment-form" onSubmit={commentHandler}>
-                <div class="row">
+                <form className="pure-form" id="comment-form" onSubmit={commentHandler}>
+                <div className="row">
                 <div className='text-area'>
                 <textarea 
                 className='comment-input'
@@ -284,10 +284,10 @@ function SinglePost({match, history}) {
                 onChange={(e)=>setcomment(e.target.value)}
                 />
                 </div>
-                <div class="right-side">
+                <div className="right-side">
                     <button 
                         type="submit"
-                        class="button-secondary pure-button"
+                        className="button-secondary pure-button"
                         >Submit
                     </button>
                  </div>
@@ -306,7 +306,6 @@ function SinglePost({match, history}) {
                  {user &&
                  <div className=' box' style={{position:'relative',zIndex:'1'}} >
                      <div className='avatar-div'>
-                    <Link to={`/authors/${post.userAuthor}`}>
                     <Link to ={`/authors/${post.userAuthor}`}>
                         { window.innerWidth> 900 ?
                         <Avatar size={100} src={user.profilePicture ?
@@ -316,7 +315,6 @@ function SinglePost({match, history}) {
                             
                             user.profilePicture:
                             PF}/>}
-                    </Link>
                     </Link></div>
                     <div className='div'>
                     <span>WRITTEN BY</span>

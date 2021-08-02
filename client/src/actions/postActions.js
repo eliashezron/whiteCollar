@@ -153,7 +153,6 @@ export const createPostCreate = ({image, title, description, category}) => async
             }
         }
         const {data} = await axios.post('/api/posts/create',{image, title, description, category},config)
-        console.log(data)
         dispatch({
             type:POST_CREATE_SUCCESS,
             payload:data

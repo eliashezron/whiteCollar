@@ -11,7 +11,7 @@ import Meta from '../components/Meta'
 import { getTopUsers } from '../actions/userActions'
 import Usercard from '../components/Usercard'
 import StickyBox from "react-sticky-box/dist/esnext";
-import { Divider } from 'antd'
+import { Alert, Divider } from 'antd'
  export default function Home({match}) {
     const keyword = match.params.keyword
     const allPosts = useSelector(state => state.allPosts)
@@ -35,27 +35,29 @@ import { Divider } from 'antd'
     return (
         <>
         <Meta/>
-        {isLoading ? <h1><Loader/></h1> : error ?(<h1>{error.message}</h1>) :
-        (<div className='home'>
-           <div> {userInfo ? <Link to='/create'><PlusCircleOutlined /></Link> :<Link to='/login'><PlusCircleOutlined /></Link> }</div> 
-           {windowWidth >900 ?
+        {isLoading && <Loader/>}
+        {error && <Alert message={error}/>}
+       
+        <div> {userInfo ? <Link to='/create'><PlusCircleOutlined /></Link> :<Link to='/login'><PlusCircleOutlined /></Link> }</div> 
+           {windowWidth >900 &&
         <section className='container'>
         <div className='row'>
         <Divider orientation="left">Trending posts</Divider>
             <PostMasonry columns={3} tagsOnTop={true}/>
         </div>
-        </section> :''}
-    <section className='container' style={{display:'flex', alignItems:'flex-start'}}>
+        </section>}
+        <section  className='container'style={{display:"flex", alignItems:'flex-start'}}>
         <div className='row' style={{flex:"8"}}>
         <Divider orientation="left">Lastest posts</Divider>
             <PostGrid posts={posts} tagsOnTop={true} />
         </div> 
-        {window.innerWidth > 900 && 
-        <StickyBox style={{flex:"4" , right:'0'}}>
-        <Usercard categories={categoriesInfo} users={users}/>    
-        </StickyBox>}
-    </section>
-    </div>)}
+        {windowWidth > 900 &&
+        <StickyBox style={{flex:"4"}}>
+            <Usercard categories={categoriesInfo} users={users}/>    
+        </StickyBox>
+        }
+        </section>
+      
         </>
     )
 }

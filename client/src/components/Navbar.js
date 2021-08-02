@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import {Avatar} from 'antd'
 import { logout } from '../actions/userActions'
 import { useDispatch, useSelector } from 'react-redux'
-import {LogoutOutlined, LoginOutlined} from '@ant-design/icons'
+import {LogoutOutlined, LoginOutlined, CloseOutlined} from '@ant-design/icons'
 
 import SearchBox from './SearchBox'
 
@@ -20,23 +20,22 @@ const PF = 'https://res.cloudinary.com/eliashezron1/image/upload/v1626282055/use
     const loginUser = useSelector(state => state.loginUser)
     const {userInfo} = loginUser
 
-       const showcomponent = React.createElement(
-               'span',{style:{display:'block'}}, `logout ${userInfo.userName}`
-           )
-           
+     
        
     return (
         <>
         <nav className={`site-navigation ${menuActive && 'active' }`}>
-            <Link to='/'><span className='menu-title'>WHITEPEN</span></Link>
-            <Route render={({history}) => <SearchBox history={history}/>}/>
+            <div>
+            <Link to='/'><span className='menu-title'>WHITECOLLAR</span></Link></div>
+           <div> <Route render={({history}) => <SearchBox history={history}/>}/></div>
             <div className="menu-content-container" onMouseEnter={()=>setMenuActive(true)} onMouseLeave={()=>setMenuActive(false)}>
                 <ul>
+                  
                         <li>
-                            <Link to='/'>Blog</Link>
+                            <Link to='/'>Home</Link>
                         </li>
                         <li>
-                            {userInfo ? <Link to='/create'>post</Link> :<Link to='/login'>post</Link> }
+                            {userInfo ? <Link to='/create'>post</Link> :<Link to='/login'>Blog</Link> }
                             
                         </li>
                         {!userInfo && 
@@ -48,15 +47,19 @@ const PF = 'https://res.cloudinary.com/eliashezron1/image/upload/v1626282055/use
                 <div className='class'>
                     <div className="menu-avatar-conatiner">
                     <Link to={`/authors/${userInfo.userName}`}>
-                    <Avatar size={50} src={userInfo.profilePicture ?
+                    <Avatar size={60} src={userInfo.profilePicture ?
                         userInfo.profilePicture:
                         PF}/>
                     </Link>
+                    <span className='menu-avatar-name'>{userInfo.userName}</span>
                     </div>
-                    <div onMouseOver={showcomponent}>
+                    <div>
                     <Link to='/' onClick={logoutHandler}><LogoutOutlined /></Link>
                     </div>
                 </div>)}
+                {menuActive && window.innerWidth <900 ?
+                        <div className='closeic' onClick={()=>setMenuActive(false)}><CloseOutlined/></div>
+                    :''}
             </div>
             <i className="icon ionicons ion-ios-menu"
             onClick={(e)=> setMenuActive(!menuActive)}/>

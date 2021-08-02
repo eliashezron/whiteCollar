@@ -1,0 +1,13 @@
+.admin{
+    max-width: 800px;
+    display: flex;
+    margin: 10px auto;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .ant-btn{
+        margin-right: 30px;
+    }
+    
+}

@@ -4,15 +4,21 @@ import { Link } from 'react-router-dom'
 import {format} from 'timeago.js'
 import axios from 'axios'
 import Avatar from 'antd/lib/avatar/avatar'
-const CommentSection = ({comment, userAuthor}) => {
+const CommentSection = ({comment}) => {
     const PF = 'https://res.cloudinary.com/eliashezron1/image/upload/v1626282055/userProfilePictures/noAvatar_kwzvtj.png'
 
      const [user, setuser] = useState('')
         const dispatch = useDispatch()
-       useEffect(async() => {
-         const {data} = await axios.get(`/api/users?userName=${userAuthor}`)
-         setuser(data)
-       }, [dispatch, userAuthor])
+       useEffect(() => {
+         let isMounted = true
+         async function fetchData(){
+           const {data} = await axios.get(`/api/users?userName=${comment.userName}`)
+           if(isMounted){
+             setuser(data)}
+         }
+         fetchData()
+         return()=>{isMounted=false}
+       }, [dispatch,comment.userName])
     return(
         <div className='comment-section'>
             <div className='comments'>
@@ -27,7 +33,7 @@ const CommentSection = ({comment, userAuthor}) => {
                     </Link> 
                   <span>{format (comment.createdAt)}</span>
                </div>
-               <div className='body'>
+               <div className='body-comment'>
                    {comment.comment}
                </div>
             </div>

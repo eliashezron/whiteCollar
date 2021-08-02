@@ -3,9 +3,9 @@ import axios from 'axios'
 import {useSelector, useDispatch} from 'react-redux'
 import {Tags} from '../components/TagRow' 
 import { Link } from 'react-router-dom'
-import { deletePostAction,likePostAction, getPostDetails, updatePost, commentPostAction, getPostDetailsComments } from '../actions/postActions'
+import { deletePostAction,likePostAction, getPostDetails, updatePost, commentPostAction} from '../actions/postActions'
 import {EditOutlined, DeleteOutlined, CommentOutlined,DoubleLeftOutlined, HeartOutlined,CloseOutlined} from '@ant-design/icons'
-import { POST_COMMENT_RESET, POST_CREATE_RESET, POST_EDIT_RESET, POST_LIKE_RESET } from '../constants/postConstants'
+import { POST_COMMENT_RESET, POST_EDIT_RESET, POST_LIKE_RESET } from '../constants/postConstants'
 import {PaperClipOutlined} from '@ant-design/icons'
 import { Button, message } from 'antd'
 import Loader from '../components/Loader'
@@ -32,48 +32,50 @@ function SinglePost({match, history}) {
     const [save, setsave] = useState(false)
   
     const postDetails = useSelector(state => state.postDetails)
-    const {isLoading, post, success, error} = postDetails
+    const {isLoading, post, error} = postDetails
     const editPost = useSelector(state => state.editPost)
-    const {isLoading:editisLoading, post:editedPost, success:editSuccess, error:editError} = editPost
+    const {success:editSuccess} = editPost
     const commentPost = useSelector(state => state.commentPost)
-    const {error:commentPostError, success: commentPostSuccess} = commentPost
-    const deletePost = useSelector(state => state.deletePost)
-    const {success:deleteSuccess} = deletePost
+    const { success: commentPostSuccess} = commentPost
     const loginUser = useSelector(state => state.loginUser)
     const {userInfo} = loginUser
-    const savePost = useSelector(state => state.savePost)
-    const {success:saveSuccess} = savePost
+    const allUsers = useSelector(state => state.allUsers)
+    const {user} = allUsers
     const dispatch = useDispatch()
     const PF = 'https://res.cloudinary.com/eliashezron1/image/upload/v1626282055/userProfilePictures/noAvatar_kwzvtj.png'
-    const [user, setuser] = useState('')
-     
-    useEffect(async() => {
-        if(post){
-            const {data} = await axios.get(`/api/users?userName=${post.userAuthor}`)
-            setuser(data)
-        }
-        if(editSuccess){
-            dispatch({type:POST_EDIT_RESET})
-        }else{
-       
+    useEffect(() => {
+        window.scrollTo(0, 0)
         if(!post._id || post._id !== match.params.id){
             dispatch(getPostDetails(match.params.id))
           
-        }else{
+        } else{
+            dispatch(callUser(post.userAuthor))
             settitle(post.title)
             setdescription(post.description)
             setimage(post.image)
             setlike(post.likes.length)
         }
-         }
-        if(commentPostSuccess){
-               dispatch({type:POST_COMMENT_RESET})
-               console.log('success')
-           }
-        if(userInfo.readingList.includes(post.id)){
-            setsave(userInfo.readingList.includes(post.id))
+    
+    }, [dispatch, match.params.id, post])
+     
+
+    useEffect(() => {
+        if(editSuccess){
+            dispatch({type:POST_EDIT_RESET})
         }
-    }, [dispatch, match.params.id, commentPostSuccess, editSuccess, deleteSuccess, post])
+    }, [dispatch, editSuccess])
+    useEffect(() => {
+        if(userInfo && userInfo.readingList.includes(post._id)){
+            setsave(userInfo.readingList.includes(post._id))
+        }
+
+    }, [dispatch, userInfo, post._id])
+    useEffect(() => {
+        if(commentPostSuccess){
+            dispatch({type:POST_COMMENT_RESET})
+            console.log('success')
+        }
+    }, [dispatch, commentPostSuccess])
 
       const uploadFileHandler =async(e)=>{
         const file = e.target.files[0]
@@ -107,6 +109,7 @@ function SinglePost({match, history}) {
     const handleDelete=(e)=>{
         if(window.confirm('are you sure')){
             dispatch(deletePostAction(match.params.id))
+            message.success('post deleted')
             history.push('/')
         }
     }
@@ -130,7 +133,7 @@ function SinglePost({match, history}) {
             message.success('post has been liked')
         }
         }else{
-            message.warning('login in to like post')
+            message.info('login in to like post')
         }
       
       }
@@ -144,7 +147,7 @@ function SinglePost({match, history}) {
                   message.error('error occuried')
               }
           }else{
-              message.warning('only users can comment')
+              message.warning('login to comment on post')
           }
       }
       const handleSave = (e) =>{
@@ -153,10 +156,12 @@ function SinglePost({match, history}) {
               setsave(!save)
               dispatch({type:"SAVE_RESET"})
               if(save){
-                  message.success('post removed from reading list')
+                message.info('post removed from reading list')
                 }else{
                   message.success('post added to reading list')
               }
+          }else{
+            message.info('login to create a reading list')
           }
       }
     return (
@@ -267,7 +272,7 @@ function SinglePost({match, history}) {
                 </div>
             </div>
             <div className={`flash-comments ${divActive && 'active' }`} >
-                <div className='closediv'style={{top:'85px', right:'0', width:'fix-content', zIndex:'3', position:'absolute'}} onClick={()=>setdivActive(false)}><CloseOutlined style={{position:'sticky'}}/></div>
+                <div className='closediv' onClick={()=>setdivActive(false)}><CloseOutlined style={{position:'sticky'}}/></div>
             {userInfo ? (
                 <form class="pure-form" id="comment-form" onSubmit={commentHandler}>
                 <div class="row">
@@ -294,12 +299,12 @@ function SinglePost({match, history}) {
                  )}
                 <div>
                 {post.comments.map(x=>{
-                    return<CommentSection comment={x} key={x._id} userAuthor={x.userName}/>
+                    return<CommentSection comment={x} key={x._id}/>
                 })}
                 </div>
             </div>
                  {user &&
-                 <div className=' box'>
+                 <div className=' box' style={{position:'relative',zIndex:'1'}} >
                      <div className='avatar-div'>
                     <Link to={`/authors/${post.userAuthor}`}>
                     <Link to ={`/authors/${post.userAuthor}`}>
@@ -308,6 +313,7 @@ function SinglePost({match, history}) {
                             user.profilePicture:
                             PF}/>:
                         <Avatar size={75} src={user.profilePicture ?
+                            
                             user.profilePicture:
                             PF}/>}
                     </Link>

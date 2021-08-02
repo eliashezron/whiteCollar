@@ -1,21 +1,58 @@
 .profileRightTop{
         display: flex;
-        height: 250px;
+        height: 400px;
         margin-bottom: 25px;
         .profileCover{
-        height: 120px;
+        width: 100%;
+        height: 250px;
         position: relative;
-        background-color: $main-color;
+        // background-image:url('https://res.cloudinary.com/eliashezron1/image/upload/v1627808725/postImages/logo-1627808732771.png');
+        object-fit:cover;
+        background-size: cover;
+        overflow: hidden;
+        background-position: center center;
+        .image-text{
+            display: flex;
+            height: 100%;
+            width: 100%;
+            color: white;
+            font-weight: 400;
+            font-size: larger;
+            font-family: 'nunito', sans-serif;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000000;
+        }
+   
     }
+    .profileCover::before{
+        z-index: 1;
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        /* From https://css.glass */
+        background: rgba(19, 18, 18, 0);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(0px);
+        -webkit-backdrop-filter: blur(0px);
+        border: 1px solid rgba(19, 18, 18, 0.3);
+    }
+
     .profileUserImg{
             margin-bottom: 5px solid white;
             height: 400px;
             position: absolute;
             left: 0;
             right: 0;
+            z-index: 1;
             margin: auto 20px;
-            top: 140px;
-            padding-left: 40px;
+            top: 300px;
+            padding-left: 120px;
             .ant-avatar{
                 border: 10px solid white;
             }
@@ -39,6 +76,7 @@
             }
         }
         .but{
+            z-index: 1;
             display: flex;
             justify-content: flex-end;
             margin-right: 50px;
@@ -76,35 +114,35 @@
             position: absolute;
             margin-bottom: 2px solid white;
             height: 100px;
-            margin: auto -20px;
-            top: 125px;
+            top: 140px;
+            display: flex;
+            padding-left: 0px;
             .ant-avatar{
+                
                 border: 5px solid white;
             }
         }
         .profileInfo{
+            color: black;
             display: flex;
-            flex-direction:column;
-            justify-content:center;
-            margin-left: 100px;
+            justify-content: left;
+            margin-left: 110px;
+            margin-top: 20px;
             .profileInfoName{
-                font-size: 18px;
-                text-transform: capitalize;
-                font-family: 'Castoro', sans-serif;
-
+                display: flex;
+                align-items: flex-start;
+                justify-content: flex-start;
+                font-size: 20px;
+                font-family:'DM Serif Display', serif;
             }
-            
-            .profileInfoDesc{
-                font-weight: 400;
-                font-size: 14px;
-                font-family: 'Raleway', sans-serif;
-            }
-        }
+        }     
+        
         .but{
             display: flex;
             justify-content: flex-end;
             margin-right: 20px;
-            margin-top: -20px;
+            margin-left: 70px;
+            margin-top: -30px;
             .ant-btn{
                 font-size: 14px;
                 height: fit-content;

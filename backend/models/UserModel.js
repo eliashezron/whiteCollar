@@ -13,6 +13,14 @@ const userSchema = mongoose.Schema({
         type:String,
         default:''
     },
+    profession:{
+        type:String,
+        default:''
+    },
+    workplace:{
+        type:String,
+        default:''
+    },
     email:{
         type:String,
         required:true,
@@ -30,6 +38,10 @@ const userSchema = mongoose.Schema({
         default: false,
     },
     profilePicture:{
+        type:String,
+        default:""
+    },
+    coverPhoto:{
         type:String,
         default:""
     },

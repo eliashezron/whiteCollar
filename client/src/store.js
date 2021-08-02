@@ -1,3 +1,4 @@
+import LogRocket from 'logrocket';
 import { createStore, combineReducers, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
 import {composeWithDevTools} from 'redux-devtools-extension'
@@ -50,7 +51,7 @@ const initialState = {
 
 const store = createStore(reducer,
      initialState,
-     composeWithDevTools(applyMiddleware(...middleware)
+     composeWithDevTools(applyMiddleware(...middleware, LogRocket.reduxMiddleware())
 ))
 
 export default store

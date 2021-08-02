@@ -6,6 +6,8 @@ import '@quasar/extras/ionicons-v4/ionicons-v4.css'
 import App from './App';
 import store from './store'
 import './assets/scss/base.scss'
+// import LogRocket from 'logrocket';
+// LogRocket.init('oo5yxf/collars');
 ReactDOM.render(
     <Provider store ={store}>
     <App />

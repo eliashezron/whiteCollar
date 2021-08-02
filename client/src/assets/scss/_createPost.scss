@@ -17,8 +17,16 @@
         position: relative;
     }
     .writeFormGroup{
+      margin-top: 20px;
         display: flex;
         align-items: center;
+        justify-content: center;
+        .ql-editor{
+          width: 100%;
+          min-height: 300px;
+          max-width: 1000px;
+          margin: 0 auto;
+        }
     }
       .writeIcon {
         width: 60px;

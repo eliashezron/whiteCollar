@@ -31,7 +31,8 @@ import {
            }catch(error){
                dispatch({
                    type:LOGIN_FAILURE,
-                   payload:error
+                   payload: error.response && error.response.data.message ? 
+                   error.response.data.message : error.message
                })
            }
        }
@@ -65,9 +66,14 @@ import {
             })
             localStorage.setItem('userInfo',JSON.stringify(data))
         }catch(error){
+            let message = error.response && error.response.data.message ? 
+            error.response.data.message : error.message
+            if(message === `E11000 duplicate key error collection: myFirstDatabase.users index: userName_1 dup key: { userName: ${userName} }`){
+                message = 'UserName Taken try annother userName'
+            }
             dispatch({
                 type:REGISTER_FAILURE,
-                payload:error
+                payload: message
             })
         }
     }
@@ -112,7 +118,7 @@ export const getUserDetails = () => async(dispatch, getState)=>{
         console.log(error)
         dispatch({
             type:'USER_DETAILS_FAILURE',
-            error:error.response && error.response.data.message ? 
+            payload:error.response && error.response.data.message ? 
             error.response.data.message : error.message
         })
         
@@ -145,7 +151,7 @@ export const updateUserDetails = (user) => async(dispatch, getState)=>{
     } catch (error) {
         dispatch({
             type: UPDATE_FAILURE,
-            error:error.response && error.response.data.message ? 
+            payload:error.response && error.response.data.message ? 
             error.response.data.message : error.message
         })
         
@@ -168,7 +174,7 @@ export const getTopUsers = () => async(dispatch)=>{
     } catch (error) {
         dispatch({
             type:'TOP_USERS_FAILURE',
-            error:error.response && error.response.data.message ? 
+            payload: error.response && error.response.data.message ? 
             error.response.data.message : error.message
         })
         
@@ -210,7 +216,7 @@ export const followUserAction = (userId) => async(dispatch, getState)=>{
     }catch(error){
         dispatch({
             type:'FOLLOW_FAILURE',
-            error:error.response && error.response.data.message ? 
+            payload: error.response && error.response.data.message ? 
             error.response.data.message : error.message
         })
     }
@@ -236,7 +242,7 @@ export const followCategoryAction = (categoryId) => async(dispatch, getState)=>{
     }catch(error){
         dispatch({
             type:'CATEGORY_FOLLOW_FAILURE',
-            error:error.response && error.response.data.message ? 
+            payload: error.response && error.response.data.message ? 
             error.response.data.message : error.message
         })
     }
@@ -262,7 +268,7 @@ export const unfollowUserAction = (userId) => async(dispatch, getState)=>{
     }catch(error){
         dispatch({
             type:'UN_FOLLOW_FAILURE',
-            error:error.response && error.response.data.message ? 
+            payload: error.response && error.response.data.message ? 
             error.response.data.message : error.message
         })
     }
@@ -288,7 +294,7 @@ export const savePostAction = (postId) => async(dispatch, getState)=>{
     }catch(error){
         dispatch({
             type:'SAVE_FAILURE',
-            error:error.response && error.response.data.message ? 
+            payload: error.response && error.response.data.message ? 
             error.response.data.message : error.message
         })
     }
@@ -307,9 +313,8 @@ export const getAllUsers = () => async(dispatch)=>{
         console.log(error)
         dispatch({
             type:'ALL_USERS_FAILURE',
-            error:error.response && error.response.data.message ? 
-            error.response.data.message : error.message
-        })
+            payload: error.response && error.response.data.message ? 
+            error.response.data.message : error.message        })
     }
 }
 export const getReadingList = () => async(dispatch, getState)=>{
@@ -334,7 +339,7 @@ export const getReadingList = () => async(dispatch, getState)=>{
         console.log(error)
         dispatch({
             type:'READING_LIST_FAILURE',
-            error:error.response && error.response.data.message ? 
+            payload: error.response && error.response.data.message ? 
             error.response.data.message : error.message
         })
     }

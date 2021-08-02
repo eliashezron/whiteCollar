@@ -20,12 +20,17 @@
     width: 100%;
     color:$text-color;
     align-items: center;
+    font-family: 'nunito', sans-serif;
+    box-shadow: 0px 0px 8px 0px #d4d4d4;
 
     .menu-title{
         align-items: center;
         font-size:22px;
         height:100%;
         display: flex;
+        margin: 'fit-content';
+        font-weight: 800;
+        font-family: 'DM Serif Display', serif;
         margin-left: 30px;
         color: black;
         &:hover{
@@ -35,7 +40,7 @@
 
     .menu-content-container{
         display: flex;
-        align-items: center;
+        justify-content: center;
         margin-right: 30px;
 
         ul{
@@ -43,11 +48,10 @@
             display: flex;
             flex-direction: row;
             height:100%;
-            justify-content: flex-end;
+            justify-content: center;
             margin: 0 20px 0 20px;
-            margin-block-start: 0;
-            margin-block-end: 0;
-            padding-inline-start: 0;
+            align-items: center;
+            padding-top: 20px;
 
             a{
                 text-decoration: none;
@@ -72,20 +76,21 @@
                     }
             }
         }
-        .menu-avatar-container{
+        .menu-avatar-conatiner{
             display: flex;
             flex-direction: row;
             height: 100%;
             justify-content: center;
             align-items: center;
-            
+            // padding-top: 20px;
             .ant-avatar{
-                padding: 0 5px 0 5px;
+                // padding: 0 5px 0 5px;
                 background-color: $background;
                 border: 1px solid $border;
+                // padding-top: 20px;
             }
             .menu-avatar-name{
-                padding: 30px;
+                padding: 10px;
                 display: inline-block;
                 overflow: hidden;
                 white-space: nowrap;
@@ -101,9 +106,11 @@
     }
 }
 .login-div{
+    display: flex;
+    align-items: center;
     .anticon-login{
         font-size: 20px;
-        padding: 30px;
+        // padding: 30px;
         color:black;
             &:hover{
                 color:$text-link;
@@ -113,16 +120,34 @@
 @media screen and (max-width: 900px) {
     .site-navigation{
         .menu-content-container{
-            width: 300px;
+            width: 70vw;
             height: calc(100%-65px);
             background: white;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(3.3px);
+            -webkit-backdrop-filter: blur(3.3px);
+            border: 1px solid rgba(26, 27, 27, 0.3);           
             position: fixed;
             top: 65px;
             left: -300px;
             transition: 300ms ease left;
             flex-direction: column-reverse;
+            .closeic{
+                z-index: 100;
+                display: flex;
+                justify-content: flex-end;
+                left: 10px;
+                // background: yellow;
+                .anticon-close{
+                    top: 0;
+                    font-size: x-large;
+                }
+            }
 
             ul{
+                color: black;
+                font-size: x-large;
+                font-weight: 800;
                 flex-direction: column;
                 justify-content: flex-start;
 
@@ -142,8 +167,12 @@
                 display: flex;
                 flex-direction: column;
                 .ant-avatar{
-                    align-self: flex-start;
-                    margin-left:8%;
+                    align-self: center;
+                    margin-top: 10px;
+                    margin-left:30%;
+                }
+                .anticon-logout{
+                    margin-left: 25%;
                 }
                 .menu-avatar-container{
                     display: flex;
@@ -163,5 +192,6 @@
         .ion-ios-menu{
             display:block;
         }
+      
     }
 }

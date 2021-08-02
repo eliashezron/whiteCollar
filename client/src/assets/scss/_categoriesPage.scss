@@ -31,3 +31,18 @@
         border: none !important;
     }
 }
+@media screen  and (max-width:900px){
+    .category-box{
+        height: 60px;
+        .cat1{
+            height: 50px;
+            font-size: medium;
+            padding-left: 10px;
+            padding-top: 10px;
+            .ant-btn{
+                font-size: 10px;
+                height: fit-content;
+            }
+        }
+    }
+}

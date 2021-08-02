@@ -12,11 +12,10 @@ import { getTopUsers } from '../actions/userActions'
 import Usercard from '../components/Usercard'
 import StickyBox from "react-sticky-box/dist/esnext";
 import { Divider } from 'antd'
-export default function Home({match}) {
+ export default function Home({match}) {
     const keyword = match.params.keyword
-    const pageNumber = match.params.pageNumber || 1
     const allPosts = useSelector(state => state.allPosts)
-    const {isLoading, error, posts, page, pages} = allPosts
+    const {isLoading, error, posts} = allPosts
     const loginUser = useSelector(state => state.loginUser)
     const {userInfo} = loginUser
     const topUsers = useSelector(state => state.topUsers)
@@ -27,12 +26,11 @@ export default function Home({match}) {
     const dispatch = useDispatch()
     
     useEffect(()=>{
-        dispatch(listPosts(keyword, pageNumber))
+        dispatch(listPosts(keyword))
         dispatch(getAllCategories())
         dispatch(getTopUsers())
-    },[dispatch, keyword, pageNumber])
+    },[dispatch, keyword])
     
-    //  const recentPosts =[...posts, ...posts, ...posts]
         const windowWidth = window.innerWidth
     return (
         <>

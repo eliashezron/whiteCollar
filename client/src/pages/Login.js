@@ -1,8 +1,9 @@
-import { Alert, message } from 'antd'
+import { Alert, Button, message } from 'antd'
 import React,{useEffect,useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import { Link } from 'react-router-dom'
 import { login } from '../actions/userActions'
+import Loader from '../components/Loader'
 import Meta from '../components/Meta'
 
 export default function Login({history, location}) {
@@ -23,38 +24,38 @@ export default function Login({history, location}) {
   }
   return (
   <>
-
-  <Meta title='log into whitePen'/>
-  {error && <Alert type='error' message='username and password combinations do no match'showIcon closable/>}
+  <Meta title='log into WHITECOLLAR'/>
+  {error && <Alert type='error' message={error} showIcon closable/>}
   {success && message.success('login successfull')}
-    <div className="login">
-      <span className="loginTitle">Login</span>
-      <form className="loginForm" onSubmit={handleSubmit}>
-        <label>userName</label>
-        <input className="loginInput"
-         type="text" 
-         placeholder="Enter your userName..."
-         value={userName}
-         onChange={(e)=>setuserName(e.target.value)}/>
-        <label>Password</label>
-        <input className="loginInput" 
-        type="password" 
-        placeholder="Enter your password..."
-        value={password}
-        onChange={(e)=>setpassword(e.target.value)} />
-        <button className="loginButton"
-        type='submit'
-        disabled={isLoading}>Login</button>
-      </form>
-      
+  {isLoading && <Loader/>}
+  <div className='body'>
+      <div className="container">
+        <div className="icon"></div>
+        <div className="title">WHITECOLLAR</div>
+        <div className="inputs">
+          <label for="email">userName</label>
+          <input type="text"
+          placeholder="enterUserName"
+          value={userName}
+          onChange={(e)=>setuserName(e.target.value)}/>
+          <label for="password">password</label>
+          <input type="password"
+          placeholder="enter your password"
+          value={password}
+          onChange={(e)=>setpassword(e.target.value)}/>
+        </div>
+        <div className="button">
+          <Button shape='round' onClick={handleSubmit}>LOGIN</Button>
+        </div>
         <div> new User ? {''}
-        <button className="loginRegisterButton">
-          <Link className='link' to={redirect ? `/register?register=${redirect}`:'/register'}>
+        <button className="button" >
+          <Link style={{color:'black'}} to={redirect ? `/register?register=${redirect}`:'/register'}>
           Register 
           </Link> 
           </button>
         </div>
-    </div>
-    </>
+      </div>
+  </div>
+  </>
   );
 }

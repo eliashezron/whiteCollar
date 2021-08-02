@@ -63,7 +63,7 @@ const getSingleUser = asynchandler(async(req, res) => {
     const user = await User.findById(req.user._id)
     if(user){
         res.status(200)
-        res.json(user )
+        res.json(user)
     }else{
         res.status(404)
         throw new Error('User not found')
@@ -123,7 +123,10 @@ const updateUserProfile = asynchandler(async(req, res)=>{
         user.userName = req.body.userName || user.userName
         user.email = req.body.email || user.email 
         user.userBio = req.body.userBio || user.userBio
+        user.profession = req.body.profession || user.profession
+        user.workplace = req.body.workplace || user.workplace
         user.profilePicture = req.body.profilePicture || user.profilePicture
+        user.coverPhoto = req.body.coverPhoto || user.coverPhoto
         if(req.body.password){
             user.password = req.body.password
         }
@@ -135,6 +138,10 @@ const updateUserProfile = asynchandler(async(req, res)=>{
             email: updatedUser.email,
             isAdmin: updatedUser.isAdmin,
             profilePicture:user.profilePicture,
+            coverPhoto:user.coverPhoto,
+            profession:user.profession,
+            workplace:user.workplace,
+            userBio:user.userBio,
             token:generateToken(updatedUser._id)
     })
     }else{

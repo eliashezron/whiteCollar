@@ -22,12 +22,14 @@
 @import './_categoriesPage.scss';
 @import './_userAuthorPosts.scss';
 @import './_userCard.scss';
+@import './_admin.scss';
 
 body {
     font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
     font-weight: 500;
     margin: 0;
-    background-color: #f8f9fa;
+    // background-color: #f8f9fa;
+    background-color: white;
 }
 main{
     margin-top: 65px;
@@ -37,7 +39,7 @@ main{
 // }
 
 .container {
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
@@ -54,4 +56,12 @@ main{
     bottom: 0;
     left: 0;
     background: linear-gradient(180deg, transparent 0%, transparent 18%, rgba(0,0,0,0.8) 99%, rgba(0,0,0,0.8) 100%)
+
+    // background: linear-gradient(180deg, transparent 0%, transparent 18%, rgba(0,0,0,0.8) 99%, rgba(0,0,0,0.8) 100%)
+    // background: rgba(19, 18, 18, 0);
+    //     // border-radius: 16px;
+    //     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    //     backdrop-filter: blur(0px);
+    //     -webkit-backdrop-filter: blur(0px);
+    //     border: 1px solid rgba(19, 18, 18, 0.3);
 }

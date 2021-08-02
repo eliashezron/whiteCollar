@@ -32,6 +32,14 @@ const storageProfilePicture = new CloudinaryStorage({
         transformation:[{width:750, height:200, crop:"limit"}]
     },
 })
+const storageCoverPhoto = new CloudinaryStorage({
+    cloudinary: cloud,
+    params:{
+        folder:'userCoverPhotos',
+        public_id:(req, file)=>`${file.originalname.split('.')[0]}-${Date.now()}`,
+        transformation:[{width:750, height:200, crop:"limit"}]
+    },
+})
 
 function checkFileType(file, cb){
     const filetypes = /jpg|jpeg|png/;
@@ -56,11 +64,20 @@ const uploadPP = multer({
         checkFileType(file, cb)
     },
 })
+const uploadPPC = multer({
+    storage:storageCoverPhoto,
+    fileFilter:function(req,file,cb){
+        checkFileType(file, cb)
+    },
+})
 
 router.post('/', upload.single('image'), (req, res)=>{
     res.send(req.file.path)
 })
 router.post('/profile', uploadPP.single('image'), (req, res)=>{
+    res.send(req.file.path)
+})
+router.post('/cover', uploadPPC.single('image'), (req, res)=>{
     res.send(req.file.path)
 })
 export default router

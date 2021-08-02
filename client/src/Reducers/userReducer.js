@@ -20,11 +20,13 @@ export const registerUserReducer = (state={}, action)=>{
             return{
                 userInfo:action.payload,
                 isLoading:false,
+                success:true
             };
         case REGISTER_FAILURE:
             return{
                 isLoading:false,
-                error:action.payload
+                error:action.payload,
+                success:false
             };
         default:
             return state

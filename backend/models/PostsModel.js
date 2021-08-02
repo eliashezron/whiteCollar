@@ -50,6 +50,14 @@ const postSchema = mongoose.Schema({
     saved:{
         type:Array,
         default:[]
+    },
+    submitted:{
+        type:Boolean,
+        default:false
+    },
+    published:{
+        type:Boolean,
+        default:false
     }
 }, {timestamps: true})
 

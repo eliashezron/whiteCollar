@@ -19,15 +19,17 @@ export function TagRow({tags}) {
 
 
 export const Tags = ({tags}) =>{
-    return(
-        <div className='tags-containers'>
-        {tags.map((tag)=>
+    return(<>
+        {tags.map((tag, index)=> {
+        return (
+        <div className='tags-containers' key={index}>
         <Link to = {`/posts/${tag}`}>
-            <span key={tag._id} className='tags'  style={{color:categoryColors[tag], backgroundColor:'white', fontFamily:'nunito',fontWeight:'700', height:'fit-content'}} >
+            <span  className='tags'  style={{color:categoryColors[tag], backgroundColor:'white', fontFamily:'nunito',fontWeight:'700', height:'fit-content'}} >
                 #{tag.toUpperCase()}
             </span>
         </Link>            
-        )}
     </div>
+    )})}
+    </>
     )
 }

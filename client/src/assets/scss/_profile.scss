@@ -1,109 +1,98 @@
-.settings {
-    display: flex;
-  }
-  .writeInput {
-    font-size: 30px;
-    border: none;
-    padding: 20px;
-    width: 100%;
-    background-color: $background;
+  .card-main{
+    display: grid;
+    grid-template-columns:repeat(2,  minmax(275px, 1fr));
+    grid-gap:20px;
+    .card{
+      background-color: #fdfdfd;
+      border-radius: 1px solid #eee;
+      box-shadow: 0px 0px 8px 0px #d4d4d4;
+      height: 145px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+  
+    }
+    .card1{
+        .settingsPPIcon{
+          margin-left: 10px;
+          color: black;
+          cursor: pointer;
+          margin-left: 30px;
+          font-size: 30px;
+        }
+        label{
+          margin-bottom: 4px;
+          font-size: 16px;
+          font-family:'DM Serif Display', serif;
+          color: $text-color;
+        }
+    }
+    .card2, .card3, .card4,.card5, .card6 {
+      label,input{
+        // width: fit-content;
+        border: none;
+        box-sizing: border-box;
+        outline: none;
+        display: flex;
+        justify-content: center;
+      }
+      label{
+        margin-bottom: 4px;
+        font-size: 16px;
+        font-family:'DM Serif Display', serif;
+        color: $text-color;
 
+      }
+      input{
+        margin-top: 4px;
+        margin-bottom: 5px;
+        font-family: 'Nunito', sans-serif;
+        font-size: 16px;
+        input::placeholder{
+          color:gray;
+          display: flex;
+          justify-content: center;
+        }
+        input:value{
+          color: black;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+.last-div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  .ant-btn{
+    font-size: x-large;
+    color: black;
+    font-weight: 500;
+    font-family:'Nunito', serif;
+    height: fit-content;
+    width: fit-content;
+    margin-left: 30px;
+    margin-right: 30px;
+    &:hover{
+      border:1px solid $main-color;
+    }
+  }
 }
-  .settingsWrapper {
-    flex: 9;
-    padding: 20px;
-  }
-  
-  .settingsTitle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .settingsTitleUpdate {
-    font-size: 30px;
-    margin-bottom: 20px;
-    color: lightcoral;
-  }
-  
-  .settingsTitleDelete {
-    color: red;
-    font-size: 12px;
-    cursor: pointer;
-  }
-  
-  .settingsForm {
+@media screen and (max-width:900px) {
+  .card-main{
     display: flex;
     flex-direction: column;
+    padding: 0px 40px;
+    .card{
+      height: 140px;
+    }
   }
-  
-  .settingsPP {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
+  .last-div{
+    padding-bottom: 20px;
+    .ant-btn{
+      font-size: 14px;
+    }
   }
-  
-  .settingsPP > img {
-    height: 70px;
-    width: 70px;
-    border-radius: 20px;
-    object-fit: cover;
-  }
-  
-  .settingsPPIcon {
-    width: 25px;
-    height: 25px;
-    padding: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    border-radius: 50%;
-    margin-left: 10px;
-    color: white;
-    background-color: lightcoral;
-    cursor: pointer;
-  }
-  
-  .settingsPPButton:focus {
-    outline-style: none;
-  }
-  
-  .settingsForm > label {
-    font-size: 20px;
-    margin-top: 20px;
-  }
-  
-  .settingsPPInput {
-    width: 30%;
-  }
-  
-  .settingsForm > input {
-    color: gray;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    height: 30px;
-    border: none;
-    border-bottom: 1px solid lightgray;
-  }
-  
-  .settingsSubmitButton {
-    align-self: center;
-    width: 150px;
-    border: none;
-    border-radius: 10px;
-    color: white;
-    background-color: teal;
-    padding: 10px;
-    margin-top: 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .settingsSubmitButton:hover {
-    background-color: rgb(1, 114, 114);
-  }
-  
+}

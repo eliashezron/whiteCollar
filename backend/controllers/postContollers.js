@@ -220,7 +220,7 @@ const deletePost = asynchandler(async(req, res)=>{
 // route /top
 // method top
 const getTopPosts = asynchandler(async(req, res)=>{
-    const topPosts = await Post.find({}).sort({likes: -1}).limit(5)
+    const topPosts = await Post.find({}).sort({likes: -1}).limit(4)
     res.json(topPosts)
 })
 // get carausel posts, this are selected randomly

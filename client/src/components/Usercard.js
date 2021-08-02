@@ -1,14 +1,11 @@
 import Avatar from 'antd/lib/avatar/avatar'
 import React,{useEffect} from 'react'
-import { Tag, Divider,Button } from 'antd';
+import {Divider,Button } from 'antd';
 import { categoryColors } from './CategoryColors';
 import { Link } from 'react-router-dom'
 import { getReadingList } from '../actions/userActions';
 import {useDispatch, useSelector} from 'react-redux'
 import {format} from 'timeago.js'
-import TagRow from './TagRow';
-import {CommentOutlined, HeartOutlined} from '@ant-design/icons'
-import { Hooks } from './Hooks';
 
 function Usercard({categories, users, Category}) {
     const PF = 'https://res.cloudinary.com/eliashezron1/image/upload/v1626282055/userProfilePictures/noAvatar_kwzvtj.png'
@@ -17,7 +14,6 @@ function Usercard({categories, users, Category}) {
     const dispatch = useDispatch()
     const getreadingList = useSelector(state => state.getreadingList)
     const {readingList} = getreadingList
-    const windowWidth = window.innerWidth
     useEffect(() => {
       if(userInfo){
         dispatch(getReadingList())
@@ -56,7 +52,9 @@ function Usercard({categories, users, Category}) {
                    <ul>
                      <div className='div2' key={user._id}>
                      <Link to={`/authors/${user.userName}`}>
-                      <Avatar src={user.profilePicture} size={60}/>
+                     <Avatar size={60} src={user.profilePicture ?
+                            user.profilePicture:
+                            PF}/>
                       </Link>
                       <Link to={`/authors/${user.userName}`}>
                       <div className='div3'>
@@ -83,11 +81,9 @@ function Usercard({categories, users, Category}) {
           return(
           <div className='card-box card-read' key={post._id}>
           <div className='author-title'> 
-          {/* <TagRow tags={post.category}/> */}
           <Link to={`/authors/${post.userAuthor}`}>
             <span><strong style={{color:'gray', fontFamily:"Castoro", fontSize:'20px'}}>Written By: </strong>{post.userAuthor}</span>
           </Link>
-          {/* <span>{format (post.createdAt)}</span> */}
           <Link to={`/post/${post._id}`}>
           <div className='title' style={{fontSize:'25px'}}>{post.title}</div>
           <span>{format (post.createdAt)}</span>

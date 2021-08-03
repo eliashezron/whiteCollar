@@ -45,16 +45,21 @@ function SinglePost({match, history}) {
     const PF = 'https://res.cloudinary.com/eliashezron1/image/upload/v1626282055/userProfilePictures/noAvatar_kwzvtj.png'
     useEffect(() => {
         window.scrollTo(0, 0)
-        if(!post._id || post._id !== match.params.id){
-            dispatch(getPostDetails(match.params.id))
-          
-        } else{
-            dispatch(callUser(post.userAuthor))
-            settitle(post.title)
-            setdescription(post.description)
-            setimage(post.image)
-            setlike(post.likes.length)
+        let isMounted = true
+        if(isMounted){
+
+            if(!post._id || post._id !== match.params.id){
+                dispatch(getPostDetails(match.params.id))
+              
+            } else{
+                dispatch(callUser(post.userAuthor))
+                settitle(post.title)
+                setdescription(post.description)
+                setimage(post.image)
+                setlike(post.likes.length)
+            }
         }
+        return()=>{isMounted = false}
     
     }, [dispatch, match.params.id, post])
      

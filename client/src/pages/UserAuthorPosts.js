@@ -27,11 +27,15 @@ import { callUser, followUserAction, getUserDetails} from '../actions/userAction
     const dispatch = useDispatch()
     useEffect(() => {
       window.scrollTo(0, 0)
+      let isMounted = true
+      if(isMounted){
         if(userAuthor || userInfo){
             dispatch(getUserDetails())   
             dispatch(getPostsByuserAuthor(userAuthor))
             dispatch(callUser(userAuthor))
           }
+      }
+      return()=>{isMounted = false}
 
     }, [dispatch, userAuthor, userInfo])
     // useEffect(() => {

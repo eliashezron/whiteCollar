@@ -38,15 +38,19 @@ const Profile = ({history}) => {
     } 
   }, [dispatch, history, userInfo])
   useEffect(() => {
-    if(!user.userName){
-      dispatch(getUserDetails())
-    }else{
-      setprofilePicture(user.profilePicture)
-      setuserBio(user.userBio)
-      setprofession(user.profession)
-      setworkplace(user.workplace)
-      setcoverPhoto(user.coverPhoto)
+    let isMounted = true
+    if (isMounted){
+      if(!user.userName){
+        dispatch(getUserDetails())
+      }else{
+        setprofilePicture(user.profilePicture)
+        setuserBio(user.userBio)
+        setprofession(user.profession)
+        setworkplace(user.workplace)
+        setcoverPhoto(user.coverPhoto)
+      }
     }
+    return()=>{isMounted = false}
   }, [dispatch, user, success])
   
   const uploadFileHandler =async(e)=>{

@@ -26,9 +26,14 @@ import { Alert, Divider } from 'antd'
     const dispatch = useDispatch()
     
     useEffect(()=>{
-        dispatch(listPosts(keyword))
-        dispatch(getAllCategories())
-        dispatch(getTopUsers())
+        let isMounted = true
+        if(isMounted){
+
+            dispatch(listPosts(keyword))
+            dispatch(getAllCategories())
+            dispatch(getTopUsers())
+        }
+        return()=>{isMounted = false}
     },[dispatch, keyword])
     
         const windowWidth = window.innerWidth

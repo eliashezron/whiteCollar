@@ -50,11 +50,6 @@ function CreatePost({history}) {
       [{ 'script': 'sub'}, { 'script': 'super' }], 
       ['clean']
     ], 
-
-  clipboard: {
-    // toggle to add extra line breaks when pasting HTML:
-    matchVisual: false,
-    }
     }
   }),[])
  
@@ -87,51 +82,7 @@ function CreatePost({history}) {
       setpreviewsource(reader.result)
     }
   }
-//   function imageHandler() {
-//     var range = this.quill.getSelection();
-//     var value = prompt('please copy paste the image url here.');
-//     if(value){
-//         this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
-//     }
-// }
-  // let quillObj
-  // function imageHandler(){
-  //   const input = document.createElement('input');  
-  //   input.setAttribute('type', 'file');  
-  //   input.setAttribute('accept', 'image/*');  
-  //   input.click(); 
-  //   input.onchange = async()=>{
-  //   const file = input.files[0]
-  //   // previewFile(file)
-  //   const formData = new FormData()
-  //   formData.append('image', file)
-  //   // setuploading(true)
-  //   try{
-  //     const config ={
-  //       headers:{
-  //         'Content-Type':'multipart/form-data'
-  //       }
-  //     }
-  //     const res = await axios.post('/api/upload', formData, config)
-  //     .then((response) => {
-  //       if (response.data.error == 'false' || response.data.error == false) {
-  //     quillObj.focus();
-  //     const range = quillObj.getSelection(true);
-  //     let position = range ? range.index : 0;
-  //     quillObj.setSelection(position + 1);
-  //     quillObj.insertEmbed(position, 'image', response.data)}})
-  //   }catch(error){
-  //     console.log(error)
-  //     // setuploading(false)
-  //   }
-  // }}
-  // const previewFile = (file) =>{
-  //   const reader = new FileReader()
-  //   reader.readAsDataURL(file)
-  //   reader.onloadend=()=>{
-  //     setpreviewsource(reader.result)
-  //   }
-  // }
+
   const gethtmlHandler=(e)=>{
     const editor = quillObj.current.getEditor();
     const unprivilegedEditor = quillObj.current.makeUnprivilegedEditor(editor);
@@ -154,7 +105,6 @@ function CreatePost({history}) {
 
     
   }
-  
 
   return (
     <>
@@ -204,6 +154,7 @@ function CreatePost({history}) {
         </div>
         {/* {Parser( */}
         <div className="writeFormGroup">
+      
         <ReactQuill
         ref={quillObj} 
         placeholder='create your post'
@@ -246,3 +197,55 @@ function CreatePost({history}) {
 
 
   export default React.memo(CreatePost)
+
+  //   function imageHandler() {
+//     var range = this.quill.getSelection();
+//     var value = prompt('please copy paste the image url here.');
+//     if(value){
+//         this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
+//     }
+// }
+  // let quillObj
+  // function imageHandler(){
+  //   const input = document.createElement('input');  
+  //   input.setAttribute('type', 'file');  
+  //   input.setAttribute('accept', 'image/*');  
+  //   input.click(); 
+  //   input.onchange = async()=>{
+  //   const file = input.files[0]
+  //   // previewFile(file)
+  //   const formData = new FormData()
+  //   formData.append('image', file)
+  //   // setuploading(true)
+  //   try{
+  //     const config ={
+  //       headers:{
+  //         'Content-Type':'multipart/form-data'
+  //       }
+  //     }
+  //     const res = await axios.post('/api/upload', formData, config)
+  //     .then((response) => {
+  //       if (response.data.error == 'false' || response.data.error == false) {
+  //     quillObj.focus();
+  //     const range = quillObj.getSelection(true);
+  //     let position = range ? range.index : 0;
+  //     quillObj.setSelection(position + 1);
+  //     quillObj.insertEmbed(position, 'image', response.data)}})
+  //   }catch(error){
+  //     console.log(error)
+  //     // setuploading(false)
+  //   }
+  // }}
+  // const previewFile = (file) =>{
+  //   const reader = new FileReader()
+  //   reader.readAsDataURL(file)
+  //   reader.onloadend=()=>{
+  //     setpreviewsource(reader.result)
+  //   }
+  // }  
+  {/* <QuillEditor
+  placeholder={"Start Posting Something"}
+  defaultValue= {description}
+  onEditorChange={onEditorChange}
+  // onFilesChange={onFilesChange}
+/> */}

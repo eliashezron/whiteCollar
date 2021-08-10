@@ -40,7 +40,7 @@ const handleSubmit = (e) =>{
   <div className='body'>
       <div className="container">
         {/* <div className="icon"></div> */}
-        <div className="title">WHITECOLLAR</div>
+        <div className="title">WHITEKOLLA</div>
         <div className="inputs">
           <label for="email">Email</label>
           <input type="text"

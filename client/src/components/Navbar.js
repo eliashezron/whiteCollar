@@ -26,7 +26,8 @@ const PF = 'https://res.cloudinary.com/eliashezron1/image/upload/v1626282055/use
         <>
         <nav className={`site-navigation ${menuActive && 'active' }`}>
             <div>
-            <Link to='/'><span className='menu-title'>WHITECOLLAR</span></Link></div>
+            <Link to='/'><div className='menu-title'>
+                <span style={{marginRight: '5px'}}>WHITE</span><span style={{backgroundColor:'black', color:'white'}}>KOLLA</span></div></Link></div>
            <div> <Route render={({history}) => <SearchBox history={history}/>}/></div>
             <div className="menu-content-container" onMouseEnter={()=>setMenuActive(true)} onMouseLeave={()=>setMenuActive(false)}>
                 <ul>

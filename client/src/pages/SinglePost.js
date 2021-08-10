@@ -175,21 +175,6 @@ function SinglePost({match, history}) {
             {isLoading ? <h1><Loader/></h1> : error ?(<h1>{error.message}</h1>) :(<>
                 <Meta title={post.title}/>
             <div className='post-container'>
-                    {uploading ? (<h1>uploading</h1>) : 
-            previewsource  ? (
-            <img
-            className="writeImg"
-            src={previewsource}
-            alt=""
-            />
-                ):
-                   ( <figure>
-                    {post.image && (
-                    <img src={post.image} alt={post.image}/>)}
-            </figure>)} 
-            <div className='tagspost'>
-                <Tags tags={post.category}/>
-            </div>
             {updateMode ? (<>
                 <div>
                 <label htmlFor="fileInput">
@@ -239,6 +224,22 @@ function SinglePost({match, history}) {
                     {new Date(post.createdAt).toDateString()}
                 </span>
             </p>
+                    {uploading ? (<h1>uploading</h1>) : 
+            previewsource  ? (
+            <img
+            className="writeImg"
+            src={previewsource}
+            alt=""
+            />
+                ):
+                   (<figure>
+                    {post.image && (
+                    <img src={post.image} alt={post.image}/>)}
+            </figure>)} 
+            <div className='tagspost'>
+                <Tags tags={post.category}/>
+            </div>
+
             {updateMode ? (
                 <textarea
                 className='singlePostDescInput'

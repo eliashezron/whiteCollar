@@ -31,7 +31,7 @@ export default function Login({history, location}) {
   <div className='body'>
       <div className="container">
         <div className="icon"></div>
-        <div className="title">WHITECOLLAR</div>
+        <div className="title">WHITEKOLLA</div>
         <div className="inputs">
           <label for="email">userName</label>
           <input type="text"

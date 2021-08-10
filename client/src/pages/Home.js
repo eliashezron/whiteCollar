@@ -12,7 +12,7 @@ import { getTopUsers } from '../actions/userActions'
 import Usercard from '../components/Usercard'
 import StickyBox from "react-sticky-box/dist/esnext";
 import { Alert, Divider } from 'antd'
- export default function Home({match}) {
+ export default function Home({match}) { 
     const keyword = match.params.keyword
     const allPosts = useSelector(state => state.allPosts)
     const {isLoading, error, posts} = allPosts
@@ -28,7 +28,6 @@ import { Alert, Divider } from 'antd'
     useEffect(()=>{
         let isMounted = true
         if(isMounted){
-
             dispatch(listPosts(keyword))
             dispatch(getAllCategories())
             dispatch(getTopUsers())
@@ -51,7 +50,7 @@ import { Alert, Divider } from 'antd'
             <PostMasonry columns={3} tagsOnTop={true}/>
         </div>
         </section>}
-        <section  className='container'style={{display:"flex", alignItems:'flex-start'}}>
+        <section className='container' style={{display:"flex", alignItems:'flex-start'}}>
         <div className='row' style={{flex:"8"}}>
         <Divider orientation="left">Lastest posts</Divider>
             <PostGrid posts={posts} tagsOnTop={true} />

@@ -19,7 +19,7 @@
      figure {
         padding: 10px 0;
         width: 100%;
-        height: 200px;
+        height: 400px;
         border-radius: 10px;
         object-fit: cover;
         position: relative;
@@ -34,7 +34,7 @@
         height: 100%;
         width: 100%;
         margin: 0 auto;
-        max-height: 280px;
+        // max-height: 280px;
     }
     .singlePostTitleInput{
         margin: 10px;
@@ -69,6 +69,7 @@
         font-size: 36px;
         font-weight: 800px;
         font-family: 'DM Serif Display', serif;
+        text-align: left;
     }
 
     .author-text {
@@ -83,6 +84,7 @@
         color: black;
         font-size: 18px;
         line-height: 25px;
+        white-space: pre-wrap !important;
 
     }
     .singlePostDescInput:focus{
@@ -93,7 +95,8 @@
         font-size: 22px;
         font-weight: 400px !important;
         color: black;
-        font-family:'Nunito', sans-serif;;
+        font-family:'Nunito', sans-serif;
+        white-space: pre-wrap !important;
     }
     .singlePostButton {
         width: 100px;
@@ -274,21 +277,26 @@
         padding: 0 40px;
         justify-content: center;
         figure{
-            height: 120px;
+            height: 180px;
         }
         .description-text {
             font-size: 16px;
             font-weight: 400px;
             color: black;
             text-align: left;
-            font-family:'nunito', sans-serif;
+            font-family:'Castoro', sans-serif;
+            line-height: 1.8;
         }
         .singlePostTitle{
             align-self: flex-start;
-            font-size: 24px;
+            font-size: 18px;
             text-align: justify;
             font-weight: 600px;
             // font-family: 'Castoro', serif;
+            flex-direction: column;
+            .singlePostEdit{
+                font-size: medium;
+            }
         }
         .flash-comments{
             transition: 300ms ease;

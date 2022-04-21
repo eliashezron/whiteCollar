@@ -5,11 +5,13 @@
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
     "@quasar/extras": "^1.10.7",
+    "@reduxjs/toolkit": "^1.8.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "antd": "^4.16.3",
     "axios": "^0.21.1",
+    "firebase": "^9.6.11",
     "highlight.js": "^11.1.0",
     "logrocket": "^2.0.0",
     "moment": "^2.29.1",
@@ -55,5 +57,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000"
+  "proxy": "https://5000-eliashezron-whitecollar-8q7iixosxn8.ws-eu34.gitpod.io"
 }

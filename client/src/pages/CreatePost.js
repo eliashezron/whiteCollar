@@ -10,10 +10,13 @@ import Loader from '../components/Loader'
 import {message} from 'antd'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import {db, storage} from '../firebase'
+import { collection, addDoc } from 'firebase/firestore'
 
 function CreatePost({history}) {
   const quillObj = useRef(null)
   const [title, settitle] = useState('')
+  const [progress, setProgress] = useState('')
   const [description, setdescription] = useState('')
   const [image, setimage] = useState('')
   const [category, setcategory] = useState('')
@@ -60,21 +63,20 @@ function CreatePost({history}) {
     const formData = new FormData()
     formData.append('image', file)
     setuploading(true)
-    try{
-      const config ={
-        headers:{
-          'Content-Type':'multipart/form-data'
-        }
-      }
-      const {data} = await axios.post('/api/upload', formData, config)
-      // console.log(data)
-      setimage(data)
-      setuploading(false)
-    }catch(error){
-      console.log(error)
-      setuploading(false)
-    }
-  }
+    
+    const fileRef = storage.ref(file.name)
+    fileRef.put(file).on('state_changed', (snap) => {
+      let percentage = (snap.bytesTransferred / snap.totalBytes) * 100;
+      setProgress(percentage);
+    }, (err) => {
+      console.log(err);
+    }, async () => {
+      const url = await fileRef.getDownloadURL();
+      // const createdAt = timestamp();
+      // await collectionRef.add({ url, createdAt });
+      setimage(url);
+    }); 
+
   const previewFile = (file) =>{
     const reader = new FileReader()
     reader.readAsDataURL(file)
@@ -90,7 +92,7 @@ function CreatePost({history}) {
     setdescription(inputText)
   }
   
-  const handleSubmit= (e)=>{
+  const handleSubmit= async(e)=>{
     e.preventDefault()
     if(!image){
       message.warning('add an image before posting')
@@ -100,10 +102,10 @@ function CreatePost({history}) {
     }else if(!description){
       message.warning('add a description before posting')
     }else{
-      dispatch(createPostCreate({image, title, description, category}))
-    }
-
-    
+      const postRef = collection(db, 'posts')
+      await addDoc(postRef,
+      ({image, title, description, category, author: 'elias'}))
+    }  
   }
 
   return (
@@ -195,57 +197,6 @@ function CreatePost({history}) {
     'link', 'image', 'formula','code-block',
   ]
 
+}
 
-  export default React.memo(CreatePost)
-
-  //   function imageHandler() {
-//     var range = this.quill.getSelection();
-//     var value = prompt('please copy paste the image url here.');
-//     if(value){
-//         this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
-//     }
-// }
-  // let quillObj
-  // function imageHandler(){
-  //   const input = document.createElement('input');  
-  //   input.setAttribute('type', 'file');  
-  //   input.setAttribute('accept', 'image/*');  
-  //   input.click(); 
-  //   input.onchange = async()=>{
-  //   const file = input.files[0]
-  //   // previewFile(file)
-  //   const formData = new FormData()
-  //   formData.append('image', file)
-  //   // setuploading(true)
-  //   try{
-  //     const config ={
-  //       headers:{
-  //         'Content-Type':'multipart/form-data'
-  //       }
-  //     }
-  //     const res = await axios.post('/api/upload', formData, config)
-  //     .then((response) => {
-  //       if (response.data.error == 'false' || response.data.error == false) {
-  //     quillObj.focus();
-  //     const range = quillObj.getSelection(true);
-  //     let position = range ? range.index : 0;
-  //     quillObj.setSelection(position + 1);
-  //     quillObj.insertEmbed(position, 'image', response.data)}})
-  //   }catch(error){
-  //     console.log(error)
-  //     // setuploading(false)
-  //   }
-  // }}
-  // const previewFile = (file) =>{
-  //   const reader = new FileReader()
-  //   reader.readAsDataURL(file)
-  //   reader.onloadend=()=>{
-  //     setpreviewsource(reader.result)
-  //   }
-  // }  
-  {/* <QuillEditor
-  placeholder={"Start Posting Something"}
-  defaultValue= {description}
-  onEditorChange={onEditorChange}
-  // onFilesChange={onFilesChange}
-/> */}
+export default React.memo(CreatePost)
